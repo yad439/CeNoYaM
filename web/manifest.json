@@ -1,11 +1,11 @@
 {
-  "name": "cenoyam",
+  "name": "CeNoYaM",
   "short_name": "cenoyam",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0175C2",
   "theme_color": "#0175C2",
-  "description": "Сertainly Not Yandex Music.",
+  "description": "Certainly Not Yandex Music.",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
