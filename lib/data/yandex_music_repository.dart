@@ -2,19 +2,17 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
-import 'package:http/http.dart' as http;
 
+import 'yandex_music_datasource.dart';
 import 'download_info.dart';
 
 class YandexMusicRepository {
-  Future<Uri> getDownloadUrl(int trackId) async {
-    final infoUrlJsonResponse = await http.get(Uri.https('music.yandex.ru',
-        'api/v2.1/handlers/track/$trackId/track/download/m?hq=1'));
-    final infoUrlJson = jsonDecode(infoUrlJsonResponse.body);
+  final YandexMusicDatasource _datasource;
 
-    final infoJson =
-        await http.get(Uri.parse(infoUrlJson["src"] + '&format=json'));
-    final info = DownloadInfo.fromJson(jsonDecode(infoJson.body));
+  YandexMusicRepository(this._datasource);
+
+  Future<Uri> getDownloadUrl(int trackId) async {
+    DownloadInfo info = await _datasource.getDownloadInfo(trackId);
 
     var output = AccumulatorSink<Digest>();
     var input = md5.startChunkedConversion(output);
