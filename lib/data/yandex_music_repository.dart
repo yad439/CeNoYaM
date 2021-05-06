@@ -4,7 +4,7 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 
 import 'yandex_music_datasource.dart';
-import 'download_info.dart';
+import 'json/download_info.dart';
 
 class YandexMusicRepository {
   final YandexMusicDatasource _datasource;

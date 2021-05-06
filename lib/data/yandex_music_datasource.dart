@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'download_info.dart';
+import 'json/download_info.dart';
 
 class YandexMusicDatasource {
   Future<DownloadInfo> getDownloadInfo(int trackId) async {

@@ -9,11 +9,7 @@ class DownloadInfo {
   final String s;
   final String ts;
 
-  DownloadInfo(
-      {required this.host,
-      required this.path,
-      required this.s,
-      required this.ts});
+  DownloadInfo(this.host, this.path, this.s, this.ts);
 
   factory DownloadInfo.fromJson(Map<String, dynamic> json) =>
       _$DownloadInfoFromJson(json);

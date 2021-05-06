@@ -8,9 +8,9 @@ part of 'download_info.dart';
 
 DownloadInfo _$DownloadInfoFromJson(Map<String, dynamic> json) {
   return DownloadInfo(
-    host: json['host'] as String,
-    path: json['path'] as String,
-    s: json['s'] as String,
-    ts: json['ts'] as String,
+    json['host'] as String,
+    json['path'] as String,
+    json['s'] as String,
+    json['ts'] as String,
   );
 }
