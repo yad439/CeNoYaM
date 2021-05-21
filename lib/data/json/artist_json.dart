@@ -3,12 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'artist_json.g.dart';
 
 @JsonSerializable(createToJson: false)
-class ArtistJson {
+class ArtistMinJson {
   int id;
   String name;
 
-  ArtistJson(this.id, this.name);
+  ArtistMinJson(this.id, this.name);
 
-  factory ArtistJson.fromJson(Map<String, dynamic> json) =>
-      _$ArtistJsonFromJson(json);
+  factory ArtistMinJson.fromJson(Map<String, dynamic> json) =>
+      _$ArtistMinJsonFromJson(json);
 }

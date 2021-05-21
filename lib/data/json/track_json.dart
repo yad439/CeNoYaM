@@ -7,10 +7,10 @@ part 'track_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class TrackJson {
-  final int id;
+  final String id;
   final String title;
-  final List<ArtistJson> artists;
-  final List<AlbumJson> albums;
+  final List<ArtistMinJson> artists;
+  final List<AlbumMinJson> albums;
 
   TrackJson(this.id, this.title, this.artists, this.albums);
 

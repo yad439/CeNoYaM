@@ -8,13 +8,13 @@ part of 'track_json.dart';
 
 TrackJson _$TrackJsonFromJson(Map<String, dynamic> json) {
   return TrackJson(
-    json['id'] as int,
+    json['id'] as String,
     json['title'] as String,
     (json['artists'] as List<dynamic>)
-        .map((e) => ArtistJson.fromJson(e as Map<String, dynamic>))
+        .map((e) => ArtistMinJson.fromJson(e as Map<String, dynamic>))
         .toList(),
     (json['albums'] as List<dynamic>)
-        .map((e) => AlbumJson.fromJson(e as Map<String, dynamic>))
+        .map((e) => AlbumMinJson.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
