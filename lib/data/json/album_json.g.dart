@@ -15,8 +15,8 @@ AlbumMinJson _$AlbumMinJsonFromJson(Map<String, dynamic> json) {
 
 AlbumJson _$AlbumJsonFromJson(Map<String, dynamic> json) {
   return AlbumJson(
-    json['id'],
-    json['title'],
+    json['id'] as int,
+    json['title'] as String,
     (json['artists'] as List<dynamic>)
         .map((e) => ArtistMinJson.fromJson(e as Map<String, dynamic>))
         .toList(),

@@ -21,7 +21,8 @@ class AlbumJson extends AlbumMinJson {
   List<ArtistMinJson> artists;
   List<List<TrackJson>> volumes;
 
-  AlbumJson(id, title, this.artists, this.volumes) : super(id, title);
+  AlbumJson(int id, String title, this.artists, this.volumes)
+      : super(id, title);
 
   factory AlbumJson.fromJson(Map<String, dynamic> json) =>
       _$AlbumJsonFromJson(json);

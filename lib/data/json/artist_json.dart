@@ -12,3 +12,11 @@ class ArtistMinJson {
   factory ArtistMinJson.fromJson(Map<String, dynamic> json) =>
       _$ArtistMinJsonFromJson(json);
 }
+
+@JsonSerializable(createToJson: false)
+class ArtistJson extends ArtistMinJson {
+  ArtistJson(String id, String name) : super(int.parse(id), name);
+
+  factory ArtistJson.fromJson(Map<String, dynamic> json) =>
+      _$ArtistJsonFromJson(json);
+}

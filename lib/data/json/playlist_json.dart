@@ -6,13 +6,23 @@ import 'track_json.dart';
 part 'playlist_json.g.dart';
 
 @JsonSerializable(createToJson: false)
-class PlaylistJson {
+class PlaylistMinJson {
   int kind;
   String title;
   UserJson owner;
+
+  PlaylistMinJson(this.kind, this.title, this.owner);
+
+  factory PlaylistMinJson.fromJson(Map<String, dynamic> json) =>
+      _$PlaylistMinJsonFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class PlaylistJson extends PlaylistMinJson {
   List<TrackJson> tracks;
 
-  PlaylistJson(this.kind, this.title, this.owner, this.tracks);
+  PlaylistJson(int kind, String title, UserJson owner, this.tracks)
+      : super(kind, title, owner);
 
   factory PlaylistJson.fromJson(Map<String, dynamic> json) =>
       _$PlaylistJsonFromJson(json);

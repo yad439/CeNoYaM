@@ -12,3 +12,10 @@ ArtistMinJson _$ArtistMinJsonFromJson(Map<String, dynamic> json) {
     json['name'] as String,
   );
 }
+
+ArtistJson _$ArtistJsonFromJson(Map<String, dynamic> json) {
+  return ArtistJson(
+    json['id'] as String,
+    json['name'] as String,
+  );
+}
