@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:cenoyam/data/json/playlist_box.dart';
 import 'package:http/http.dart' as http;
 
-import 'json/artist_info.dart';
 import 'json/download_info.dart';
+import 'json/artist_info.dart';
+import 'json/playlist_box.dart';
 import 'json/track_info.dart';
 import 'json/album_json.dart';
 
