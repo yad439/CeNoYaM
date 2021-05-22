@@ -4,8 +4,8 @@ part 'artist_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ArtistMinJson {
-  int id;
-  String name;
+  final int id;
+  final String name;
 
   ArtistMinJson(this.id, this.name);
 

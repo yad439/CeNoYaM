@@ -6,7 +6,7 @@ part 'track_box.g.dart';
 
 @JsonSerializable(createToJson: false)
 class TrackBox {
-  TrackJson track;
+  final TrackJson track;
 
   TrackBox(this.track);
 

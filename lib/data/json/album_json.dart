@@ -7,8 +7,8 @@ part 'album_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class AlbumMinJson {
-  int id;
-  String title;
+  final int id;
+  final String title;
 
   AlbumMinJson(this.id, this.title);
 
@@ -18,8 +18,8 @@ class AlbumMinJson {
 
 @JsonSerializable(createToJson: false)
 class AlbumJson extends AlbumMinJson {
-  List<ArtistMinJson> artists;
-  List<List<TrackJson>> volumes;
+  final List<ArtistMinJson> artists;
+  final List<List<TrackJson>> volumes;
 
   AlbumJson(int id, String title, this.artists, this.volumes)
       : super(id, title);

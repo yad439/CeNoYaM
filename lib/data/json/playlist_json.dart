@@ -7,9 +7,9 @@ part 'playlist_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class PlaylistMinJson {
-  int kind;
-  String title;
-  UserJson owner;
+  final int kind;
+  final String title;
+  final UserJson owner;
 
   PlaylistMinJson(this.kind, this.title, this.owner);
 

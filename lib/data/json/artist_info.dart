@@ -7,9 +7,9 @@ part 'artist_info.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ArtistInfo {
-  ArtistJson artist;
-  List<AlbumMinJson> albums;
-  List<String> trackIds;
+  final ArtistJson artist;
+  final List<AlbumMinJson> albums;
+  final List<String> trackIds;
 
   ArtistInfo(this.artist, this.albums, this.trackIds);
 

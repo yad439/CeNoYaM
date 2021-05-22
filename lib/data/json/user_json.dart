@@ -4,8 +4,8 @@ part 'user_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class UserJson {
-  int uid;
-  String login;
+  final int uid;
+  final String login;
 
   UserJson(this.uid, this.login);
 

@@ -6,7 +6,7 @@ part 'playlist_box.g.dart';
 
 @JsonSerializable(createToJson: false)
 class PlaylistBox {
-  PlaylistJson playlist;
+  final PlaylistJson playlist;
 
   PlaylistBox(this.playlist);
 
