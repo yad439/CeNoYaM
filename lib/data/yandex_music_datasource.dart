@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'json/download_info.dart';
 import 'json/artist_info.dart';
 import 'json/playlist_box.dart';
-import 'json/track_info.dart';
+import 'json/track_box.dart';
 import 'json/album_json.dart';
 
 class YandexMusicDatasource {
@@ -21,11 +21,11 @@ class YandexMusicDatasource {
     return DownloadInfo.fromJson(jsonDecode(infoJson.body));
   }
 
-  Future<TrackInfo> getTrackInfo(int trackId, {int? albumId}) => http
+  Future<TrackBox> getTrackInfo(int trackId, {int? albumId}) => http
       .get(Uri.https('music.yandex.ru', 'handlers/track.jsx', {
         'track': (albumId == null ? trackId.toString() : '$trackId:$albumId')
       }))
-      .then((value) => TrackInfo.fromJson(jsonDecode(value.body)));
+      .then((value) => TrackBox.fromJson(jsonDecode(value.body)));
 
   Future<AlbumJson> getAlbum(int albumId) => http
       .get(Uri.https('music.yandex.ru', 'handlers/album.jsx',
