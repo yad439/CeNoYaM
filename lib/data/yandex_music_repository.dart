@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 
+import '/domain/music_repository.dart';
 import '/domain/entity/album.dart';
 import '/domain/entity/artist.dart';
 import '/domain/entity/playlist.dart';
@@ -11,7 +12,7 @@ import '/domain/entity/user.dart';
 import 'json/download_info.dart';
 import 'yandex_music_datasource.dart';
 
-class YandexMusicRepository {
+class YandexMusicRepository implements MusicRepository {
   final YandexMusicDatasource _datasource;
 
   YandexMusicRepository(this._datasource);
