@@ -11,5 +11,5 @@ class TrackBox {
   TrackBox(this.track);
 
   factory TrackBox.fromJson(Map<String, dynamic> json) =>
-      _$TrackInfoFromJson(json);
+      _$TrackBoxFromJson(json);
 }
