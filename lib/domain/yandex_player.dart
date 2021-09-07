@@ -18,4 +18,12 @@ class YandexPlayer {
   void resume() => _player.resume();
 
   void stop() => _player.stop();
+
+  Future<int> get duration => _player.getDuration();
+
+  Stream<Duration> get durationStream => _player.onDurationChanged;
+
+  Stream<Duration> get position => _player.onAudioPositionChanged;
+
+  Future<void> dispose() async => _player.dispose();
 }
