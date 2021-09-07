@@ -40,7 +40,7 @@ class PlayerWidget extends StatelessWidget {
                   if ((track == null)) {
                     return Text('-');
                   } else {
-                    var artist = track.artists.map((ar) => ar.name).join(';');
+                    var artist = track.artistString;
                     return Text('$artist - ${track.title}');
                   }
                 },

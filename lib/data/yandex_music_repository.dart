@@ -39,7 +39,8 @@ class YandexMusicRepository implements MusicRepository {
         User(ownerJson.uid, ownerJson.login),
         playlist.kind,
         playlist.tracks
-            .map((t) => TrackMin(int.parse(t.id), t.title))
+            .map((t) => TrackMin.joinArtists(
+                int.parse(t.id), t.title, t.artists.map((e) => e.name)))
             .toList(growable: false));
   }
 
@@ -66,7 +67,8 @@ class YandexMusicRepository implements MusicRepository {
             .toList(growable: false),
         albumJson.volumes
             .expand((e) => e)
-            .map((t) => TrackMin(int.parse(t.id), t.title))
+            .map((t) => TrackMin.joinArtists(
+                int.parse(t.id), t.title, t.artists.map((e) => e.name)))
             .toList(growable: false));
   }
 
