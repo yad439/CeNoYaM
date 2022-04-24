@@ -24,6 +24,4 @@ class YandexPlayer {
   Stream<Duration> get durationStream => _player.onDurationChanged;
 
   Stream<Duration> get position => _player.onAudioPositionChanged;
-
-  Future<void> dispose() async => _player.dispose();
 }
