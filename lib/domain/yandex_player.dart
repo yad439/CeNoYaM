@@ -10,7 +10,7 @@ class YandexPlayer {
 
   void play(int trackId) async {
     final url = await _musicRepository.getDownloadUrl(trackId);
-    _player.play(url.toString());
+    _player.play(UrlSource(url.toString()));
   }
 
   void pause() => _player.pause();
@@ -19,9 +19,9 @@ class YandexPlayer {
 
   void stop() => _player.stop();
 
-  Future<int> get duration => _player.getDuration();
+  Future<Duration?> get duration => _player.getDuration();
 
   Stream<Duration> get durationStream => _player.onDurationChanged;
 
-  Stream<Duration> get position => _player.onAudioPositionChanged;
+  Stream<Duration> get position => _player.onPositionChanged;
 }

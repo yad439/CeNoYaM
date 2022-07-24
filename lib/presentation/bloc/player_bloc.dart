@@ -9,7 +9,7 @@ class PlayerBloc {
   final StreamController<Track?> _trackController = StreamController<Track?>();
   final StreamController<bool> _playingController = StreamController<bool>();
   final StreamController<PlayerEvent> _eventController =
-  StreamController<PlayerEvent>();
+      StreamController<PlayerEvent>();
 
   PlayerBloc(this._player) {
     _eventController.stream.listen(_handleEvent);
@@ -23,18 +23,17 @@ class PlayerBloc {
 
   Stream<Duration> get position => _player.position;
 
-  Stream<double> get progress =>
-      _player.position.asyncMap((event) =>
-          _player.duration.then((value) => value.toDouble() / event.inSeconds));
+  Stream<double> get progress => _player.position.asyncMap((event) => _player
+      .duration
+      .then((value) => value != null ? value.inSeconds / event.inSeconds : 0));
 
   Stream<Track?> get currentTrack => _trackController.stream;
 
-  void _handleEvent(PlayerEvent event) =>
-      event.when(
-          pause: () => _pause(),
-          resume: () => _resume(),
-          stop: () => _stop(),
-          play: (track) => _play(track));
+  void _handleEvent(PlayerEvent event) => event.when(
+      pause: () => _pause(),
+      resume: () => _resume(),
+      stop: () => _stop(),
+      play: (track) => _play(track));
 
   void _pause() {
     _player.pause();
