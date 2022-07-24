@@ -25,7 +25,7 @@ class PlayerBloc {
 
   Stream<double> get progress => _player.position.asyncMap((event) => _player
       .duration
-      .then((value) => value != null ? value.inSeconds / event.inSeconds : 0));
+      .then((value) => value != null ? event.inMilliseconds / value.inMilliseconds : 0));
 
   Stream<Track?> get currentTrack => _trackController.stream;
 
