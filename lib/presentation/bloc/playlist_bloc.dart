@@ -7,15 +7,12 @@ import 'playlist_state.dart';
 class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   final MusicRepository _repository;
 
-  PlaylistBloc(this._repository) : super(PlaylistState.uninitialized());
-
-  @override
-  Stream<PlaylistState> mapEventToState(PlaylistEvent event) {
-    return event.when(load: _load);
+  PlaylistBloc(this._repository) : super(PlaylistState.uninitialized()){
+    on<PlaylistEvent>((event, emit) async => emit(await event.when(load: _load)));
   }
 
-  Stream<PlaylistState> _load(String owner, int id) async* {
+  Future<PlaylistState> _load(String owner, int id) async {
     final playlist = await _repository.getPlaylist(owner, id);
-    yield PlaylistState.loaded(playlist.tracks);
+    return PlaylistState.loaded(playlist.tracks);
   }
 }
