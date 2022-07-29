@@ -35,15 +35,15 @@ class MyApp extends StatelessWidget {
           title: const Text('CeNoYaM'),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Provider.value(value: bloc, child: const PlaylistWidget()),
-              Provider(
-                create: (_) => PlayerBloc(YandexPlayer(player, _repository)),
-                child: const PlayerWidget(),
-              ),
-            ],
+          child: Provider(
+            create: (_) => PlayerBloc(YandexPlayer(player, _repository)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Provider.value(value: bloc, child: const PlaylistWidget()),
+                const PlayerWidget(),
+              ],
+            ),
           ),
         ),
       ),

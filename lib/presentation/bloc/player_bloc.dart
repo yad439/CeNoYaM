@@ -9,7 +9,8 @@ class PlayerBloc {
     _eventController.stream.listen(_handleEvent);
   }
   final YandexPlayer _player;
-  final StreamController<Track?> _trackController = StreamController<Track?>();
+  final StreamController<TrackMin?> _trackController =
+      StreamController<TrackMin?>();
   final StreamController<bool> _playingController = StreamController<bool>();
   final StreamController<PlayerEvent> _eventController =
       StreamController<PlayerEvent>();
@@ -29,7 +30,7 @@ class PlayerBloc {
         ),
       );
 
-  Stream<Track?> get currentTrack => _trackController.stream;
+  Stream<TrackMin?> get currentTrack => _trackController.stream;
 
   void _handleEvent(PlayerEvent event) => event.when(
         pause: _pause,
@@ -54,7 +55,7 @@ class PlayerBloc {
     _trackController.sink.add(null);
   }
 
-  void _play(Track track) {
+  void _play(TrackMin track) {
     _player.play(track.id);
     _trackController.sink.add(track);
     _playingController.sink.add(true);

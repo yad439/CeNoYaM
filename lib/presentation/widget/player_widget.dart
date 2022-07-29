@@ -44,7 +44,7 @@ class PlayerWidget extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                StreamBuilder<Track?>(
+                StreamBuilder<TrackMin?>(
                   stream: bloc.currentTrack,
                   builder: (cont, snap) {
                     final track = snap.data;

@@ -13,5 +13,5 @@ class PlayerEvent with _$PlayerEvent {
 
   const factory PlayerEvent.stop() = _Stop;
 
-  const factory PlayerEvent.play(Track track) = _Play;
+  const factory PlayerEvent.play(TrackMin track) = _Play;
 }
