@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 
 import 'music_repository.dart';
 
@@ -23,4 +24,24 @@ class YandexPlayer {
   Stream<Duration> get durationStream => _player.onDurationChanged;
 
   Stream<Duration> get position => _player.onPositionChanged;
+
+  Stream<YandexPlayerState> get state =>
+      _player.onPlayerStateChanged.map((event) {
+        switch (event) {
+          case PlayerState.stopped:
+            return YandexPlayerState.stopped;
+          case PlayerState.completed:
+            return YandexPlayerState.stopped;
+          case PlayerState.playing:
+            return YandexPlayerState.playing;
+          case PlayerState.paused:
+            return YandexPlayerState.paused;
+        }
+      });
+
+  void dispose() {
+    _player.dispose();
+  }
 }
+
+enum YandexPlayerState { playing, paused, stopped }
