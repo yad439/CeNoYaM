@@ -9,26 +9,27 @@ environment:
   sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
+  audioplayers:
+  convert:
+  crypto:
   flutter:
     sdk: flutter
-  audioplayers:
-  injectable:
-  get_it:
-  provider:
-  http:
-  json_annotation:
-  crypto:
-  convert:
   flutter_bloc:
   freezed_annotation:
+  get_it:
+  http:
+  injectable:
+  json_annotation:
+  provider:
 
 dev_dependencies:
+  build_runner:
+  flutter_lints:
   flutter_test:
     sdk: flutter
-  build_runner:
+  freezed:
   injectable_generator:
   json_serializable:
-  freezed:
 
 
 flutter:

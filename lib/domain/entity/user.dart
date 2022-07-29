@@ -1,8 +1,7 @@
 class User {
+  User(this._uid, this._login);
   final int _uid;
   final String _login;
-
-  User(this._uid, this._login);
 
   String get login => _login;
 

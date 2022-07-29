@@ -5,15 +5,14 @@ import '../../domain/yandex_player.dart';
 import 'player_event.dart';
 
 class PlayerBloc {
+  PlayerBloc(this._player) {
+    _eventController.stream.listen(_handleEvent);
+  }
   final YandexPlayer _player;
   final StreamController<Track?> _trackController = StreamController<Track?>();
   final StreamController<bool> _playingController = StreamController<bool>();
   final StreamController<PlayerEvent> _eventController =
       StreamController<PlayerEvent>();
-
-  PlayerBloc(this._player) {
-    _eventController.stream.listen(_handleEvent);
-  }
 
   Sink<PlayerEvent> get command => _eventController.sink;
 
@@ -23,17 +22,21 @@ class PlayerBloc {
 
   Stream<Duration> get position => _player.position;
 
-  Stream<double> get progress => _player.position.asyncMap((event) => _player
-      .duration
-      .then((value) => value != null ? event.inMilliseconds / value.inMilliseconds : 0));
+  Stream<double> get progress => _player.position.asyncMap(
+        (event) => _player.duration.then(
+          (value) =>
+              value != null ? event.inMilliseconds / value.inMilliseconds : 0,
+        ),
+      );
 
   Stream<Track?> get currentTrack => _trackController.stream;
 
   void _handleEvent(PlayerEvent event) => event.when(
-      pause: () => _pause(),
-      resume: () => _resume(),
-      stop: () => _stop(),
-      play: (track) => _play(track));
+        pause: _pause,
+        resume: _resume,
+        stop: _stop,
+        play: _play,
+      );
 
   void _pause() {
     _player.pause();

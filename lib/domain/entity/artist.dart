@@ -1,10 +1,9 @@
 import 'album.dart';
 
 class ArtistMin {
+  ArtistMin(this._id, this._name);
   final int _id;
   final String _name;
-
-  ArtistMin(this._id, this._name);
 
   String get name => _name;
 
@@ -12,9 +11,8 @@ class ArtistMin {
 }
 
 class Artist extends ArtistMin {
-  final List<AlbumMin> _albums;
-
   Artist(int id, String name, this._albums) : super(id, name);
+  final List<AlbumMin> _albums;
 
   List<AlbumMin> get albums => _albums;
 }

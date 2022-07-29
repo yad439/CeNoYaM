@@ -4,13 +4,12 @@ part 'artist_json.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ArtistMinJson {
-  final int id;
-  final String name;
-
   ArtistMinJson(this.id, this.name);
 
   factory ArtistMinJson.fromJson(Map<String, dynamic> json) =>
       _$ArtistMinJsonFromJson(json);
+  final int id;
+  final String name;
 }
 
 @JsonSerializable(createToJson: false)

@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../domain/entity/track.dart';
 
-class TrackWidget extends StatelessWidget{
+class TrackWidget extends StatelessWidget {
+  const TrackWidget(this._track, this._callback, {Key? key}) : super(key: key);
   final TrackMin _track;
   final void Function() _callback;
 
-  TrackWidget(this._track, this._callback);
-
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ElevatedButton(onPressed: _callback, child: Text('|>')),
-        Text('${_track.artistString} - ${_track.title}')
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        children: [
+          ElevatedButton(onPressed: _callback, child: const Text('|>')),
+          Text('${_track.artistString} - ${_track.title}')
+        ],
+      );
 }

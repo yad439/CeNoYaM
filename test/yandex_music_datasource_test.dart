@@ -15,7 +15,9 @@ void main() {
     expect(track.artists.length, 1);
     expect(track.artists[0].id, 1716328);
     expect(
-        track.artists[0].name, 'Aperture Science Psychoacoustic Laboratories');
+      track.artists[0].name,
+      'Aperture Science Psychoacoustic Laboratories',
+    );
   });
 
   test('should return correct album', () async {
@@ -25,12 +27,14 @@ void main() {
     expect(album.artists.length, 1);
     expect(album.artists[0].id, 1716328);
     expect(
-        album.artists[0].name, 'Aperture Science Psychoacoustic Laboratories');
+      album.artists[0].name,
+      'Aperture Science Psychoacoustic Laboratories',
+    );
     expect(album.volumes.length, 4);
     expect(album.volumes[0][0].id, '5493089');
   });
 
-  test("should return correct playlist", () async {
+  test('should return correct playlist', () async {
     final playlistBox =
         await datasource.getPlaylist('yamusic-bestsongs', 222057);
     final playlist = playlistBox.playlist;
@@ -40,7 +44,7 @@ void main() {
     expect(playlist.tracks[0].id, '1361730');
   });
 
-  test("should return correct artist", () async {
+  test('should return correct artist', () async {
     final artistInfo = await datasource.getArtist(1716328);
     final artist = artistInfo.artist;
 

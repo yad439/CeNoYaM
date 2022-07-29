@@ -6,17 +6,20 @@ import '../bloc/playlist_state.dart';
 import 'track_widget.dart';
 
 class PlaylistWidget extends StatelessWidget {
+  const PlaylistWidget({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PlaylistBloc, PlaylistState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<PlaylistBloc, PlaylistState>(
         builder: (context, state) => state.when(
-            uninitialized: () => const SizedBox(),
-            loaded: (tracks) => Expanded(
-                  child: ListView(
-                    children: tracks
-                        .map((track) => TrackWidget(track, () {}))
-                        .toList(growable: false),
-                  ),
-                )));
-  }
+          uninitialized: () => const SizedBox(),
+          loaded: (tracks) => Expanded(
+            child: ListView(
+              children: tracks
+                  .map((track) => TrackWidget(track, () {}))
+                  .toList(growable: false),
+            ),
+          ),
+        ),
+      );
 }

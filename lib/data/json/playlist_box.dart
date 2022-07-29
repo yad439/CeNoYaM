@@ -6,10 +6,9 @@ part 'playlist_box.g.dart';
 
 @JsonSerializable(createToJson: false)
 class PlaylistBox {
-  final PlaylistJson playlist;
-
   PlaylistBox(this.playlist);
 
   factory PlaylistBox.fromJson(Map<String, dynamic> json) =>
       _$PlaylistBoxFromJson(json);
+  final PlaylistJson playlist;
 }
