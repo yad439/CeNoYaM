@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/entity/album.dart';
-import '../../domain/entity/artist.dart';
 import '../../domain/entity/track.dart';
 import '../../domain/player_state.dart';
 import '../bloc/player_bloc.dart';
@@ -34,8 +32,7 @@ class PlayerWidget extends StatelessWidget {
                     if (track == null) {
                       return const Text('-');
                     } else {
-                      final artist = track.artistString;
-                      return Text('$artist - ${track.title}');
+                      return Text('${track.artistString} - ${track.title}');
                     }
                   },
                 ),
