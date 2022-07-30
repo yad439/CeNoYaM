@@ -49,3 +49,4 @@ pubspec.lock
 
 *.g.dart
 *.freezed.dart
+main.config.dart
