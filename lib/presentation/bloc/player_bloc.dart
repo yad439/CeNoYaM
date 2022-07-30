@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../domain/entity/track.dart';
+import '../../domain/player_state.dart';
 import '../../domain/yandex_player.dart';
 import 'player_event.dart';
 
@@ -11,13 +12,12 @@ class PlayerBloc {
   final YandexPlayer _player;
   final StreamController<TrackMin?> _trackController =
       StreamController<TrackMin?>();
-  final StreamController<bool> _playingController = StreamController<bool>();
   final StreamController<PlayerEvent> _eventController =
       StreamController<PlayerEvent>();
 
   Sink<PlayerEvent> get command => _eventController.sink;
 
-  Stream<bool> get isPlaying => _playingController.stream;
+  Stream<PlayerState> get state => _player.state;
 
   Stream<Duration> get duration => _player.durationStream;
 
@@ -41,29 +41,25 @@ class PlayerBloc {
 
   void _pause() {
     _player.pause();
-    _playingController.sink.add(false);
   }
 
   void _resume() {
     _player.resume();
-    _playingController.sink.add(true);
   }
 
   void _stop() {
     _player.stop();
-    _playingController.sink.add(false);
     _trackController.sink.add(null);
   }
 
   void _play(TrackMin track) {
     _player.play(track.id);
     _trackController.sink.add(track);
-    _playingController.sink.add(true);
   }
 
   void dispose() {
     _eventController.close();
     _trackController.close();
-    _playingController.close();
+    _player.dispose();
   }
 }

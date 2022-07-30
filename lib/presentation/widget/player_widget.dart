@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../domain/entity/album.dart';
 import '../../domain/entity/artist.dart';
 import '../../domain/entity/track.dart';
+import '../../domain/player_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 
@@ -18,28 +19,10 @@ class PlayerWidget extends StatelessWidget {
       color: Theme.of(context).bottomAppBarColor,
       child: Row(
         children: [
-          StreamBuilder<bool>(
-            stream: bloc.isPlaying,
-            initialData: false,
-            builder: (cont, playing) => playing.data!
-                ? TextButton(
-                    child: const Text('||'),
-                    onPressed: () =>
-                        bloc.command.add(const PlayerEvent.pause()),
-                  )
-                : TextButton(
-                    child: const Text('|>'),
-                    onPressed: () => bloc.command.add(
-                      PlayerEvent.play(
-                        Track(
-                          5493020,
-                          'test',
-                          AlbumMin(0, 'qwer'),
-                          [ArtistMin(0, 'asdf')],
-                        ),
-                      ),
-                    ),
-                  ),
+          StreamBuilder<PlayerState>(
+            stream: bloc.state,
+            initialData: PlayerState.stopped,
+            builder: (cont, state) => _buildButton(bloc, state.data!),
           ),
           Expanded(
             child: Column(
@@ -87,5 +70,22 @@ class PlayerWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildButton(PlayerBloc bloc, PlayerState state) {
+    switch (state) {
+      case PlayerState.playing:
+        return TextButton(
+          child: const Text('||'),
+          onPressed: () => bloc.command.add(const PlayerEvent.pause()),
+        );
+      case PlayerState.paused:
+        return TextButton(
+          child: const Text('|>'),
+          onPressed: () => bloc.command.add(const PlayerEvent.resume()),
+        );
+      case PlayerState.stopped:
+        return const TextButton(onPressed: null, child: Text('|>'));
+    }
   }
 }

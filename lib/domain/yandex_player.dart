@@ -1,15 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart' as audioplayers;
 
 import 'music_repository.dart';
+import 'player_state.dart';
 
 class YandexPlayer {
   YandexPlayer(this._player, this._musicRepository);
-  final AudioPlayer _player;
+  final audioplayers.AudioPlayer _player;
   final MusicRepository _musicRepository;
 
   Future<void> play(int trackId) async {
     final url = await _musicRepository.getDownloadUrl(trackId);
-    return _player.play(UrlSource(url.toString()));
+    return _player.play(audioplayers.UrlSource(url.toString()));
   }
 
   void pause() => _player.pause();
@@ -24,17 +25,15 @@ class YandexPlayer {
 
   Stream<Duration> get position => _player.onPositionChanged;
 
-  Stream<YandexPlayerState> get state =>
-      _player.onPlayerStateChanged.map((event) {
+  Stream<PlayerState> get state => _player.onPlayerStateChanged.map((event) {
         switch (event) {
-          case PlayerState.stopped:
-            return YandexPlayerState.stopped;
-          case PlayerState.completed:
-            return YandexPlayerState.stopped;
-          case PlayerState.playing:
-            return YandexPlayerState.playing;
-          case PlayerState.paused:
-            return YandexPlayerState.paused;
+          case audioplayers.PlayerState.stopped:
+          case audioplayers.PlayerState.completed:
+            return PlayerState.stopped;
+          case audioplayers.PlayerState.playing:
+            return PlayerState.playing;
+          case audioplayers.PlayerState.paused:
+            return PlayerState.paused;
         }
       });
 
@@ -42,5 +41,3 @@ class YandexPlayer {
     _player.dispose();
   }
 }
-
-enum YandexPlayerState { playing, paused, stopped }
