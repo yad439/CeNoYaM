@@ -25,7 +25,7 @@ void configureDependencies(GetIt getIt) => $initGetIt(getIt);
 @module
 abstract class InjectableConfig {
   @singleton
-  AudioPlayer get audioPlayer;
+  AudioPlayer get audioPlayer => AudioPlayer();
 }
 
 class MyApp extends StatelessWidget {
