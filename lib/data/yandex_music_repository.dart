@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:injectable/injectable.dart';
 
 import '/domain/entity/album.dart';
 import '/domain/entity/artist.dart';
@@ -11,6 +12,7 @@ import '/domain/entity/user.dart';
 import '/domain/music_repository.dart';
 import 'yandex_music_datasource.dart';
 
+@Singleton(as: MusicRepository)
 class YandexMusicRepository implements MusicRepository {
   YandexMusicRepository(this._datasource);
   final YandexMusicDatasource _datasource;

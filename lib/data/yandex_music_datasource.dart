@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 import 'json/album_json.dart';
 import 'json/artist_info.dart';
@@ -8,6 +9,7 @@ import 'json/download_info.dart';
 import 'json/playlist_box.dart';
 import 'json/track_box.dart';
 
+@singleton
 class YandexMusicDatasource {
   Future<DownloadInfo> getDownloadInfo(int trackId) async {
     final infoUrlJsonResponse = await http.get(
@@ -23,7 +25,9 @@ class YandexMusicDatasource {
     final infoJson =
         // ignore: avoid_dynamic_calls
         await http.get(Uri.parse('https:${infoUrlJson['src']}&format=json'));
-    return DownloadInfo.fromJson(jsonDecode(infoJson.body));
+    return DownloadInfo.fromJson(
+      jsonDecode(infoJson.body) as Map<String, dynamic>,
+    );
   }
 
   Future<TrackBox> getTrackInfo(int trackId, {int? albumId}) => http
@@ -32,7 +36,10 @@ class YandexMusicDatasource {
           'track': albumId == null ? trackId.toString() : '$trackId:$albumId'
         }),
       )
-      .then((value) => TrackBox.fromJson(jsonDecode(value.body)));
+      .then(
+        (value) =>
+            TrackBox.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
+      );
 
   Future<AlbumJson> getAlbum(int albumId) => http
       .get(
@@ -42,7 +49,10 @@ class YandexMusicDatasource {
           {'album': albumId.toString()},
         ),
       )
-      .then((value) => AlbumJson.fromJson(jsonDecode(value.body)));
+      .then(
+        (value) =>
+            AlbumJson.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
+      );
 
   Future<PlaylistBox> getPlaylist(String owner, int kinds) => http
       .get(
@@ -52,7 +62,11 @@ class YandexMusicDatasource {
           {'owner': owner, 'kinds': kinds.toString()},
         ),
       )
-      .then((value) => PlaylistBox.fromJson(jsonDecode(value.body)));
+      .then(
+        (value) => PlaylistBox.fromJson(
+          jsonDecode(value.body) as Map<String, dynamic>,
+        ),
+      );
 
   Future<ArtistInfo> getArtist(int artistId) => http
       .get(
@@ -62,5 +76,8 @@ class YandexMusicDatasource {
           {'artist': artistId.toString()},
         ),
       )
-      .then((value) => ArtistInfo.fromJson(jsonDecode(value.body)));
+      .then(
+        (value) =>
+            ArtistInfo.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
+      );
 }
