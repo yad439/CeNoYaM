@@ -1,8 +1,11 @@
 import 'package:cenoyam/data/yandex_music_datasource.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final datasource = YandexMusicDatasource();
+  final datasource = YandexMusicDatasource(
+    Dio(BaseOptions(baseUrl: 'https://music.yandex.ru/')),
+  );
 
   test('should return correct track info', () async {
     final trackInfo = await datasource.getTrackInfo(5493020);

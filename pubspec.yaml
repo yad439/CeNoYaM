@@ -11,13 +11,15 @@ environment:
 dependencies:
   audioplayers:
   convert:
+  cookie_jar:
   crypto:
+  dio:
+  dio_cookie_manager:
   flutter:
     sdk: flutter
   flutter_bloc:
   freezed_annotation:
   get_it:
-  http:
   injectable:
   json_annotation:
   provider:

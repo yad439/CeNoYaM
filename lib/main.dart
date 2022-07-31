@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +27,8 @@ void configureDependencies(GetIt getIt) => $initGetIt(getIt);
 abstract class InjectableConfig {
   @singleton
   AudioPlayer get audioPlayer => AudioPlayer();
+  @singleton
+  Dio get dio => Dio(BaseOptions(baseUrl: 'https://music.yandex.ru'));
 }
 
 class MyApp extends StatelessWidget {

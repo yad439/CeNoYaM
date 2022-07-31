@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import 'json/album_json.dart';
@@ -11,73 +9,49 @@ import 'json/track_box.dart';
 
 @singleton
 class YandexMusicDatasource {
-  Future<DownloadInfo> getDownloadInfo(int trackId) async {
-    final infoUrlJsonResponse = await http.get(
-      Uri.https(
-        'music.yandex.ru',
-        'api/v2.1/handlers/track/$trackId/track/download/m',
-        {'hq': '1'},
-      ),
-      headers: {'X-Retpath-Y': 'https%3A%2F%2Fmusic.yandex.ru%2F'},
-    );
-    final infoUrlJson = jsonDecode(infoUrlJsonResponse.body);
+  YandexMusicDatasource(this._dio);
 
-    final infoJson =
-        // ignore: avoid_dynamic_calls
-        await http.get(Uri.parse('https:${infoUrlJson['src']}&format=json'));
-    return DownloadInfo.fromJson(
-      jsonDecode(infoJson.body) as Map<String, dynamic>,
+  final Dio _dio;
+
+  Future<DownloadInfo> getDownloadInfo(int trackId) async {
+    final infoUrlJsonResponse = await _dio.get<Map<String, dynamic>>(
+      '/api/v2.1/handlers/track/$trackId/track/download/m',
+      queryParameters: {'hq': '1'},
+      options:
+          Options(headers: {'X-Retpath-Y': 'https%3A%2F%2Fmusic.yandex.ru%2F'}),
     );
+
+    final infoJson = await _dio.get<Map<String, dynamic>>(
+      'https:${infoUrlJsonResponse.data!['src']}&format=json',
+    );
+    return DownloadInfo.fromJson(infoJson.data!);
   }
 
-  Future<TrackBox> getTrackInfo(int trackId, {int? albumId}) => http
-      .get(
-        Uri.https('music.yandex.ru', 'handlers/track.jsx', {
+  Future<TrackBox> getTrackInfo(int trackId, {int? albumId}) =>
+      _dio.get<Map<String, dynamic>>(
+        '/handlers/track.jsx',
+        queryParameters: {
           'track': albumId == null ? trackId.toString() : '$trackId:$albumId'
-        }),
-      )
-      .then(
-        (value) =>
-            TrackBox.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
+        },
+      ).then(
+        (value) => TrackBox.fromJson(value.data!),
       );
 
-  Future<AlbumJson> getAlbum(int albumId) => http
-      .get(
-        Uri.https(
-          'music.yandex.ru',
-          'handlers/album.jsx',
-          {'album': albumId.toString()},
-        ),
-      )
-      .then(
-        (value) =>
-            AlbumJson.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
+  Future<AlbumJson> getAlbum(int albumId) => _dio.get<Map<String, dynamic>>(
+        '/handlers/album.jsx',
+        queryParameters: {'album': albumId.toString()},
+      ).then(
+        (value) => AlbumJson.fromJson(value.data!),
       );
 
-  Future<PlaylistBox> getPlaylist(String owner, int kinds) => http
-      .get(
-        Uri.https(
-          'music.yandex.ru',
-          'handlers/playlist.jsx',
-          {'owner': owner, 'kinds': kinds.toString()},
-        ),
-      )
-      .then(
-        (value) => PlaylistBox.fromJson(
-          jsonDecode(value.body) as Map<String, dynamic>,
-        ),
-      );
+  Future<PlaylistBox> getPlaylist(String owner, int kinds) =>
+      _dio.get<Map<String, dynamic>>(
+        '/handlers/playlist.jsx',
+        queryParameters: {'owner': owner, 'kinds': kinds.toString()},
+      ).then((value) => PlaylistBox.fromJson(value.data!));
 
-  Future<ArtistInfo> getArtist(int artistId) => http
-      .get(
-        Uri.https(
-          'music.yandex.ru',
-          'handlers/artist.jsx',
-          {'artist': artistId.toString()},
-        ),
-      )
-      .then(
-        (value) =>
-            ArtistInfo.fromJson(jsonDecode(value.body) as Map<String, dynamic>),
-      );
+  Future<ArtistInfo> getArtist(int artistId) => _dio.get<Map<String, dynamic>>(
+        '/handlers/artist.jsx',
+        queryParameters: {'artist': artistId.toString()},
+      ).then((value) => ArtistInfo.fromJson(value.data!));
 }
