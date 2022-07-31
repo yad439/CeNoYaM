@@ -98,4 +98,11 @@ class YandexMusicRepository implements MusicRepository {
       albumsJson.map((a) => AlbumMin(a.id, a.title)).toList(growable: false),
     );
   }
+
+  @override
+  Future<bool> login(String login, String password) =>
+      _datasource.login(login, password);
+
+  @override
+  Future<void> logout() => _datasource.logout();
 }

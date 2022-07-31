@@ -54,4 +54,34 @@ class YandexMusicDatasource {
         '/handlers/artist.jsx',
         queryParameters: {'artist': artistId.toString()},
       ).then((value) => ArtistInfo.fromJson(value.data!));
+
+  Future<bool> login(String login, String password) => _dio
+      .post<String>(
+        'https://passport.yandex.ru/auth',
+        data: {
+          'login': login,
+          'passwd': password,
+          'retpath': 'https://music.yandex.ru',
+        },
+        options: Options(responseType: ResponseType.plain),
+      )
+      .then(
+        (value) => value.data!.contains('data-page-type="profile.passportv2"'),
+      );
+
+  Future<void> logout() async {
+    final profile = await _dio
+        .get<Map<String, dynamic>>('/api/v2.1/handlers/auth')
+        .then((value) => value.data!);
+    await _dio.get<dynamic>(
+      'https://passport.yandex.ru/passport',
+      queryParameters: {
+        'mode': 'embeddedauth',
+        'action': 'logut',
+        'retpath': 'https://music.yandex.ru',
+        'yu': profile['yandexuid'],
+        'uid': profile['uid']
+      },
+    );
+  }
 }

@@ -13,4 +13,8 @@ abstract class MusicRepository {
   Future<Playlist> getPlaylist(String owner, int id);
 
   Future<Track> getTrack(int trackId, {int? albumId});
+
+  Future<bool> login(String login, String password);
+
+  Future<void> logout();
 }
