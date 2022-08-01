@@ -6,14 +6,12 @@ import 'playlist_state.dart';
 
 class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   PlaylistBloc(this._repository) : super(const PlaylistState.uninitialized()) {
-    on<PlaylistEvent>(
-      (event, emit) async => emit(await event.when(load: _load)),
-    );
+    on<LoadPlaylist>((event, emit) => _load(event.owner, event.id, emit));
   }
   final MusicRepository _repository;
 
-  Future<PlaylistState> _load(String owner, int id) async {
+  Future<void> _load(String owner, int id, Emitter<PlaylistState> emit) async {
     final playlist = await _repository.getPlaylist(owner, id);
-    return PlaylistState.loaded(playlist.tracks);
+    emit(PlaylistState.loaded(playlist.tracks));
   }
 }

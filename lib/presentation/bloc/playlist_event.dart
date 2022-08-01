@@ -5,5 +5,5 @@ part 'playlist_event.freezed.dart';
 @immutable
 @freezed
 class PlaylistEvent with _$PlaylistEvent {
-  const factory PlaylistEvent.load(String owner, int id) = _Load;
+  const factory PlaylistEvent.load(String owner, int id) = LoadPlaylist;
 }
