@@ -14,6 +14,6 @@ class SearchResults with _$SearchResults {
     List<TrackMin> tracks,
     List<ArtistMin> artists,
     List<AlbumMin> albums,
-    List<Playlist> playlists,
+    List<PlaylistMin> playlists,
   ) = _SearchResults;
 }

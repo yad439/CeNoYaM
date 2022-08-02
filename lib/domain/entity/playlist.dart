@@ -1,15 +1,21 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'track.dart';
 import 'user.dart';
 
-class Playlist {
-  Playlist(this._owner, this._id, this._tracks);
-  final User _owner;
-  final int _id;
-  final List<TrackMin> _tracks;
+part 'playlist.freezed.dart';
 
-  List<TrackMin> get tracks => _tracks;
+@freezed
+class PlaylistMin with _$PlaylistMin {
+  const factory PlaylistMin(User owner, int id, String title) = _PlaylistMin;
+}
 
-  int get id => _id;
-
-  User get owner => _owner;
+@freezed
+class Playlist with _$Playlist implements PlaylistMin {
+  const factory Playlist(
+    User owner,
+    int id,
+    String title,
+    List<TrackMin> tracks,
+  ) = _Playlist;
 }
