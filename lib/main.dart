@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
+import 'data/json_mapper.dart';
 import 'domain/music_repository.dart';
 import 'domain/yandex_player.dart';
 import 'main.config.dart';
@@ -34,6 +35,8 @@ abstract class InjectableConfig {
     ..interceptors.add(CookieManager(jar));
   @singleton
   CookieJar get cookieJar => CookieJar();
+  @singleton
+  JsonMapper get jsonMapper => JsonMapper();
 }
 
 class MyApp extends StatelessWidget {
