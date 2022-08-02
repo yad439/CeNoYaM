@@ -7,7 +7,7 @@ import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 
 class PlayerWidget extends StatelessWidget {
-  const PlayerWidget({Key? key}) : super(key: key);
+  const PlayerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

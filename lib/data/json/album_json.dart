@@ -17,8 +17,7 @@ class AlbumMinJson {
 
 @JsonSerializable(createToJson: false)
 class AlbumJson extends AlbumMinJson {
-  AlbumJson(int id, String title, this.artists, this.volumes)
-      : super(id, title);
+  AlbumJson(super.id, super.title, this.artists, this.volumes);
 
   factory AlbumJson.fromJson(Map<String, dynamic> json) =>
       _$AlbumJsonFromJson(json);

@@ -8,7 +8,7 @@ import '../bloc/playlist_state.dart';
 import 'track_widget.dart';
 
 class PlaylistWidget extends StatelessWidget {
-  const PlaylistWidget({Key? key}) : super(key: key);
+  const PlaylistWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

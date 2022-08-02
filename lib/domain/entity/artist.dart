@@ -11,7 +11,7 @@ class ArtistMin {
 }
 
 class Artist extends ArtistMin {
-  Artist(int id, String name, this._albums) : super(id, name);
+  Artist(super.id, super.name, this._albums);
   final List<AlbumMin> _albums;
 
   List<AlbumMin> get albums => _albums;

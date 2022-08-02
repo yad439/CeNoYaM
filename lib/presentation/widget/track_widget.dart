@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entity/track.dart';
 
 class TrackWidget extends StatelessWidget {
-  const TrackWidget(this._track, this._callback, {Key? key}) : super(key: key);
+  const TrackWidget(this._track, this._callback, {super.key});
   final TrackMin _track;
   final void Function() _callback;
 

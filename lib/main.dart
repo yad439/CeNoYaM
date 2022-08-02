@@ -40,7 +40,7 @@ abstract class InjectableConfig {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(this._getIt, {Key? key}) : super(key: key);
+  const MyApp(this._getIt, {super.key});
   final GetIt _getIt;
 
   @override

@@ -18,8 +18,7 @@ class PlaylistMinJson {
 
 @JsonSerializable(createToJson: false)
 class PlaylistJson extends PlaylistMinJson {
-  PlaylistJson(int kind, String title, UserJson owner, this.tracks)
-      : super(kind, title, owner);
+  PlaylistJson(super.kind, super.title, super.owner, this.tracks);
 
   factory PlaylistJson.fromJson(Map<String, dynamic> json) =>
       _$PlaylistJsonFromJson(json);
