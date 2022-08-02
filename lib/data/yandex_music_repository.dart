@@ -8,14 +8,17 @@ import '/domain/entity/album.dart';
 import '/domain/entity/artist.dart';
 import '/domain/entity/playlist.dart';
 import '/domain/entity/track.dart';
-import '/domain/entity/user.dart';
 import '/domain/music_repository.dart';
+import '../domain/entity/search_results.dart';
+import '../domain/search_type.dart';
+import 'json_mapper.dart';
 import 'yandex_music_datasource.dart';
 
 @Singleton(as: MusicRepository)
 class YandexMusicRepository implements MusicRepository {
-  YandexMusicRepository(this._datasource);
+  YandexMusicRepository(this._datasource, this._mapper);
   final YandexMusicDatasource _datasource;
+  final JsonMapper _mapper;
 
   @override
   Future<Uri> getDownloadUrl(int trackId) async {
@@ -33,76 +36,45 @@ class YandexMusicRepository implements MusicRepository {
   }
 
   @override
-  Future<Playlist> getPlaylist(String owner, int id) async {
-    final playlistJson = await _datasource.getPlaylist(owner, id);
-    final playlist = playlistJson.playlist;
-    final ownerJson = playlist.owner;
-    return Playlist(
-      User(ownerJson.uid, ownerJson.login),
-      playlist.kind,
-      playlist.tracks
-          .map(
-            (t) => TrackMin.joinArtists(
-              int.parse(t.id),
-              t.title,
-              t.artists.map((e) => e.name),
-            ),
-          )
-          .toList(growable: false),
-    );
-  }
+  Future<Playlist> getPlaylist(String owner, int id) => _datasource
+      .getPlaylist(owner, id)
+      .then((value) => _mapper.playlistFromJson(value.playlist));
 
   @override
-  Future<Track> getTrack(int trackId, {int? albumId}) async {
-    final trackJson = await _datasource.getTrackInfo(trackId, albumId: albumId);
-    final track = trackJson.track;
-    final album = track.albums[0];
-    return Track(
-      trackId,
-      track.title,
-      AlbumMin(album.id, album.title),
-      track.artists.map((a) => ArtistMin(a.id, a.name)).toList(growable: false),
-    );
-  }
+  Future<Track> getTrack(int trackId, {int? albumId}) => _datasource
+      .getTrackInfo(trackId, albumId: albumId)
+      .then((value) => _mapper.trackFromJson(value.track));
 
   @override
-  Future<Album> getAlbum(int id) async {
-    final albumJson = await _datasource.getAlbum(id);
-    return Album(
-      id,
-      albumJson.title,
-      albumJson.artists
-          .map((a) => ArtistMin(a.id, a.name))
-          .toList(growable: false),
-      albumJson.volumes
-          .expand((e) => e)
-          .map(
-            (t) => TrackMin.joinArtists(
-              int.parse(t.id),
-              t.title,
-              t.artists.map((e) => e.name),
-            ),
-          )
-          .toList(growable: false),
-    );
-  }
+  Future<Album> getAlbum(int id) =>
+      _datasource.getAlbum(id).then(_mapper.albumFromJson);
 
   @override
-  Future<Artist> getArtist(int id) async {
-    final artistBox = await _datasource.getArtist(id);
-    final artistJson = artistBox.artist;
-    final albumsJson = artistBox.albums;
-    return Artist(
-      id,
-      artistJson.name,
-      albumsJson.map((a) => AlbumMin(a.id, a.title)).toList(growable: false),
-    );
-  }
-
+  Future<Artist> getArtist(int id) =>
+      _datasource.getArtist(id).then(_mapper.artistFromJson);
   @override
   Future<bool> login(String login, String password) =>
       _datasource.login(login, password);
 
   @override
   Future<void> logout() => _datasource.logout();
+
+  @override
+  Future<SearchResults> search(String text, SearchType searchType) async {
+    final results = await _datasource.search(text, searchType);
+    return SearchResults(
+      results.tracks.items
+          .map(_mapper.trackMinFromJson)
+          .toList(growable: false),
+      results.artists.items
+          .map(_mapper.artistMinFromJson)
+          .toList(growable: false),
+      results.albums.items
+          .map(_mapper.albumMinFromJson)
+          .toList(growable: false),
+      results.playlists.items
+          .map(_mapper.playlistMinFromJson)
+          .toList(growable: false),
+    );
+  }
 }

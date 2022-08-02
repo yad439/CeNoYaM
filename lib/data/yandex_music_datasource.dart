@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../domain/search_type.dart';
 import 'json/album_json.dart';
 import 'json/artist_info.dart';
 import 'json/download_info.dart';
 import 'json/playlist_box.dart';
+import 'json/search_response.dart';
 import 'json/track_box.dart';
 
 @singleton
@@ -84,4 +86,13 @@ class YandexMusicDatasource {
       },
     );
   }
+
+  Future<SearchResponse> search(String text, SearchType searchType) =>
+      _dio.get<Map<String, dynamic>>(
+        '/handlers/music-search.jsx',
+        queryParameters: {
+          'text': text,
+          'type': searchType.toString(),
+        },
+      ).then((value) => SearchResponse.fromJson(value.data!));
 }
