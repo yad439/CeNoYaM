@@ -33,6 +33,9 @@ dev_dependencies:
   injectable_generator:
   json_serializable:
 
+dependency_overrides:
+  analyzer: ">=4.2.0 <5.0.0"
+
 
 flutter:
   uses-material-design: true
