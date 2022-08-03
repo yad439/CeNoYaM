@@ -92,7 +92,22 @@ class YandexMusicDatasource {
         '/handlers/music-search.jsx',
         queryParameters: {
           'text': text,
-          'type': searchType.toString(),
+          'type': _searchTypeToString(searchType),
         },
       ).then((value) => SearchResponse.fromJson(value.data!));
+}
+
+String _searchTypeToString(SearchType searchType) {
+  switch (searchType) {
+    case SearchType.all:
+      return 'all';
+    case SearchType.albums:
+      return 'albums';
+    case SearchType.artists:
+      return 'artists';
+    case SearchType.tracks:
+      return 'tracks';
+    case SearchType.playlists:
+      return 'playlists';
+  }
 }
