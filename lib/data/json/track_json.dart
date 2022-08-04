@@ -11,8 +11,12 @@ class TrackJson {
 
   factory TrackJson.fromJson(Map<String, dynamic> json) =>
       _$TrackJsonFromJson(json);
+  @JsonKey(fromJson: _toString)
   final String id;
+
   final String title;
   final List<ArtistMinJson> artists;
   final List<AlbumMinJson> albums;
 }
+
+String _toString(Object obj)=>obj.toString();
