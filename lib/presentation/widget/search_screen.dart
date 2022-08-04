@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entity/playlist.dart';
+import '../../domain/entity/track.dart';
+import '../bloc/loading_state.dart';
+import '../bloc/playlist_bloc.dart';
+import '../bloc/playlist_event.dart';
 import '../bloc/search_results_bloc.dart';
 import '../bloc/search_state.dart';
+import '../bloc/track_bloc.dart';
 import '../util/list_entry_adapter.dart';
 import 'player_screen.dart';
 
@@ -44,15 +50,27 @@ class SearchScreen extends StatelessWidget {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Text(
+                        'Tracks',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    _buildList<TrackMin, int, TrackState, TrackBloc>(
+                      context,
+                      results.tracks,
+                      const TrackEntryAdapter(),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Text(
                         'Playlists',
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
-                    _buildList(
+                    _buildList<PlaylistMin, PlaylistEvent, PlaylistState,
+                        PlaylistBloc>(
                       context,
                       results.playlists,
                       const PlaylistEntryAdapter(),
-                    )
+                    ),
                   ],
                 ),
               ),

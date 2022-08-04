@@ -2,10 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entity/playlist.dart';
+import '../../domain/entity/track.dart';
 import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
+import '../bloc/track_bloc.dart';
 import '../widget/playlist_widget.dart';
+import '../widget/track_widget.dart';
 
 abstract class ListEntryAdapter<T, EventT, StateT,
     BlocT extends Bloc<EventT, StateT>> {
@@ -30,4 +33,17 @@ class PlaylistEntryAdapter
   @override
   Widget screen(BuildContext context, PlaylistMin object) =>
       const PlaylistWidget();
+}
+
+class TrackEntryAdapter
+    implements ListEntryAdapter<TrackMin, int, TrackState, TrackBloc> {
+  const TrackEntryAdapter();
+  @override
+  String title(TrackMin object) => object.title;
+  @override
+  String subtitle(TrackMin object) => object.artistString;
+  @override
+  int onTapAction(TrackMin object) => object.id;
+  @override
+  Widget screen(BuildContext context, TrackMin object) => const TrackWidget();
 }

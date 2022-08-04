@@ -12,3 +12,4 @@ class LoadingState<T> with _$LoadingState<T> {
 }
 
 typedef PlaylistState = LoadingState<List<TrackMin>>;
+typedef TrackState = LoadingState<Track>;

@@ -8,6 +8,7 @@ import 'domain/yandex_player.dart';
 import 'presentation/bloc/player_bloc.dart';
 import 'presentation/bloc/playlist_bloc.dart';
 import 'presentation/bloc/search_results_bloc.dart';
+import 'presentation/bloc/track_bloc.dart';
 import 'presentation/widget/search_screen.dart';
 
 class Cenoyam extends StatelessWidget {
@@ -21,6 +22,9 @@ class Cenoyam extends StatelessWidget {
             create: (_) => SearchResultsBloc(_getIt.get<MusicRepository>()),
           ),
           Provider(create: (_) => PlayerBloc(_getIt.get<YandexPlayer>())),
+          BlocProvider(
+            create: (_) => TrackBloc(_getIt.get<MusicRepository>()),
+          ),
           BlocProvider(
             create: (_) => PlaylistBloc(_getIt.get<MusicRepository>()),
           ),
