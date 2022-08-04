@@ -60,6 +60,5 @@ class PlayerBloc {
   void dispose() {
     _eventController.close();
     _trackController.close();
-    _player.dispose();
   }
 }
