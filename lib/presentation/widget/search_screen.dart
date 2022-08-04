@@ -5,6 +5,7 @@ import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/search_results_bloc.dart';
 import '../bloc/search_state.dart';
+import '../util/list_entry_adapter.dart';
 import 'player_screen.dart';
 import 'playlist_widget.dart';
 
@@ -42,32 +43,20 @@ class SearchScreen extends StatelessWidget {
             child: BlocBuilder<SearchResultsBloc, SearchState>(
               builder: (context, state) => state.when(
                 initial: () => const SizedBox.shrink(),
-                found: (results) => ListView.builder(
-                  itemCount: results.playlists.length,
-                  itemBuilder: (context, index) {
-                    final playlist = results.playlists[index];
-                    return ListTile(
-                      title: Text(playlist.title),
-                      subtitle: Text(playlist.owner.login),
-                      onTap: () {
-                        BlocProvider.of<PlaylistBloc>(context).add(
-                          PlaylistEvent.load(
-                            playlist.owner.login,
-                            playlist.id,
-                          ),
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) => PlayerScreen(
-                              title: playlist.title,
-                              child: const PlaylistWidget(),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                found: (results) => CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Text(
+                        'Playlists',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    _buildList(
+                      context,
+                      results.playlists,
+                      const PlaylistEntryAdapter(),
+                    )
+                  ],
                 ),
               ),
             ),
@@ -76,4 +65,36 @@ class SearchScreen extends StatelessWidget {
       ),
     );
   }
+
+  static SliverList
+      _buildList<T, EventT, StateT, BlocT extends Bloc<EventT, StateT>>(
+              BuildContext context,
+              List<T> items,
+              ListEntryAdapter<T, EventT, StateT, BlocT> adapter) =>
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = items[index];
+                return ListTile(
+                  title: Text(adapter.title(item)),
+                  subtitle: Text(adapter.subtitle(item)),
+                  onTap: () {
+                    BlocProvider.of<BlocT>(context, listen: false).add(
+                      adapter.onTapAction(items[index]),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => PlayerScreen(
+                          title: adapter.title(item),
+                          child: adapter.screen(context, item),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              childCount: items.length,
+            ),
+          );
 }
