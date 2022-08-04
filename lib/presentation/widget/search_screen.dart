@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/playlist_bloc.dart';
-import '../bloc/playlist_event.dart';
 import '../bloc/search_results_bloc.dart';
 import '../bloc/search_state.dart';
 import '../util/list_entry_adapter.dart';
 import 'player_screen.dart';
-import 'playlist_widget.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -68,9 +65,10 @@ class SearchScreen extends StatelessWidget {
 
   static SliverList
       _buildList<T, EventT, StateT, BlocT extends Bloc<EventT, StateT>>(
-              BuildContext context,
-              List<T> items,
-              ListEntryAdapter<T, EventT, StateT, BlocT> adapter) =>
+    BuildContext context,
+    List<T> items,
+    ListEntryAdapter<T, EventT, StateT, BlocT> adapter,
+  ) =>
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
