@@ -13,7 +13,7 @@ class SearchResultsBloc extends Bloc<String, SearchState> {
   Future<void> _search(String query, Emitter<SearchState> emit) async {
     emit(
       SearchState.found(
-        await _repository.search(query, SearchType.playlists),
+        await _repository.search(query, SearchType.all),
       ),
     );
   }
