@@ -11,7 +11,7 @@ class PlayerBloc {
   }
   final YandexPlayer _player;
   final StreamController<TrackMin?> _trackController =
-      StreamController<TrackMin?>();
+      StreamController<TrackMin?>.broadcast();
   final StreamController<PlayerEvent> _eventController =
       StreamController<PlayerEvent>();
 
