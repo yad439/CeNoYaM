@@ -5,7 +5,7 @@ import '../bloc/loading_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 import '../bloc/playlist_bloc.dart';
-import 'track_widget.dart';
+import 'track_entry_widget.dart';
 
 class PlaylistWidget extends StatelessWidget {
   const PlaylistWidget({super.key});
@@ -20,7 +20,7 @@ class PlaylistWidget extends StatelessWidget {
           child: ListView(
             children: tracks
                 .map(
-                  (track) => TrackWidget(track, () {
+                  (track) => TrackEntryWidget(track, () {
                     playerBloc.command.add(PlayerEvent.play(track));
                   }),
                 )

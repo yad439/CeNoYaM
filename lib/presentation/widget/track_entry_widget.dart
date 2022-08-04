@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entity/track.dart';
 
-class TrackWidget extends StatelessWidget {
-  const TrackWidget(this._track, this._callback, {super.key});
+class TrackEntryWidget extends StatelessWidget {
+  const TrackEntryWidget(this._track, this._callback, {super.key});
   final TrackMin _track;
   final void Function() _callback;
 
