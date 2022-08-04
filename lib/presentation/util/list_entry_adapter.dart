@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entity/playlist.dart';
+import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
-import '../bloc/playlist_state.dart';
 import '../widget/playlist_widget.dart';
 
 abstract class ListEntryAdapter<T, EventT, StateT,

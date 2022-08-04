@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/music_repository.dart';
+import 'loading_state.dart';
 import 'playlist_event.dart';
-import 'playlist_state.dart';
 
 class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   PlaylistBloc(this._repository) : super(const PlaylistState.uninitialized()) {

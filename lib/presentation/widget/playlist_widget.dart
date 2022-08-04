@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/loading_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 import '../bloc/playlist_bloc.dart';
-import '../bloc/playlist_state.dart';
 import 'track_widget.dart';
 
 class PlaylistWidget extends StatelessWidget {
