@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   audioplayers:
+  bloc_concurrency:
   convert:
   cookie_jar:
   crypto:
