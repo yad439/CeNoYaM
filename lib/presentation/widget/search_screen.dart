@@ -7,7 +7,6 @@ import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/search_results_bloc.dart';
-import '../bloc/search_state.dart';
 import '../bloc/track_bloc.dart';
 import '../util/list_entry_adapter.dart';
 import 'player_screen.dart';
@@ -45,8 +44,8 @@ class SearchScreen extends StatelessWidget {
           Expanded(
             child: BlocBuilder<SearchResultsBloc, SearchState>(
               builder: (context, state) => state.when(
-                initial: () => const SizedBox.shrink(),
-                found: (results) => CustomScrollView(
+                uninitialized: () => const SizedBox.shrink(),
+                loaded: (results) => CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
                       child: Text(
