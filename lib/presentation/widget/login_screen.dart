@@ -24,9 +24,9 @@ class LoginScreen extends StatelessWidget {
               break;
             case LoginState.failure:
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Login failure'),
-                  backgroundColor: Colors.red,
+                SnackBar(
+                  content: const Text('Login failure'),
+                  backgroundColor: Theme.of(context).colorScheme.errorContainer,
                 ),
               );
               bloc.add(const LoginFormEvent.clearState());
