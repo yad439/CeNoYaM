@@ -44,9 +44,4 @@ class YandexPlayer {
             return PlayerState.paused;
         }
       });
-
-  @disposeMethod
-  void dispose() {
-    _player.dispose();
-  }
 }

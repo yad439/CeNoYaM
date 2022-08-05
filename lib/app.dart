@@ -21,7 +21,10 @@ class Cenoyam extends StatelessWidget {
           BlocProvider(
             create: (_) => SearchResultsBloc(_getIt.get<MusicRepository>()),
           ),
-          Provider(create: (_) => PlayerBloc(_getIt.get<YandexPlayer>())),
+          Provider<PlayerBloc>(
+            create: (_) => PlayerBloc(_getIt.get<YandexPlayer>()),
+            dispose: (_, value) => value.dispose(),
+          ),
           BlocProvider(
             create: (_) => TrackBloc(_getIt.get<MusicRepository>()),
           ),
