@@ -30,7 +30,7 @@ class Cenoyam extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'CeNoYaM',
           theme: ThemeData(
             primarySwatch: Colors.grey,
             brightness: Brightness.dark,
