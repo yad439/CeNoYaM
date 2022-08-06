@@ -63,9 +63,11 @@ class YandexMusicDatasource {
         data: {
           'login': login,
           'passwd': password,
-          'retpath': 'https://music.yandex.ru',
         },
-        options: Options(responseType: ResponseType.plain),
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+          responseType: ResponseType.plain,
+        ),
       )
       .then(
         (value) => value.data!.contains('data-page-type="profile.passportv2"'),
