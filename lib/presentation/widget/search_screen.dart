@@ -9,6 +9,7 @@ import '../bloc/playlist_event.dart';
 import '../bloc/search_results_bloc.dart';
 import '../bloc/track_bloc.dart';
 import '../util/list_entry_adapter.dart';
+import 'login_screen.dart';
 import 'player_screen.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -21,6 +22,20 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search'),
+        actions: [
+          TextButton(
+            // style: TextButton.styleFrom(
+              // primary: Theme.of(context).colorScheme.onPrimary,
+            // ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const LoginScreen(),
+              ),
+            ),
+            child: const Text('Login'),
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
