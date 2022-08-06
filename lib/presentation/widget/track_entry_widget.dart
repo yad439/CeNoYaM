@@ -10,7 +10,10 @@ class TrackEntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          ElevatedButton(onPressed: _callback, child: const Text('|>')),
+          ElevatedButton(
+            onPressed: _track.available ? _callback : null,
+            child: const Text('|>'),
+          ),
           Text('${_track.artistString} - ${_track.title}')
         ],
       );
