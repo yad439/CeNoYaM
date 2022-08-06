@@ -14,11 +14,13 @@ class JsonMapper {
   TrackMin trackMinFromJson(TrackJson json) => TrackMin(
         int.parse(json.id),
         json.title,
+        json.available,
         json.artists.map((e) => e.name).join('; '),
       );
   Track trackFromJson(TrackJson json) => Track(
         int.parse(json.id),
         json.title,
+        json.available,
         json.albums.map(albumMinFromJson).toList(growable: false),
         json.artists.map(artistMinFromJson).toList(growable: false),
       );

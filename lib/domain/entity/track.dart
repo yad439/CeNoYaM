@@ -1,29 +1,34 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'album.dart';
 import 'artist.dart';
 
-class TrackMin {
-  TrackMin(this._id, this._title, this._artistString);
+part 'track.freezed.dart';
 
-  TrackMin.joinArtists(this._id, this._title, Iterable<String> artists)
-      : _artistString = artists.join(';');
-  final int _id;
-  final String _title;
-  final String _artistString;
-
-  String get title => _title;
-
-  String get artistString => _artistString;
-
-  int get id => _id;
+@freezed
+class TrackMin with _$TrackMin {
+  const factory TrackMin(
+    int id,
+    String title,
+    // ignore: avoid_positional_boolean_parameters
+    bool available,
+    String artistString,
+  ) = _TrackMin;
 }
 
-class Track extends TrackMin {
-  Track(int id, String title, this._albums, this._artists)
-      : super.joinArtists(id, title, _artists.map((a) => a.name));
-  final List<AlbumMin> _albums;
-  final List<ArtistMin> _artists;
+@freezed
+class Track with _$Track implements TrackMin {
+  const factory Track(
+    int id,
+    String title,
+    // ignore: avoid_positional_boolean_parameters
+    bool available,
+    List<AlbumMin> albums,
+    List<ArtistMin> artists,
+  ) = _Track;
+  const Track._();
 
-  List<ArtistMin> get artists => _artists;
-
-  List<AlbumMin> get albums => _albums;
+  @override
+  String get artistString =>
+      [for (final artist in artists) artist.name].join('; ');
 }
