@@ -6,6 +6,9 @@ import '../../domain/entity/track.dart';
 import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
+import '../bloc/profile_bloc.dart';
+import '../bloc/profile_event.dart';
+import '../bloc/profile_state.dart';
 import '../bloc/search_results_bloc.dart';
 import '../bloc/track_bloc.dart';
 import '../util/list_entry_adapter.dart';
@@ -18,22 +21,31 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SearchResultsBloc>(context, listen: false);
+    final profileBloc = BlocProvider.of<ProfileBloc>(context, listen: false);
+    profileBloc.state.whenOrNull(
+      unknown: () => profileBloc.add(ProfileEvent.update),
+    );
     final queryController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search'),
         actions: [
-          TextButton(
-            // style: TextButton.styleFrom(
-              // primary: Theme.of(context).colorScheme.onPrimary,
-            // ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => const LoginScreen(),
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) => state.when(
+              unknown: () => const SizedBox.shrink(),
+              anonimous: () => TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                ),
+                child: const Text('Login'),
+              ),
+              loggedIn: (username) => Center(
+                child: Text(username),
               ),
             ),
-            child: const Text('Login'),
           ),
         ],
       ),

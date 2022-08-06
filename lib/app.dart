@@ -8,6 +8,7 @@ import 'domain/yandex_player.dart';
 import 'presentation/bloc/login_bloc.dart';
 import 'presentation/bloc/player_bloc.dart';
 import 'presentation/bloc/playlist_bloc.dart';
+import 'presentation/bloc/profile_bloc.dart';
 import 'presentation/bloc/search_results_bloc.dart';
 import 'presentation/bloc/track_bloc.dart';
 import 'presentation/widget/search_screen.dart';
@@ -33,6 +34,9 @@ class Cenoyam extends StatelessWidget {
             create: (_) => PlaylistBloc(_getIt.get<MusicRepository>()),
           ),
           BlocProvider(create: (_) => LoginBloc(_getIt.get<MusicRepository>())),
+          BlocProvider(
+            create: (_) => ProfileBloc(_getIt.get<MusicRepository>()),
+          ),
         ],
         child: MaterialApp(
           title: 'CeNoYaM',
