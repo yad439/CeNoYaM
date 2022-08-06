@@ -19,8 +19,6 @@ class YandexMusicDatasource {
     final infoUrlJsonResponse = await _dio.get<Map<String, dynamic>>(
       '/api/v2.1/handlers/track/$trackId/track/download/m',
       queryParameters: {'hq': '1'},
-      options:
-          Options(headers: {'X-Retpath-Y': 'https%3A%2F%2Fmusic.yandex.ru%2F'}),
     );
 
     final infoJson = await _dio.get<Map<String, dynamic>>(

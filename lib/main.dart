@@ -24,8 +24,15 @@ abstract class InjectableConfig {
   @Singleton(dispose: disposeAudioPlayer)
   AudioPlayer get audioPlayer => AudioPlayer();
   @Singleton(dispose: disposeDio)
-  Dio dio(CookieJar jar) => Dio(BaseOptions(baseUrl: 'https://music.yandex.ru'))
-    ..interceptors.add(CookieManager(jar));
+  Dio dio(CookieJar jar) => Dio(
+        BaseOptions(
+          baseUrl: 'https://music.yandex.ru',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Retpath-Y': 'https%3A%2F%2Fmusic.yandex.ru%2F'
+          },
+        ),
+      )..interceptors.add(CookieManager(jar));
   @singleton
   CookieJar get cookieJar => CookieJar();
   @singleton
