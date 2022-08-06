@@ -21,16 +21,16 @@ void configureDependencies(GetIt getIt) => $initGetIt(getIt);
 
 @module
 abstract class InjectableConfig {
-  @Singleton(dispose: _disposeAudioPlayer)
+  @Singleton(dispose: disposeAudioPlayer)
   AudioPlayer get audioPlayer => AudioPlayer();
-  @Singleton(dispose: _disposeDio)
+  @Singleton(dispose: disposeDio)
   Dio dio(CookieJar jar) => Dio(BaseOptions(baseUrl: 'https://music.yandex.ru'))
     ..interceptors.add(CookieManager(jar));
   @singleton
   CookieJar get cookieJar => CookieJar();
   @singleton
   JsonMapper get jsonMapper => JsonMapper();
-
-  static void _disposeAudioPlayer(AudioPlayer player) => player.dispose();
-  static void _disposeDio(Dio dio) => dio.close();
 }
+
+void disposeAudioPlayer(AudioPlayer player) => player.dispose();
+void disposeDio(Dio dio) => dio.close();
