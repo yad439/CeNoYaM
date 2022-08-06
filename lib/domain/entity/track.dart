@@ -18,12 +18,12 @@ class TrackMin {
 }
 
 class Track extends TrackMin {
-  Track(int id, String title, this._album, this._artists)
+  Track(int id, String title, this._albums, this._artists)
       : super.joinArtists(id, title, _artists.map((a) => a.name));
-  final AlbumMin _album;
+  final List<AlbumMin> _albums;
   final List<ArtistMin> _artists;
 
   List<ArtistMin> get artists => _artists;
 
-  AlbumMin get album => _album;
+  List<AlbumMin> get albums => _albums;
 }

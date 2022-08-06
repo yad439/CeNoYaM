@@ -19,7 +19,7 @@ class JsonMapper {
   Track trackFromJson(TrackJson json) => Track(
         int.parse(json.id),
         json.title,
-        albumMinFromJson(json.albums.first),
+        json.albums.map(albumMinFromJson).toList(growable: false),
         json.artists.map(artistMinFromJson).toList(growable: false),
       );
   ArtistMin artistMinFromJson(ArtistMinJson json) => ArtistMin(
