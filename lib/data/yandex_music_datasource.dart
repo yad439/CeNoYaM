@@ -57,6 +57,10 @@ class YandexMusicDatasource {
         queryParameters: {'artist': artistId.toString()},
       ).then((value) => ArtistInfo.fromJson(value.data!));
 
+  Future<Map<String, dynamic>> getProfileInfo() => _dio
+      .get<Map<String, dynamic>>('/api/v2.1/handlers/auth')
+      .then((value) => value.data!);
+
   Future<bool> login(String login, String password) => _dio
       .post<String>(
         'https://passport.yandex.ru/auth',
@@ -74,9 +78,7 @@ class YandexMusicDatasource {
       );
 
   Future<void> logout() async {
-    final profile = await _dio
-        .get<Map<String, dynamic>>('/api/v2.1/handlers/auth')
-        .then((value) => value.data!);
+    final profile = await getProfileInfo();
     await _dio.get<dynamic>(
       'https://passport.yandex.ru/passport',
       queryParameters: {

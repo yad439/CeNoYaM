@@ -20,5 +20,7 @@ abstract class MusicRepository {
 
   Future<void> logout();
 
+  Future<String?> getUsername();
+
   Future<SearchResults> search(String text, SearchType searchType);
 }

@@ -52,12 +52,19 @@ class YandexMusicRepository implements MusicRepository {
   @override
   Future<Artist> getArtist(int id) =>
       _datasource.getArtist(id).then(_mapper.artistFromJson);
+
   @override
   Future<bool> login(String login, String password) =>
       _datasource.login(login, password);
 
   @override
   Future<void> logout() => _datasource.logout();
+
+  @override
+  Future<String?> getUsername() async {
+    final profile = await _datasource.getProfileInfo();
+    return profile['logged'] as bool ? profile['login'] as String : null;
+  }
 
   @override
   Future<SearchResults> search(String text, SearchType searchType) async {
