@@ -10,7 +10,7 @@ part 'track_json.g.dart';
 class TrackJson with _$TrackJson {
   const factory TrackJson(
     // ignore: invalid_annotation_target
-    @JsonKey(fromJson: _toString) String id,
+    @JsonKey(fromJson: _objectToInt) int id,
     String title,
     // ignore: avoid_positional_boolean_parameters
     bool available,
@@ -22,4 +22,12 @@ class TrackJson with _$TrackJson {
       _$TrackJsonFromJson(json);
 }
 
-String _toString(Object obj) => obj.toString();
+int _objectToInt(Object obj) {
+  if (obj is int) {
+    return obj;
+  } else if (obj is String) {
+    return int.parse(obj);
+  } else {
+    throw ArgumentError('Invalid object type', 'obj');
+  }
+}

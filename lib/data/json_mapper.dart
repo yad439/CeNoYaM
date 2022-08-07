@@ -3,6 +3,7 @@ import '../domain/entity/artist.dart';
 import '../domain/entity/playlist.dart';
 import '../domain/entity/track.dart';
 import '../domain/entity/user.dart';
+import '../domain/util.dart';
 import 'json/album_json.dart';
 import 'json/artist_info.dart';
 import 'json/artist_json.dart';
@@ -12,13 +13,13 @@ import 'json/user_json.dart';
 
 class JsonMapper {
   TrackMin trackMinFromJson(TrackJson json) => TrackMin(
-        int.parse(json.id),
+        json.id,
         json.title,
         json.available,
-        json.artists.map((e) => e.name).join('; '),
+        generateArtistString(json.artists.map((e) => e.name)),
       );
   Track trackFromJson(TrackJson json) => Track(
-        int.parse(json.id),
+        json.id,
         json.title,
         json.available,
         json.albums.map(albumMinFromJson).toList(growable: false),
@@ -33,7 +34,11 @@ class JsonMapper {
         json.artist.name,
         json.albums.map(albumMinFromJson).toList(growable: false),
       );
-  AlbumMin albumMinFromJson(AlbumMinJson json) => AlbumMin(json.id, json.title);
+  AlbumMin albumMinFromJson(AlbumMinJson json) => AlbumMin(
+        json.id,
+        json.title,
+        generateArtistString(json.artists.map((e) => e.name)),
+      );
   Album albumFromJson(AlbumJson json) => Album(
         json.id,
         json.title,
