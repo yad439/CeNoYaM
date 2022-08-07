@@ -87,26 +87,29 @@ class _ResultList extends StatelessWidget {
             uninitialized: () => const SizedBox.shrink(),
             loaded: (results) => CustomScrollView(
               slivers: [
-                ..._buildEntry<TrackMin, int, TrackState, TrackBloc>(
-                  context,
-                  'Tracks',
-                  results.tracks,
-                  const TrackEntryAdapter(),
-                ),
-                ..._buildEntry<AlbumMin, int, LoadingState<List<TrackMin>>,
-                    AlbumBloc>(
-                  context,
-                  'Albums',
-                  results.albums,
-                  const AlbumEntryAdapter(),
-                ),
-                ..._buildEntry<PlaylistMin, PlaylistEvent, PlaylistState,
-                    PlaylistBloc>(
-                  context,
-                  'Playlists',
-                  results.playlists,
-                  const PlaylistEntryAdapter(),
-                ),
+                if (results.tracks.isNotEmpty)
+                  ..._buildEntry<TrackMin, int, TrackState, TrackBloc>(
+                    context,
+                    'Tracks',
+                    results.tracks,
+                    const TrackEntryAdapter(),
+                  ),
+                if (results.albums.isNotEmpty)
+                  ..._buildEntry<AlbumMin, int, LoadingState<List<TrackMin>>,
+                      AlbumBloc>(
+                    context,
+                    'Albums',
+                    results.albums,
+                    const AlbumEntryAdapter(),
+                  ),
+                if (results.playlists.isNotEmpty)
+                  ..._buildEntry<PlaylistMin, PlaylistEvent, PlaylistState,
+                      PlaylistBloc>(
+                    context,
+                    'Playlists',
+                    results.playlists,
+                    const PlaylistEntryAdapter(),
+                  ),
               ],
             ),
           ),
