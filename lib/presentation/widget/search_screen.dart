@@ -118,10 +118,11 @@ class _ResultList extends StatelessWidget {
 
   static List<Widget>
       _buildEntry<T, EventT, StateT, BlocT extends Bloc<EventT, StateT>>(
-              BuildContext context,
-              String name,
-              List<T> items,
-              ListEntryAdapter<T, EventT, StateT, BlocT> adapter) =>
+    BuildContext context,
+    String name,
+    List<T> items,
+    ListEntryAdapter<T, EventT, StateT, BlocT> adapter,
+  ) =>
           [
             SliverToBoxAdapter(
               child: Text(
