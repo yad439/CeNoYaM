@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entity/album.dart';
 import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
+import '../bloc/album_bloc.dart';
 import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
@@ -68,44 +70,68 @@ class SearchScreen extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: BlocBuilder<SearchResultsBloc, SearchState>(
-              builder: (context, state) => state.when(
-                uninitialized: () => const SizedBox.shrink(),
-                loaded: (results) => CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Text(
-                        'Tracks',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
-                    _buildList<TrackMin, int, TrackState, TrackBloc>(
-                      context,
-                      results.tracks,
-                      const TrackEntryAdapter(),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Text(
-                        'Playlists',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
-                    _buildList<PlaylistMin, PlaylistEvent, PlaylistState,
-                        PlaylistBloc>(
-                      context,
-                      results.playlists,
-                      const PlaylistEntryAdapter(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
+          const _ResultList()
         ],
       ),
     );
   }
+}
+
+class _ResultList extends StatelessWidget {
+  const _ResultList();
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: BlocBuilder<SearchResultsBloc, SearchState>(
+          builder: (context, state) => state.when(
+            uninitialized: () => const SizedBox.shrink(),
+            loaded: (results) => CustomScrollView(
+              slivers: [
+                ..._buildEntry<TrackMin, int, TrackState, TrackBloc>(
+                  context,
+                  'Tracks',
+                  results.tracks,
+                  const TrackEntryAdapter(),
+                ),
+                ..._buildEntry<AlbumMin, int, LoadingState<List<TrackMin>>,
+                    AlbumBloc>(
+                  context,
+                  'Albums',
+                  results.albums,
+                  const AlbumEntryAdapter(),
+                ),
+                ..._buildEntry<PlaylistMin, PlaylistEvent, PlaylistState,
+                    PlaylistBloc>(
+                  context,
+                  'Playlists',
+                  results.playlists,
+                  const PlaylistEntryAdapter(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  static List<Widget>
+      _buildEntry<T, EventT, StateT, BlocT extends Bloc<EventT, StateT>>(
+              BuildContext context,
+              String name,
+              List<T> items,
+              ListEntryAdapter<T, EventT, StateT, BlocT> adapter) =>
+          [
+            SliverToBoxAdapter(
+              child: Text(
+                name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            _buildList<T, EventT, StateT, BlocT>(
+              context,
+              items,
+              adapter,
+            ),
+          ];
 
   static SliverList
       _buildList<T, EventT, StateT, BlocT extends Bloc<EventT, StateT>>(
