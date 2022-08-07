@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../util.dart';
 import 'album.dart';
 import 'artist.dart';
 
@@ -29,5 +30,5 @@ class Track with _$Track implements TrackMin {
   const Track._();
 
   @override
-  String get artistString => artists.map((it) => it.name).join('; ');
+  String get artistString => generateArtistString(artists.map((e) => e.name));
 }
