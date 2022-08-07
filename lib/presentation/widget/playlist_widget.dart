@@ -17,14 +17,12 @@ class PlaylistWidget extends StatelessWidget {
       builder: (context, state) => state.when(
         uninitialized: () => const SizedBox(),
         loaded: (tracks) => Expanded(
-          child: ListView(
-            children: tracks
-                .map(
-                  (track) => TrackEntryWidget(track, () {
-                    playerBloc.command.add(PlayerEvent.play(track));
-                  }),
-                )
-                .toList(growable: false),
+          child: ListView.builder(
+            itemCount: tracks.length,
+            itemBuilder: (context, index) => TrackEntryWidget(
+              tracks[index],
+              () => playerBloc.command.add(PlayerEvent.play(tracks[index])),
+            ),
           ),
         ),
       ),
