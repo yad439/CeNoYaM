@@ -29,6 +29,5 @@ class Track with _$Track implements TrackMin {
   const Track._();
 
   @override
-  String get artistString =>
-      [for (final artist in artists) artist.name].join('; ');
+  String get artistString => artists.map((it) => it.name).join('; ');
 }
