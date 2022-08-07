@@ -10,7 +10,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<LoginBloc>(context);
-    final key = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -36,51 +35,68 @@ class LoginScreen extends StatelessWidget {
               break;
           }
         },
-        child: Form(
-          key: key,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Login',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Login must not be empty';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  bloc.add(SaveLogin(value!));
-                },
-              ),
-              TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password must not be empty';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  bloc.add(SavePassword(value!));
-                },
-              ),
-              ElevatedButton(
-                child: const Text('Login'),
-                onPressed: () {
-                  if (key.currentState!.validate()) {
-                    key.currentState!.save();
-                    bloc.add(const TryLogin());
-                  }
-                },
-              ),
-            ],
+        child: const _LoginForm(),
+      ),
+    );
+  }
+}
+
+class _LoginForm extends StatefulWidget {
+  const _LoginForm();
+
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<LoginBloc>(context);
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Login',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Login must not be empty';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              bloc.add(SaveLogin(value!));
+            },
           ),
-        ),
+          TextFormField(
+            obscureText: true,
+            decoration: const InputDecoration(
+              labelText: 'Password',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Password must not be empty';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              bloc.add(SavePassword(value!));
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Login'),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                bloc.add(const TryLogin());
+              }
+            },
+          ),
+        ],
       ),
     );
   }
