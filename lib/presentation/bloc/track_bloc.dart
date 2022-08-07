@@ -1,16 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../domain/entity/track.dart';
-import '../../domain/music_repository.dart';
-import 'loading_state.dart';
+import 'loading_bloc.dart';
 
-class TrackBloc extends Bloc<int, LoadingState<Track>> {
-  TrackBloc(this._repository) : super(const LoadingState.uninitialized()) {
-    on<int>(_load);
-  }
-  final MusicRepository _repository;
+class TrackBloc extends LoadingBloc<int, Track> {
+  TrackBloc(super.repository);
 
-  Future<void> _load(int id, Emitter<LoadingState<Track>> emit) async {
-    emit(LoadingState.loaded(await _repository.getTrack(id)));
-  }
+  @override
+  Future<Track> fetch(int event) => repository.getTrack(event);
 }
