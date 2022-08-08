@@ -22,8 +22,8 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SearchResultsBloc>(context, listen: false);
-    final profileBloc = BlocProvider.of<ProfileBloc>(context, listen: false);
+    final bloc = BlocProvider.of<SearchResultsBloc>(context);
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
     profileBloc.state.whenOrNull(
       unknown: () => profileBloc.add(ProfileEvent.update),
     );
@@ -151,7 +151,7 @@ class _ResultList extends StatelessWidget {
                   title: Text(adapter.title(item)),
                   subtitle: Text(adapter.subtitle(item)),
                   onTap: () {
-                    BlocProvider.of<BlocT>(context, listen: false).add(
+                    BlocProvider.of<BlocT>(context).add(
                       adapter.onTapAction(items[index]),
                     );
                     Navigator.push(
