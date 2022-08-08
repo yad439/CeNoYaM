@@ -49,4 +49,5 @@ pubspec.lock
 
 *.g.dart
 *.freezed.dart
+*.mocks.dart
 main.config.dart
