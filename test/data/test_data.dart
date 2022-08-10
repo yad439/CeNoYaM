@@ -8,6 +8,12 @@ import 'package:cenoyam/data/json/search_response.dart';
 import 'package:cenoyam/data/json/track_box.dart';
 import 'package:cenoyam/data/json/track_json.dart';
 import 'package:cenoyam/data/json/user_json.dart';
+import 'package:cenoyam/domain/entity/album.dart';
+import 'package:cenoyam/domain/entity/artist.dart';
+import 'package:cenoyam/domain/entity/playlist.dart';
+import 'package:cenoyam/domain/entity/search_results.dart';
+import 'package:cenoyam/domain/entity/track.dart';
+import 'package:cenoyam/domain/entity/user.dart';
 import 'package:dio/dio.dart';
 
 import 'package:mockito/annotations.dart';
@@ -69,6 +75,30 @@ class TestData {
       [artistDto, artistDto2],
       [albumMinDto, albumMinDto2],
     );
+    trackEntity = Track(
+      1,
+      'track title',
+      true,
+      const [AlbumMin(6, 'album title', 'artist name; artist name 2')],
+      [ArtistMin(4, 'artist name')],
+    );
+    unavailableTrackEntity = const Track(
+      2,
+      'track title 2',
+      false,
+      [],
+      [],
+    );
+    trackWithMultipleArtistsEntity = Track(
+      3,
+      'track title 3',
+      true,
+      const [
+        AlbumMin(6, 'album title', 'artist name; artist name 2'),
+        AlbumMin(7, 'album title 2', 'artist name 2')
+      ],
+      [ArtistMin(4, 'artist name'), ArtistMin(5, 'artist name 2')],
+    );
 
     trackBoxJson = {'track': trackJson};
     unavailableTrackBoxJson = const {'track': unavailableTrackJson};
@@ -88,6 +118,12 @@ class TestData {
       [trackDto, unavailableTrackDto],
       [trackWithMultipleArtistsDto]
     ]);
+    albumEntity = Album(
+      6,
+      'album title',
+      [ArtistMin(4, 'artist name'), ArtistMin(5, 'artist name 2')],
+      [trackEntity, unavailableTrackEntity, trackWithMultipleArtistsEntity],
+    );
 
     artistBoxJson = {
       'artist': artistJson,
@@ -99,6 +135,7 @@ class TestData {
       [albumMinDto, albumMinDto2],
       ['1', '2', '3'],
     );
+    artistEntity = Artist(6, 'artist name', [albumEntity, albumEntity]);
 
     userJson = {'uid': 8, 'login': 'user_login'};
     final playlistJson = {
@@ -115,6 +152,12 @@ class TestData {
         const UserJson(8, 'user_login'),
         [trackDto, unavailableTrackDto, trackWithMultipleArtistsDto],
       ),
+    );
+    playlistEntity = Playlist(
+      User(8, 'user_login'),
+      9,
+      'playlist title',
+      [trackEntity, unavailableTrackEntity, trackWithMultipleArtistsEntity],
     );
 
     downloadPreInfoJson = const {'src': '//example.com/download?ts=123'};
@@ -169,6 +212,15 @@ class TestData {
       ),
       const SearchEntry<ArtistJson>([artistDto, artistDto2]),
       SearchEntry<PlaylistJson>([playlistBoxDto.playlist]),
+    );
+    searchResultsEntity = SearchResults(
+      [trackEntity, unavailableTrackEntity, trackWithMultipleArtistsEntity],
+      [artistEntity, artistEntity],
+      [
+        albumEntity,
+        const AlbumMin(7, 'album title 2', 'artist name; artist name 2')
+      ],
+      [playlistEntity],
     );
 
     dio = MockDio();
@@ -321,6 +373,14 @@ class TestData {
   late final PlaylistBox playlistBoxDto;
   late final DownloadInfo downloadInfoDto;
   late final SearchResponse searchResultDto;
+
+  late final Track trackEntity;
+  late final Track unavailableTrackEntity;
+  late final Track trackWithMultipleArtistsEntity;
+  late final Artist artistEntity;
+  late final Album albumEntity;
+  late final Playlist playlistEntity;
+  late final SearchResults searchResultsEntity;
 
   late final String correctLoginResopnse =
       '<!doctype html><html lang="ru" dir="ltr" data-page-type="profile.passportv2" class="is-js_no"><head><title>Яндекс ID</title>';
