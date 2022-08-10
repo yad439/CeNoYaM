@@ -4,6 +4,7 @@ import 'package:cenoyam/data/json/artist_json.dart';
 import 'package:cenoyam/data/json/download_info.dart';
 import 'package:cenoyam/data/json/playlist_box.dart';
 import 'package:cenoyam/data/json/playlist_json.dart';
+import 'package:cenoyam/data/json/search_response.dart';
 import 'package:cenoyam/data/json/track_box.dart';
 import 'package:cenoyam/data/json/track_json.dart';
 import 'package:cenoyam/data/json/user_json.dart';
@@ -134,6 +135,34 @@ class TestData {
       'uid': 0
     };
 
+    searchResultsJson = {
+      'text': 'query',
+      'albums': {
+        'items': [albumJson, albumJson2]
+      },
+      'artists': {
+        'items': [artistInt, artistInt2]
+      },
+      'tracks': {
+        'items': [
+          {...trackJson, 'id': 1},
+          {...unavailableTrackJson, 'id': 2},
+          {...trackWithMultipleArtistsJson, 'id': 3}
+        ]
+      },
+      'playlists': {
+        'items': [playlistJson]
+      }
+    };
+    searchResultDto = SearchResponse(
+      SearchEntry<AlbumMinJson>([albumMinDto, albumMinDto2]),
+      SearchEntry<TrackJson>(
+        [trackDto, unavailableTrackDto, trackWithMultipleArtistsDto],
+      ),
+      SearchEntry<ArtistJson>([artistDto, artistDto2]),
+      SearchEntry<PlaylistJson>([playlistBoxDto.playlist]),
+    );
+
     dio = MockDio();
     when(
       dio.get<Map<String, dynamic>>(
@@ -242,6 +271,20 @@ class TestData {
         requestOptions: RequestOptions(path: ''),
       ),
     );
+    when(
+      dio.get<Map<String, dynamic>>(
+        '/handlers/music-search.jsx',
+        queryParameters: {
+          'text': 'query',
+          'type': 'all',
+        },
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: searchResultsJson,
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
   }
 
   late final Dio dio;
@@ -257,6 +300,7 @@ class TestData {
   late final Map<String, dynamic> downloadInfoJson;
   late final Map<String, dynamic> profileInfoJson;
   late final Map<String, dynamic> anonymousProfileInfoJson;
+  late final Map<String, dynamic> searchResultsJson;
 
   late final TrackJson trackDto;
   late final TrackJson unavailableTrackDto;
@@ -268,6 +312,7 @@ class TestData {
   late final AlbumJson albumDto;
   late final PlaylistBox playlistBoxDto;
   late final DownloadInfo downloadInfoDto;
+  late final SearchResponse searchResultDto;
 
   late final String correctLoginResopnse =
       '<!doctype html><html lang="ru" dir="ltr" data-page-type="profile.passportv2" class="is-js_no"><head><title>Яндекс ID</title>';

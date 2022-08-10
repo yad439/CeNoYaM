@@ -1,4 +1,5 @@
 import 'package:cenoyam/data/yandex_music_datasource.dart';
+import 'package:cenoyam/domain/search_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -115,6 +116,43 @@ void main() {
             'uid': data.profileInfoJson['uid']
           },
         ),
+      );
+    });
+
+    test('performs search', () async {
+      final result = await datasource.search('query', SearchType.all);
+
+      expect(
+        result.albums.items.length,
+        data.searchResultDto.albums.items.length,
+      );
+      expect(
+        result.albums.items.first.id,
+        data.searchResultDto.albums.items.first.id,
+      );
+      expect(
+        result.artists.items.length,
+        data.searchResultDto.artists.items.length,
+      );
+      expect(
+        result.artists.items.first.id,
+        data.searchResultDto.artists.items.first.id,
+      );
+      expect(
+        result.tracks.items.length,
+        data.searchResultDto.tracks.items.length,
+      );
+      expect(
+        result.tracks.items.first.id,
+        data.searchResultDto.tracks.items.first.id,
+      );
+      expect(
+        result.playlists.items.length,
+        data.searchResultDto.playlists.items.length,
+      );
+      expect(
+        result.playlists.items.first.kind,
+        data.searchResultDto.playlists.items.first.kind,
       );
     });
   });
