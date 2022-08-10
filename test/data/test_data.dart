@@ -22,8 +22,8 @@ class TestData {
     const artistInt = {'id': 4, 'name': 'artist name'};
     // const artistJson2 = {'id': '5', 'name': 'artist name 2'};
     const artistInt2 = {'id': 5, 'name': 'artist name 2'};
-    final artistDto = ArtistJson('4', 'artist name');
-    final artistDto2 = ArtistJson('5', 'artist name 2');
+    const artistDto = ArtistJson(4, 'artist name');
+    const artistDto2 = ArtistJson(5, 'artist name 2');
 
     albumJson = {
       'id': 6,
@@ -33,10 +33,10 @@ class TestData {
     const albumJson2 = {
       'id': 7,
       'title': 'album title 2',
-      'artists': [artistInt]
+      'artists': [artistInt2]
     };
-    final albumMinDto = AlbumMinJson(6, 'album title', [artistDto, artistDto2]);
-    final albumMinDto2 = AlbumMinJson(7, 'album title 2', [artistDto2]);
+    const albumMinDto = AlbumMinJson(6, 'album title', [artistDto, artistDto2]);
+    const albumMinDto2 = AlbumMinJson(7, 'album title 2', [artistDto2]);
 
     final trackJson = {
       'id': '1',
@@ -59,9 +59,10 @@ class TestData {
       'artists': [artistInt, artistInt2],
       'albums': [albumJson, albumJson2]
     };
-    trackDto = TrackJson(1, 'track title', true, [artistDto], [albumMinDto]);
+    trackDto =
+        const TrackJson(1, 'track title', true, [artistDto], [albumMinDto]);
     unavailableTrackDto = const TrackJson(2, 'track title 2', false, [], []);
-    trackWithMultipleArtistsDto = TrackJson(
+    trackWithMultipleArtistsDto = const TrackJson(
       3,
       'track title 3',
       true,
@@ -93,8 +94,11 @@ class TestData {
       'albums': [albumJson, albumJson2],
       'trackIds': ['1', '2', '3']
     };
-    artistInfoDto =
-        ArtistInfo(artistDto, [albumMinDto, albumMinDto2], ['1', '2', '3']);
+    artistInfoDto = const ArtistInfo(
+      artistDto,
+      [albumMinDto, albumMinDto2],
+      ['1', '2', '3'],
+    );
 
     userJson = {'uid': 8, 'login': 'user_login'};
     final playlistJson = {
@@ -108,7 +112,7 @@ class TestData {
       PlaylistJson(
         9,
         'playlist title',
-        UserJson(8, 'user_login'),
+        const UserJson(8, 'user_login'),
         [trackDto, unavailableTrackDto, trackWithMultipleArtistsDto],
       ),
     );
@@ -120,8 +124,12 @@ class TestData {
       's': 'qwer',
       'ts': 'asdf'
     };
-    downloadInfoDto =
-        DownloadInfo('download.test.com', '/something/abc', 'qwer', 'asdf');
+    downloadInfoDto = const DownloadInfo(
+      'download.test.com',
+      '/something/abc',
+      'qwer',
+      'asdf',
+    );
 
     profileInfoJson = const {
       'logged': true,
@@ -155,11 +163,11 @@ class TestData {
       }
     };
     searchResultDto = SearchResponse(
-      SearchEntry<AlbumMinJson>([albumMinDto, albumMinDto2]),
+      const SearchEntry<AlbumMinJson>([albumMinDto, albumMinDto2]),
       SearchEntry<TrackJson>(
         [trackDto, unavailableTrackDto, trackWithMultipleArtistsDto],
       ),
-      SearchEntry<ArtistJson>([artistDto, artistDto2]),
+      const SearchEntry<ArtistJson>([artistDto, artistDto2]),
       SearchEntry<PlaylistJson>([playlistBoxDto.playlist]),
     );
 

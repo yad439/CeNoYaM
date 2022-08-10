@@ -25,7 +25,7 @@ class JsonMapper {
         json.albums.map(albumMinFromJson).toList(growable: false),
         json.artists.map(artistMinFromJson).toList(growable: false),
       );
-  ArtistMin artistMinFromJson(ArtistMinJson json) => ArtistMin(
+  ArtistMin artistMinFromJson(ArtistJson json) => ArtistMin(
         json.id,
         json.name,
       );

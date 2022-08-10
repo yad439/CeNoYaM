@@ -1,17 +1,19 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'album_json.dart';
 import 'artist_json.dart';
 
+part 'artist_info.freezed.dart';
 part 'artist_info.g.dart';
 
-@JsonSerializable(createToJson: false)
-class ArtistInfo {
-  ArtistInfo(this.artist, this.albums, this.trackIds);
+@Freezed(equal: true)
+class ArtistInfo with _$ArtistInfo {
+  const factory ArtistInfo(
+    ArtistJson artist,
+    List<AlbumMinJson> albums,
+    List<String> trackIds,
+  ) = _ArtistInfo;
 
   factory ArtistInfo.fromJson(Map<String, dynamic> json) =>
       _$ArtistInfoFromJson(json);
-  final ArtistJson artist;
-  final List<AlbumMinJson> albums;
-  final List<String> trackIds;
 }

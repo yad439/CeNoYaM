@@ -8,12 +8,12 @@ import 'track_json.dart';
 part 'search_response.freezed.dart';
 
 @immutable
-@Freezed(fromJson: false)
+@Freezed(fromJson: false, equal: true)
 class SearchResponse with _$SearchResponse {
   const factory SearchResponse(
     SearchEntry<AlbumMinJson> albums,
     SearchEntry<TrackJson> tracks,
-    SearchEntry<ArtistMinJson> artists,
+    SearchEntry<ArtistJson> artists,
     SearchEntry<PlaylistMinJson> playlists,
   ) = _SearchResponse;
 
@@ -26,9 +26,9 @@ class SearchResponse with _$SearchResponse {
           json['tracks'] as Map<String, dynamic>,
           TrackJson.fromJson,
         ),
-        SearchEntry<ArtistMinJson>.fromJson(
+        SearchEntry<ArtistJson>.fromJson(
           json['artists'] as Map<String, dynamic>,
-          ArtistMinJson.fromJson,
+          ArtistJson.fromJson,
         ),
         SearchEntry<PlaylistMinJson>.fromJson(
           json['playlists'] as Map<String, dynamic>,
@@ -38,7 +38,7 @@ class SearchResponse with _$SearchResponse {
 }
 
 @immutable
-@Freezed(fromJson: false)
+@Freezed(fromJson: false, equal: true)
 class SearchEntry<T> with _$SearchEntry<T> {
   const factory SearchEntry(List<T> items) = _SearchEntry;
 

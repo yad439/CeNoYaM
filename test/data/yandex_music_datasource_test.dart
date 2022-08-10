@@ -13,30 +13,14 @@ void main() {
   group('Get request', () {
     test('returns correct track info', () async {
       final trackBox = await datasource.getTrackInfo(data.trackDto.id);
-      final track = trackBox.track;
 
-      expect(track.id, data.trackDto.id);
-      expect(track.title, data.trackDto.title);
-      expect(track.available, data.trackDto.available);
-      expect(track.artists.length, data.trackDto.artists.length);
-      expect(track.artists.first.id, data.trackDto.artists.first.id);
-      expect(track.albums.length, data.trackDto.albums.length);
-      expect(track.albums.first.id, data.trackDto.albums.first.id);
+      expect(trackBox, data.trackBoxDto);
     });
 
     test('returns correct album', () async {
       final album = await datasource.getAlbum(data.albumDto.id);
 
-      expect(album.id, data.albumDto.id);
-      expect(album.title, data.albumDto.title);
-      expect(album.artists.length, data.albumDto.artists.length);
-      expect(album.artists.first.id, data.albumDto.artists.first.id);
-      expect(album.volumes.length, data.albumDto.volumes.length);
-      expect(album.volumes.first.length, data.albumDto.volumes.first.length);
-      expect(
-        album.volumes.first.first.id,
-        data.albumDto.volumes.first.first.id,
-      );
+      expect(album, data.albumDto);
     });
 
     test('returns correct playlist', () async {
@@ -46,36 +30,21 @@ void main() {
         playlistDto.owner.login,
         playlistDto.kind,
       );
-      final playlist = playlistBox.playlist;
 
-      expect(playlist.kind, playlistDto.kind);
-      expect(playlist.owner.uid, playlistDto.owner.uid);
-      expect(playlist.owner.login, playlistDto.owner.login);
-      expect(playlist.title, playlistDto.title);
-      expect(playlist.tracks.length, playlistDto.tracks.length);
-      expect(playlist.tracks.first.id, playlistDto.tracks.first.id);
+      expect(playlistBox, data.playlistBoxDto);
     });
 
     test('returns correct artist', () async {
-      final artistDto = data.artistInfoDto.artist;
+      final artistBox =
+          await datasource.getArtist(data.artistInfoDto.artist.id);
 
-      final artistBox = await datasource.getArtist(artistDto.id);
-      final artist = artistBox.artist;
-
-      expect(artistBox.albums.length, data.artistInfoDto.albums.length);
-      expect(artistBox.albums.first.id, data.artistInfoDto.albums.first.id);
-      expect(artistBox.trackIds, data.artistInfoDto.trackIds);
-      expect(artist.id, artistDto.id);
-      expect(artist.name, artistDto.name);
+      expect(artistBox, data.artistInfoDto);
     });
 
     test('returns correct download info', () async {
       final downloadInfo = await datasource.getDownloadInfo(1);
 
-      expect(downloadInfo.host, data.downloadInfoDto.host);
-      expect(downloadInfo.path, data.downloadInfoDto.path);
-      expect(downloadInfo.s, data.downloadInfoDto.s);
-      expect(downloadInfo.ts, data.downloadInfoDto.ts);
+      expect(downloadInfo, data.downloadInfoDto);
     });
 
     test('returns correct profile info', () async {
@@ -122,30 +91,9 @@ void main() {
     test('performs search', () async {
       final result = await datasource.search('query', SearchType.all);
 
-      expect(
-        result.albums.items.length,
-        data.searchResultDto.albums.items.length,
-      );
-      expect(
-        result.albums.items.first.id,
-        data.searchResultDto.albums.items.first.id,
-      );
-      expect(
-        result.artists.items.length,
-        data.searchResultDto.artists.items.length,
-      );
-      expect(
-        result.artists.items.first.id,
-        data.searchResultDto.artists.items.first.id,
-      );
-      expect(
-        result.tracks.items.length,
-        data.searchResultDto.tracks.items.length,
-      );
-      expect(
-        result.tracks.items.first.id,
-        data.searchResultDto.tracks.items.first.id,
-      );
+      expect(result.albums, data.searchResultDto.albums);
+      expect(result.artists, data.searchResultDto.artists);
+      expect(result.tracks, data.searchResultDto.tracks);
       expect(
         result.playlists.items.length,
         data.searchResultDto.playlists.items.length,

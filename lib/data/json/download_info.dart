@@ -1,15 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'download_info.freezed.dart';
 part 'download_info.g.dart';
 
-@JsonSerializable(createToJson: false)
-class DownloadInfo {
-  DownloadInfo(this.host, this.path, this.s, this.ts);
+@Freezed(equal: true)
+class DownloadInfo with _$DownloadInfo {
+  const factory DownloadInfo(String host, String path, String s, String ts) =
+      _DownloadInfo;
 
   factory DownloadInfo.fromJson(Map<String, dynamic> json) =>
       _$DownloadInfoFromJson(json);
-  final String host;
-  final String path;
-  final String s;
-  final String ts;
 }
