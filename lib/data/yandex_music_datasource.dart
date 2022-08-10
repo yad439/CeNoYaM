@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../domain/entity/artist_subcategory.dart';
 import '../domain/entity/search_type.dart';
 import 'json/album_json.dart';
 import 'json/artist_info.dart';
@@ -50,9 +51,17 @@ class YandexMusicDatasource {
         queryParameters: {'owner': owner, 'kinds': kinds.toString()},
       ).then((value) => PlaylistBox.fromJson(value.data!));
 
-  Future<ArtistInfo> getArtist(int artistId) => _dio.get<Map<String, dynamic>>(
+  Future<ArtistInfo> getArtist(
+    int artistId, {
+    ArtistSubcategory? subcategory,
+  }) =>
+      _dio.get<Map<String, dynamic>>(
         '/handlers/artist.jsx',
-        queryParameters: {'artist': artistId.toString()},
+        queryParameters: {
+          'artist': artistId.toString(),
+          if (subcategory != null) 'what': _subcategoryToString(subcategory),
+          if (subcategory != null) 'sort': ''
+        },
       ).then((value) => ArtistInfo.fromJson(value.data!));
 
   Future<Map<String, dynamic>> getProfileInfo() => _dio
@@ -111,5 +120,14 @@ String _searchTypeToString(SearchType searchType) {
       return 'tracks';
     case SearchType.playlists:
       return 'playlists';
+  }
+}
+
+String _subcategoryToString(ArtistSubcategory subcategory) {
+  switch (subcategory) {
+    case ArtistSubcategory.albums:
+      return 'albums';
+    case ArtistSubcategory.tracks:
+      return 'tracks';
   }
 }

@@ -1,0 +1,1 @@
+enum ArtistSubcategory { albums, tracks }

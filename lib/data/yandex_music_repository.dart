@@ -9,6 +9,7 @@ import '/domain/entity/artist.dart';
 import '/domain/entity/playlist.dart';
 import '/domain/entity/track.dart';
 import '/domain/music_repository.dart';
+import '../domain/entity/artist_subcategory.dart';
 import '../domain/entity/search_results.dart';
 import '../domain/entity/search_type.dart';
 import 'json_mapper.dart';
@@ -50,8 +51,10 @@ class YandexMusicRepository implements MusicRepository {
       _datasource.getAlbum(id).then(_mapper.albumFromJson);
 
   @override
-  Future<Artist> getArtist(int id) =>
-      _datasource.getArtist(id).then(_mapper.artistFromJson);
+  Future<Artist> getArtist(int id, {ArtistSubcategory? subcategory}) =>
+      _datasource
+          .getArtist(id, subcategory: subcategory)
+          .then(_mapper.artistFromJson);
 
   @override
   Future<bool> login(String login, String password) =>
