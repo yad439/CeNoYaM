@@ -10,7 +10,7 @@ import '/domain/entity/playlist.dart';
 import '/domain/entity/track.dart';
 import '/domain/music_repository.dart';
 import '../domain/entity/search_results.dart';
-import '../domain/search_type.dart';
+import '../domain/entity/search_type.dart';
 import 'json_mapper.dart';
 import 'yandex_music_datasource.dart';
 

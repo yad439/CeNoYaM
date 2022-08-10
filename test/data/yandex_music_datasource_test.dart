@@ -1,5 +1,5 @@
 import 'package:cenoyam/data/yandex_music_datasource.dart';
-import 'package:cenoyam/domain/search_type.dart';
+import 'package:cenoyam/domain/entity/search_type.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

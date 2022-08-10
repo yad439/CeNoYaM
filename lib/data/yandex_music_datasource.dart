@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../domain/search_type.dart';
+import '../domain/entity/search_type.dart';
 import 'json/album_json.dart';
 import 'json/artist_info.dart';
 import 'json/download_info.dart';
