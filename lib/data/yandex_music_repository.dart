@@ -4,14 +4,14 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:injectable/injectable.dart';
 
-import '../domain/enum/artist_subcategory.dart';
-import '../domain/enum/search_type.dart';
 import '/domain/entity/album.dart';
 import '/domain/entity/artist.dart';
 import '/domain/entity/playlist.dart';
 import '/domain/entity/track.dart';
 import '/domain/music_repository.dart';
 import '../domain/entity/search_results.dart';
+import '../domain/enum/artist_subcategory.dart';
+import '../domain/enum/search_type.dart';
 import 'json_mapper.dart';
 import 'yandex_music_datasource.dart';
 
