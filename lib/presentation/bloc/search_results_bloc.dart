@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entity/search_type.dart';
+import '../../domain/enum/search_type.dart';
 import '../../domain/music_repository.dart';
 import 'loading_state.dart';
 

@@ -1,8 +1,8 @@
 import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:injectable/injectable.dart';
 
+import 'enum/player_state.dart';
 import 'music_repository.dart';
-import 'player_state.dart';
 
 @singleton
 class YandexPlayer {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/entity/track.dart';
-import '../../domain/player_state.dart';
+import '../../domain/enum/player_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 

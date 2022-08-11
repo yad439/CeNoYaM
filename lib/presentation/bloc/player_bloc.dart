@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../domain/entity/track.dart';
-import '../../domain/player_state.dart';
+import '../../domain/enum/player_state.dart';
 import '../../domain/yandex_player.dart';
 import 'player_event.dart';
 
