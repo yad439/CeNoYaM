@@ -1,7 +1,5 @@
 import 'package:cenoyam/domain/entity/album.dart';
 import 'package:cenoyam/domain/entity/playlist.dart';
-import 'package:cenoyam/domain/entity/search_results.dart';
-import 'package:cenoyam/domain/entity/track.dart';
 import 'package:cenoyam/domain/music_repository.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/loading_state.dart';
@@ -17,9 +15,7 @@ import 'package:mockito/mockito.dart';
   [
     MockSpec<MusicRepository>(),
     MockSpec<Album>(),
-    MockSpec<Track>(),
     MockSpec<Playlist>(),
-    MockSpec<SearchResults>()
   ],
 )
 import 'loading_bloc_test.mocks.dart';
@@ -42,7 +38,6 @@ void main() {
 
   test('Track bloc loads', () {
     final bloc = TrackBloc(repository);
-    when(repository.getTrack(any)).thenAnswer((_) async => MockTrack());
 
     expect(bloc.state, isUninitialized);
 
@@ -71,8 +66,6 @@ void main() {
 
   test('Search bloc loads', () {
     final bloc = SearchResultsBloc(repository);
-    when(repository.search(any, any))
-        .thenAnswer((_) async => MockSearchResults());
 
     expect(bloc.state, isUninitialized);
 
