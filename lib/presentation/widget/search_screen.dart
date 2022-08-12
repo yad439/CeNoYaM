@@ -36,12 +36,15 @@ class SearchScreen extends StatelessWidget {
             builder: (context, state) => state.when(
               unknown: () => const SizedBox.shrink(),
               anonimous: () => TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                ),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                  profileBloc.add(ProfileEvent.update);
+                },
                 child: const Text('Login'),
               ),
               loggedIn: (username) => Center(
