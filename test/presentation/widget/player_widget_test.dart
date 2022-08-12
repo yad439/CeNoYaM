@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cenoyam/domain/entity/track.dart';
 import 'package:cenoyam/domain/enum/player_state.dart';
 import 'package:cenoyam/presentation/bloc/player_bloc.dart';
+import 'package:cenoyam/presentation/bloc/player_event.dart';
 import 'package:cenoyam/presentation/widget/player_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -62,20 +63,12 @@ void main() {
 
       expect(button, findsOneWidget);
       expect(widgetTester.widget<TextButton>(button).enabled, false);
-    });
-    testWidgets('no track name showed', (widgetTester) async {
-      await widgetTester.pumpWidget(
-        Provider<PlayerBloc>.value(
-          value: bloc!,
-          child: const Directionality(
-            textDirection: TextDirection.ltr,
-            child: PlayerWidget(),
-          ),
-        ),
-      );
 
-      expect(find.text('-'), findsOneWidget);
+      await widgetTester.tap(button, warnIfMissed: false);
+
+      verifyNever(bloc!.command);
     });
+
     testWidgets('progress is empty', (widgetTester) async {
       await widgetTester.pumpWidget(
         Provider<PlayerBloc>.value(
@@ -94,22 +87,9 @@ void main() {
         0,
       );
     });
-    testWidgets('duration and position are zeros', (widgetTester) async {
-      await widgetTester.pumpWidget(
-        Provider<PlayerBloc>.value(
-          value: bloc!,
-          child: const Directionality(
-            textDirection: TextDirection.ltr,
-            child: PlayerWidget(),
-          ),
-        ),
-      );
-
-      final duration = find.text(Duration.zero.toString());
-      expect(duration, findsNWidgets(2));
-    });
   });
-  group('When start playing', () {
+
+  group('When playing', () {
     setUp(() {
       stateController!.sink.add(PlayerState.playing);
       currentTrackController!.sink.add(
@@ -125,7 +105,10 @@ void main() {
       progressController!.sink.add(0.5);
     });
 
-    testWidgets('button in pause state', (widgetTester) async {
+    testWidgets('button pauses player', (widgetTester) async {
+      final commandController = StreamController<PlayerEvent>();
+      when(bloc!.command).thenReturn(commandController.sink);
+      addTearDown(commandController.close);
       await widgetTester.pumpWidget(
         Provider<PlayerBloc>.value(
           value: bloc!,
@@ -141,6 +124,129 @@ void main() {
 
       expect(button, findsOneWidget);
       expect(widgetTester.widget<TextButton>(button).enabled, true);
+
+      await widgetTester.tap(button);
+
+      expect(commandController.stream, emits(const PlayerEvent.pause()));
+    });
+
+    testWidgets('progress bar shows progress', (widgetTester) async {
+      await widgetTester.pumpWidget(
+        Provider<PlayerBloc>.value(
+          value: bloc!,
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: PlayerWidget(),
+          ),
+        ),
+      );
+      await widgetTester.pump();
+
+      final progressBar = find.byType(LinearProgressIndicator);
+      expect(progressBar, findsOneWidget);
+      expect(
+        widgetTester.widget<LinearProgressIndicator>(progressBar).value,
+        0.5,
+      );
+    });
+
+    testWidgets('duration and position are shown', (widgetTester) async {
+      await widgetTester.pumpWidget(
+        Provider<PlayerBloc>.value(
+          value: bloc!,
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: PlayerWidget(),
+          ),
+        ),
+      );
+      await widgetTester.pump();
+
+      final duration =
+          find.textContaining(const Duration(seconds: 60).toString());
+      final position =
+          find.textContaining(const Duration(seconds: 30).toString());
+
+      expect(duration, findsOneWidget);
+      expect(position, findsOneWidget);
+    });
+
+    testWidgets('track and artist are shown', (widgetTester) async {
+      await widgetTester.pumpWidget(
+        Provider<PlayerBloc>.value(
+          value: bloc!,
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: PlayerWidget(),
+          ),
+        ),
+      );
+      await widgetTester.pump();
+
+      final track = find.textContaining('Track 1');
+      final artist = find.textContaining('Artist 1');
+
+      expect(track, findsOneWidget);
+      expect(artist, findsOneWidget);
+    });
+
+    group('and paused', () {
+      setUp(() {
+        stateController!.sink.add(PlayerState.paused);
+      });
+
+      testWidgets('button resumes player', (widgetTester) async {
+        final commandController = StreamController<PlayerEvent>();
+        when(bloc!.command).thenReturn(commandController.sink);
+        addTearDown(commandController.close);
+        await widgetTester.pumpWidget(
+          Provider<PlayerBloc>.value(
+            value: bloc!,
+            child: const Directionality(
+              textDirection: TextDirection.ltr,
+              child: PlayerWidget(),
+            ),
+          ),
+        );
+        await widgetTester.pump();
+
+        final button = find.widgetWithText(TextButton, '|>');
+
+        expect(button, findsOneWidget);
+        expect(widgetTester.widget<TextButton>(button).enabled, true);
+
+        await widgetTester.tap(button);
+
+        expect(commandController.stream, emits(const PlayerEvent.resume()));
+      });
+    });
+
+    group('and completed', () {
+      setUp(() {
+        stateController!.sink.add(PlayerState.stopped);
+      });
+
+      testWidgets('button is in play state', (widgetTester) async {
+        await widgetTester.pumpWidget(
+          Provider<PlayerBloc>.value(
+            value: bloc!,
+            child: const Directionality(
+              textDirection: TextDirection.ltr,
+              child: PlayerWidget(),
+            ),
+          ),
+        );
+        await widgetTester.pump();
+
+        final button = find.widgetWithText(TextButton, '|>');
+
+        expect(button, findsOneWidget);
+        expect(widgetTester.widget<TextButton>(button).enabled, false);
+
+        await widgetTester.tap(button, warnIfMissed: false);
+
+        verifyNever(bloc!.command);
+      });
     });
   });
 }
