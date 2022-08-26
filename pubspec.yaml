@@ -26,6 +26,7 @@ dependencies:
   provider:
 
 dev_dependencies:
+  bloc_test:
   build_runner:
   flutter_lints:
   flutter_test:
