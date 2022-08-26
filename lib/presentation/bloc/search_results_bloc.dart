@@ -1,21 +1,11 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/entity/search_results.dart';
 import '../../domain/enum/search_type.dart';
-import '../../domain/music_repository.dart';
-import 'loading_state.dart';
+import 'loading_bloc.dart';
 
-class SearchResultsBloc extends Bloc<String, SearchState> {
-  SearchResultsBloc(this._repository)
-      : super(const SearchState.uninitialized()) {
-    on<String>(_search);
-  }
+class SearchResultsBloc extends LoadingBloc<String, SearchResults> {
+  SearchResultsBloc(super.repository);
 
-  final MusicRepository _repository;
-
-  Future<void> _search(String query, Emitter<SearchState> emit) async {
-    emit(
-      SearchState.loaded(
-        await _repository.search(query, SearchType.all),
-      ),
-    );
-  }
+  @override
+  Future<SearchResults> fetch(String event) =>
+      repository.search(event, SearchType.all);
 }
