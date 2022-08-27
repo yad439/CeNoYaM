@@ -34,7 +34,7 @@ dev_dependencies:
   freezed:
   injectable_generator:
   json_serializable:
-  mockingjay:
+  mockingjay: ^0.2.0
   mockito:
   mocktail:
 
