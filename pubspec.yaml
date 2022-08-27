@@ -34,7 +34,9 @@ dev_dependencies:
   freezed:
   injectable_generator:
   json_serializable:
+  mockingjay:
   mockito:
+  mocktail:
 
 dependency_overrides:
   analyzer: ">=4.2.0 <5.0.0"
