@@ -24,6 +24,7 @@ dependencies:
   injectable:
   json_annotation:
   provider:
+  rxdart:
 
 dev_dependencies:
   bloc_test:

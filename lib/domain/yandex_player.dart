@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'enum/player_state.dart';
 import 'music_repository.dart';
@@ -7,9 +8,9 @@ import 'music_repository.dart';
 @singleton
 class YandexPlayer {
   YandexPlayer(this._player, this._musicRepository)
-      : _durationStream = _player.onDurationChanged.asBroadcastStream(),
-        _position = _player.onPositionChanged.asBroadcastStream(),
-        _state = _player.onPlayerStateChanged.asBroadcastStream();
+      : _durationStream = _player.onDurationChanged.publishValue()..connect(),
+        _position = _player.onPositionChanged.publishValue()..connect(),
+        _state = _player.onPlayerStateChanged.publishValue()..connect();
   final audioplayers.AudioPlayer _player;
   final MusicRepository _musicRepository;
   final Stream<Duration> _durationStream;
