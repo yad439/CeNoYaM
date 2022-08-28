@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,14 +10,21 @@ import 'music_repository.dart';
 @singleton
 class YandexPlayer {
   YandexPlayer(this._player, this._musicRepository)
-      : _durationStream = _player.onDurationChanged.publishValue()..connect(),
-        _position = _player.onPositionChanged.publishValue()..connect(),
-        _state = _player.onPlayerStateChanged.publishValue()..connect();
+      : _durationStream = _player.onDurationChanged.publishValue(),
+        _position = _player.onPositionChanged.publishValue(),
+        _state = _player.onPlayerStateChanged.publishValue() {
+    _subscriptions = [
+      _durationStream.connect(),
+      _position.connect(),
+      _state.connect()
+    ];
+  }
   final audioplayers.AudioPlayer _player;
   final MusicRepository _musicRepository;
-  final Stream<Duration> _durationStream;
-  final Stream<Duration> _position;
-  final Stream<audioplayers.PlayerState> _state;
+  final ConnectableStream<Duration> _durationStream;
+  final ConnectableStream<Duration> _position;
+  final ConnectableStream<audioplayers.PlayerState> _state;
+  late final List<StreamSubscription<Object>> _subscriptions;
 
   Future<void> play(int trackId) async {
     final url = await _musicRepository.getDownloadUrl(trackId);
@@ -45,4 +54,11 @@ class YandexPlayer {
             return PlayerState.paused;
         }
       });
+
+  @disposeMethod
+  void dispose() {
+    for (final subscription in _subscriptions) {
+      subscription.cancel();
+    }
+  }
 }
