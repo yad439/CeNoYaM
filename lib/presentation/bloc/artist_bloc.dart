@@ -1,14 +1,12 @@
-import '../../domain/entity/album.dart';
-
+import '../../domain/entity/artist.dart';
 import 'loading_bloc.dart';
 import 'loading_state.dart';
 
-typedef ArtistState = LoadingState<List<AlbumMin>>;
+typedef ArtistState = LoadingState<Artist>;
 
-class ArtistBloc extends LoadingBloc<int, List<AlbumMin>> {
+class ArtistBloc extends LoadingBloc<int, Artist> {
   ArtistBloc(super.repository);
 
   @override
-  Future<List<AlbumMin>> fetch(int event) =>
-      repository.getArtist(event).then((value) => value.albums);
+  Future<Artist> fetch(int event) => repository.getArtist(event);
 }

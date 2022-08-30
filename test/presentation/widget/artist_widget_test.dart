@@ -18,9 +18,7 @@ void main() {
     whenListen(
       artistBloc,
       Stream.fromIterable([
-        ArtistState.loaded([
-          data.albumEntity,
-        ])
+        ArtistState.loaded(data.artistEntity),
       ]),
       initialState: const ArtistState.uninitialized(),
     );
@@ -46,7 +44,8 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.textContaining(data.albumEntity.title), findsOneWidget);
+    expect(find.text(data.albumEntity.title), findsOneWidget);
+    expect(find.text('album title 2'), findsOneWidget);
   });
 
   testWidgets('Navigates to album', (tester) async {
