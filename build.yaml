@@ -6,6 +6,7 @@ targets:
           copy_with: false
           equal: false
           to_json: false
+          to_string_override: false
       json_serializable:
         options:
           create_to_json: false
