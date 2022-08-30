@@ -148,6 +148,11 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
     await tester.pumpAndSettle();
 
+    await tester.dragUntilVisible(
+      find.text(data.playlistEntity.title),
+      find.byType(CustomScrollView),
+      const Offset(0, -100),
+    );
     final playlist = find.text(data.playlistEntity.title);
     expect(playlist, findsOneWidget);
     await tester.tap(playlist);
@@ -229,6 +234,11 @@ void main() {
     await tester.pageBack();
     await tester.pumpAndSettle();
 
+    await tester.dragUntilVisible(
+      find.text(data.playlistEntity.title),
+      find.byType(CustomScrollView),
+      const Offset(0, -100),
+    );
     final playlist = find.text(data.playlistEntity.title);
     expect(playlist, findsOneWidget);
     await tester.tap(playlist);

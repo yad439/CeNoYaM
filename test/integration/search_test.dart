@@ -6,6 +6,7 @@ import 'package:cenoyam/data/yandex_music_repository.dart';
 import 'package:cenoyam/domain/music_repository.dart';
 import 'package:cenoyam/domain/yandex_player.dart';
 import 'package:cenoyam/presentation/widget/album_widget.dart';
+import 'package:cenoyam/presentation/widget/artist_widget.dart';
 import 'package:cenoyam/presentation/widget/playlist_widget.dart';
 import 'package:cenoyam/presentation/widget/track_widget.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +83,11 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
     await tester.pumpAndSettle();
 
+    await tester.dragUntilVisible(
+      find.text(data.playlistEntity.title),
+      find.byType(CustomScrollView),
+      const Offset(0, -100),
+    );
     final playlist = find.text(data.playlistEntity.title);
     expect(playlist, findsOneWidget);
     await tester.tap(playlist);
@@ -89,6 +95,57 @@ void main() {
 
     expect(find.byType(PlaylistWidget), findsOneWidget);
     expect(find.text(data.playlistEntity.title), findsWidgets);
+    expect(find.textContaining(data.trackEntity.title), findsWidgets);
+    expect(
+      find.textContaining(data.trackWithMultipleArtistsEntity.title),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Navigates to artist', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    final artist = find.byWidgetPredicate(
+      (widget) =>
+          widget is ListTile &&
+          widget.title is Text &&
+          (widget.title as Text?)?.data == data.artistEntity.name,
+    );
+    expect(artist, findsOneWidget);
+    await tester.tap(artist);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ArtistWidget), findsOneWidget);
+    expect(find.text(data.albumEntity.title), findsOneWidget);
+  });
+
+  testWidgets('Navigates to album through artist', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is ListTile &&
+            widget.title is Text &&
+            (widget.title as Text?)?.data == data.artistEntity.name,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(data.albumEntity.title));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlbumWidget), findsOneWidget);
+    expect(find.text(data.albumEntity.title), findsWidgets);
     expect(find.textContaining(data.trackEntity.title), findsWidgets);
     expect(
       find.textContaining(data.trackWithMultipleArtistsEntity.title),

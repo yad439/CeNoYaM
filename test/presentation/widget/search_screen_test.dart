@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cenoyam/domain/entity/search_results.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
+import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/playlist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/playlist_event.dart';
@@ -20,7 +21,12 @@ import 'package:mockito/mockito.dart' as mockito;
 import '../../data/test_data.dart';
 
 @GenerateNiceMocks(
-  [MockSpec<TrackBloc>(), MockSpec<AlbumBloc>(), MockSpec<PlaylistBloc>()],
+  [
+    MockSpec<TrackBloc>(),
+    MockSpec<AlbumBloc>(),
+    MockSpec<PlaylistBloc>(),
+    MockSpec<ArtistBloc>()
+  ],
 )
 import 'search_screen_test.mocks.dart';
 
@@ -209,7 +215,7 @@ void main() {
           findsOneWidget,
         );
       });
-      testWidgets('artists', skip: true, (widgetTester) async {
+      testWidgets('artists', (widgetTester) async {
         await widgetTester.pumpWidget(
           MultiBlocProvider(
             providers: [
@@ -255,7 +261,15 @@ void main() {
         );
         await widgetTester.pump();
 
-        expect(find.text(data.playlistEntity.title), findsWidgets);
+        final playlist =
+            find.text(data.playlistEntity.title, skipOffstage: false);
+        expect(playlist, findsOneWidget);
+        await widgetTester.dragUntilVisible(
+          find.text(data.playlistEntity.title),
+          find.byType(CustomScrollView),
+          const Offset(0, -100),
+        );
+        expect(find.text(data.playlistEntity.title), findsOneWidget);
       });
     });
 
@@ -280,14 +294,28 @@ void main() {
             .tap(find.text(data.trackWithMultipleArtistsEntity.title));
         mockito.verify(trackBloc.add(data.trackWithMultipleArtistsEntity.id));
       });
-      testWidgets('artist', skip: true, (widgetTester) async {
-        // final artistBloc = MockArtistBloc();
+      testWidgets('artist', (widgetTester) async {
+        final artistBloc = MockArtistBloc();
+        whenListen(
+          searchResultsBloc,
+          Stream.fromIterable([
+            LoadingState<SearchResults>.loaded(
+              SearchResults(
+                const [],
+                [data.artistEntity],
+                const [],
+                const [],
+              ),
+            ),
+          ]),
+          initialState: const LoadingState<SearchResults>.uninitialized(),
+        );
         await widgetTester.pumpWidget(
           MultiBlocProvider(
             providers: [
               BlocProvider<SearchResultsBloc>.value(value: searchResultsBloc),
               BlocProvider<ProfileBloc>.value(value: profileBloc),
-              // BlocProvider<ArtistBloc>.value(value: artistBloc),
+              BlocProvider<ArtistBloc>.value(value: artistBloc),
             ],
             child: const MaterialApp(
               home: SearchScreen(),
@@ -297,7 +325,7 @@ void main() {
         await widgetTester.pump();
 
         await widgetTester.tap(find.text(data.artistEntity.name));
-        // mockito.verify(artistBloc.add(data.artistEntity.id));
+        mockito.verify(artistBloc.add(data.artistEntity.id));
       });
       testWidgets('album', (widgetTester) async {
         final albumBloc = MockAlbumBloc();
@@ -334,6 +362,11 @@ void main() {
         );
         await widgetTester.pump();
 
+        await widgetTester.dragUntilVisible(
+          find.text(data.playlistEntity.title),
+          find.byType(CustomScrollView),
+          const Offset(0, -100),
+        );
         await widgetTester.tap(find.text(data.playlistEntity.title));
         expect(
           (mockito.verify(playlistBloc.add(mockito.captureAny)).captured.single
