@@ -1,9 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cenoyam/domain/entity/album.dart';
-import 'package:cenoyam/domain/entity/track.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
-import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/widget/artist_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,11 +18,11 @@ void main() {
     whenListen(
       artistBloc,
       Stream.fromIterable([
-        LoadingState.loaded([
+        ArtistState.loaded([
           data.albumEntity,
         ])
       ]),
-      initialState: const LoadingState<List<AlbumMin>>.uninitialized(),
+      initialState: const ArtistState.uninitialized(),
     );
   });
 
@@ -88,8 +85,6 @@ void main() {
   });
 }
 
-class MockAlbumBloc extends MockBloc<int, LoadingState<List<TrackMin>>>
-    implements AlbumBloc {}
+class MockAlbumBloc extends MockBloc<int, AlbumState> implements AlbumBloc {}
 
-class MockArtistBloc extends MockBloc<int, LoadingState<List<AlbumMin>>>
-    implements ArtistBloc {}
+class MockArtistBloc extends MockBloc<int, ArtistState> implements ArtistBloc {}

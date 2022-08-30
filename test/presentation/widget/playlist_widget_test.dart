@@ -1,6 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cenoyam/domain/entity/track.dart';
-import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/player_bloc.dart';
 import 'package:cenoyam/presentation/bloc/player_event.dart';
 import 'package:cenoyam/presentation/bloc/playlist_bloc.dart';
@@ -25,13 +23,13 @@ void main() {
     whenListen(
       playlistBloc,
       Stream.fromIterable([
-        LoadingState.loaded([
+        PlaylistState.loaded([
           data.trackEntity,
           data.trackWithMultipleArtistsEntity,
           data.unavailableTrackEntity
         ])
       ]),
-      initialState: const LoadingState<List<TrackMin>>.uninitialized(),
+      initialState: const PlaylistState.uninitialized(),
     );
 
     await tester.pumpWidget(
@@ -63,11 +61,11 @@ void main() {
     whenListen(
       playlistBloc,
       Stream.fromIterable([
-        LoadingState.loaded([
+        PlaylistState.loaded([
           data.trackEntity,
         ])
       ]),
-      initialState: const LoadingState<List<TrackMin>>.uninitialized(),
+      initialState: const PlaylistState.uninitialized(),
     );
     final mockSink = MockSink();
     when(playerBloc.command).thenReturn(mockSink);
@@ -100,6 +98,5 @@ void main() {
   });
 }
 
-class MockPlaylistBloc
-    extends MockBloc<PlaylistEvent, LoadingState<List<TrackMin>>>
+class MockPlaylistBloc extends MockBloc<PlaylistEvent, PlaylistState>
     implements PlaylistBloc {}

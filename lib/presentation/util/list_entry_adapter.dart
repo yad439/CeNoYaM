@@ -7,7 +7,6 @@ import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/artist_bloc.dart';
-import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/track_bloc.dart';
@@ -55,9 +54,7 @@ class TrackEntryAdapter
 }
 
 class AlbumEntryAdapter
-    implements
-        ListEntryAdapter<AlbumMin, int, LoadingState<List<TrackMin>>,
-            AlbumBloc> {
+    implements ListEntryAdapter<AlbumMin, int, AlbumState, AlbumBloc> {
   const AlbumEntryAdapter();
   @override
   String title(AlbumMin object) => object.title;
@@ -70,9 +67,7 @@ class AlbumEntryAdapter
 }
 
 class ArtistEntryAdapter
-    implements
-        ListEntryAdapter<ArtistMin, int, LoadingState<List<AlbumMin>>,
-            ArtistBloc> {
+    implements ListEntryAdapter<ArtistMin, int, ArtistState, ArtistBloc> {
   const ArtistEntryAdapter();
   @override
   String title(ArtistMin object) => object.name;

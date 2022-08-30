@@ -1,7 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cenoyam/domain/entity/track.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
-import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/player_bloc.dart';
 import 'package:cenoyam/presentation/bloc/player_event.dart';
 import 'package:cenoyam/presentation/widget/album_widget.dart';
@@ -24,13 +22,13 @@ void main() {
     whenListen(
       albumBloc,
       Stream.fromIterable([
-        LoadingState.loaded([
+        AlbumState.loaded([
           data.trackEntity,
           data.trackWithMultipleArtistsEntity,
           data.unavailableTrackEntity
         ])
       ]),
-      initialState: const LoadingState<List<TrackMin>>.uninitialized(),
+      initialState: const AlbumState.uninitialized(),
     );
 
     await tester.pumpWidget(
@@ -62,11 +60,11 @@ void main() {
     whenListen(
       albumBloc,
       Stream.fromIterable([
-        LoadingState.loaded([
+        AlbumState.loaded([
           data.trackEntity,
         ])
       ]),
-      initialState: const LoadingState<List<TrackMin>>.uninitialized(),
+      initialState: const AlbumState.uninitialized(),
     );
     final mockSink = MockSink();
     when(playerBloc.command).thenReturn(mockSink);
@@ -99,5 +97,4 @@ void main() {
   });
 }
 
-class MockAlbumBloc extends MockBloc<int, LoadingState<List<TrackMin>>>
-    implements AlbumBloc {}
+class MockAlbumBloc extends MockBloc<int, AlbumState> implements AlbumBloc {}

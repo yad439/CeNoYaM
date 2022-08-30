@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:cenoyam/domain/entity/search_results.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
-import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/playlist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/playlist_event.dart';
 import 'package:cenoyam/presentation/bloc/profile_bloc.dart';
@@ -39,8 +38,8 @@ void main() {
   setUp(() {
     whenListen(
       searchResultsBloc,
-      const Stream<LoadingState<SearchResults>>.empty(),
-      initialState: const LoadingState<SearchResults>.uninitialized(),
+      const Stream<SearchState>.empty(),
+      initialState: const SearchState.uninitialized(),
     );
     whenListen(
       profileBloc,
@@ -188,9 +187,9 @@ void main() {
       whenListen(
         searchResultsBloc,
         Stream.fromIterable([
-          LoadingState<SearchResults>.loaded(data.searchResultsEntity),
+          SearchState.loaded(data.searchResultsEntity),
         ]),
-        initialState: const LoadingState<SearchResults>.uninitialized(),
+        initialState: const SearchState.uninitialized(),
       );
     });
     group('renderes', () {
@@ -298,7 +297,7 @@ void main() {
         whenListen(
           searchResultsBloc,
           Stream.fromIterable([
-            LoadingState<SearchResults>.loaded(
+            SearchState.loaded(
               SearchResults(
                 const [],
                 [data.artistEntity],
@@ -307,7 +306,7 @@ void main() {
               ),
             ),
           ]),
-          initialState: const LoadingState<SearchResults>.uninitialized(),
+          initialState: const SearchState.uninitialized(),
         );
         await widgetTester.pumpWidget(
           MultiBlocProvider(
@@ -396,8 +395,7 @@ void main() {
 
 enum StateIncomingType { initial, stream }
 
-class MockSearchResultsBloc
-    extends MockBloc<String, LoadingState<SearchResults>>
+class MockSearchResultsBloc extends MockBloc<String, SearchState>
     implements SearchResultsBloc {}
 
 class MockProfileBloc extends MockBloc<ProfileEvent, ProfileState>

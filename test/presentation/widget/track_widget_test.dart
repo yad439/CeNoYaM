@@ -1,6 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cenoyam/domain/entity/track.dart';
-import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/player_bloc.dart';
 import 'package:cenoyam/presentation/bloc/player_event.dart';
 import 'package:cenoyam/presentation/bloc/track_bloc.dart';
@@ -22,8 +20,8 @@ void main() {
 
   whenListen(
     trackBloc,
-    Stream.fromIterable([LoadingState.loaded(data.trackEntity)]),
-    initialState: const LoadingState<Track>.uninitialized(),
+    Stream.fromIterable([TrackState.loaded(data.trackEntity)]),
+    initialState: const TrackState.uninitialized(),
   );
 
   testWidgets('Renders track', (tester) async {
@@ -77,5 +75,4 @@ void main() {
   });
 }
 
-class MockTrackBloc extends MockBloc<int, LoadingState<Track>>
-    implements TrackBloc {}
+class MockTrackBloc extends MockBloc<int, TrackState> implements TrackBloc {}
