@@ -43,6 +43,7 @@ class TestData {
     };
     const albumMinDto = AlbumMinJson(6, 'album title', [artistDto, artistDto2]);
     const albumMinDto2 = AlbumMinJson(7, 'album title 2', [artistDto2]);
+    const albumMinEntity2 = AlbumMin(7, 'album title 2', 'artist name 2');
 
     final trackJson = {
       'id': '1',
@@ -138,7 +139,7 @@ class TestData {
     artistEntity = Artist(
       6,
       'artist name',
-      [albumEntity, albumEntity],
+      [albumEntity, albumMinEntity2],
       [trackEntity, trackWithMultipleArtistsEntity, unavailableTrackEntity],
     );
 
