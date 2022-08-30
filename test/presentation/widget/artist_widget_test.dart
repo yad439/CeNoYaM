@@ -18,7 +18,7 @@ void main() {
     whenListen(
       artistBloc,
       Stream.fromIterable([
-        ArtistState.loaded(data.artistEntity),
+        ArtistState.loaded(data.artistAlbumsEntity),
       ]),
       initialState: const ArtistState.uninitialized(),
     );

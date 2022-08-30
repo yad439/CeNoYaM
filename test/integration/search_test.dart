@@ -121,6 +121,7 @@ void main() {
 
     expect(find.byType(ArtistWidget), findsOneWidget);
     expect(find.text(data.albumEntity.title), findsOneWidget);
+    expect(find.text('album title 2'), findsOneWidget);
   });
 
   testWidgets('Navigates to album through artist', (tester) async {

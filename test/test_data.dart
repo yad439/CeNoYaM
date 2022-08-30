@@ -128,19 +128,51 @@ class TestData {
 
     artistBoxJson = {
       'artist': artistJson,
-      'albums': [albumJson, albumJson2],
+      'albums': [albumJson],
+      'tracks': [trackJson]
+    };
+    artistBoxTracksJson = {
+      'artist': artistJson,
+      'albums': [albumJson],
       'tracks': [trackJson, trackWithMultipleArtistsJson, unavailableTrackJson]
+    };
+    artistBoxAlbumsJson = {
+      'artist': artistJson,
+      'albums': [albumJson, albumJson2],
+      'tracks': [trackJson]
     };
     artistInfoDto = ArtistInfo(
       artistDto,
-      [albumMinDto, albumMinDto2],
+      [albumMinDto],
+      [trackDto],
+    );
+    artistInfoTracksDto = ArtistInfo(
+      artistDto,
+      [albumMinDto],
       [trackDto, trackWithMultipleArtistsDto, unavailableTrackDto],
+    );
+    artistInfoAlbumsDto = ArtistInfo(
+      artistDto,
+      [albumMinDto, albumMinDto2],
+      [trackDto],
     );
     artistEntity = Artist(
       6,
       'artist name',
-      [albumEntity, albumMinEntity2],
+      [albumEntity],
+      [trackEntity],
+    );
+    artistTracksEntity = Artist(
+      6,
+      'artist name',
+      [albumEntity],
       [trackEntity, trackWithMultipleArtistsEntity, unavailableTrackEntity],
+    );
+    artistAlbumsEntity = Artist(
+      6,
+      'artist name',
+      [albumEntity, albumMinEntity2],
+      [trackEntity],
     );
 
     userJson = {'uid': 8, 'login': 'user_login'};
@@ -277,6 +309,36 @@ class TestData {
     );
     when(
       dio.get<Map<String, dynamic>>(
+        '/handlers/artist.jsx',
+        queryParameters: {
+          'artist': artistJson['id'],
+          'what': 'albums',
+          'sort': ''
+        },
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: artistBoxAlbumsJson,
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+    when(
+      dio.get<Map<String, dynamic>>(
+        '/handlers/artist.jsx',
+        queryParameters: {
+          'artist': artistJson['id'],
+          'what': 'tracks',
+          'sort': ''
+        },
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: artistBoxTracksJson,
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+    when(
+      dio.get<Map<String, dynamic>>(
         '/api/v2.1/handlers/track/1/track/download/m',
         queryParameters: anyNamed('queryParameters'),
       ),
@@ -359,6 +421,8 @@ class TestData {
   late final Map<String, dynamic> unavailableTrackBoxJson;
   late final Map<String, dynamic> trackWithMultipleArtistsBoxJson;
   late final Map<String, dynamic> artistBoxJson;
+  late final Map<String, dynamic> artistBoxTracksJson;
+  late final Map<String, dynamic> artistBoxAlbumsJson;
   late final Map<String, dynamic> albumJson;
   late final Map<String, dynamic> userJson;
   late final Map<String, dynamic> playlistBoxJson;
@@ -375,6 +439,8 @@ class TestData {
   late final TrackBox unavailableTrackBoxDto;
   late final TrackBox trackWithMultipleArtistsBoxDto;
   late final ArtistInfo artistInfoDto;
+  late final ArtistInfo artistInfoTracksDto;
+  late final ArtistInfo artistInfoAlbumsDto;
   late final AlbumJson albumDto;
   late final PlaylistBox playlistBoxDto;
   late final DownloadInfo downloadInfoDto;
@@ -384,6 +450,8 @@ class TestData {
   late final Track unavailableTrackEntity;
   late final Track trackWithMultipleArtistsEntity;
   late final Artist artistEntity;
+  late final Artist artistTracksEntity;
+  late final Artist artistAlbumsEntity;
   late final Album albumEntity;
   late final Playlist playlistEntity;
   late final SearchResults searchResultsEntity;

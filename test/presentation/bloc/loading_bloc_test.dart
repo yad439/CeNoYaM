@@ -82,7 +82,8 @@ void main() {
 
   test('Artist bloc loads', () {
     final bloc = ArtistBloc(repository);
-    when(repository.getArtist(any)).thenAnswer((_) async => MockArtist());
+    when(repository.getArtist(any, subcategory: anyNamed('subcategory')))
+        .thenAnswer((_) async => MockArtist());
 
     expect(bloc.state, isUninitialized);
 
