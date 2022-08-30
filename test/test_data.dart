@@ -75,11 +75,11 @@ class TestData {
       [artistDto, artistDto2],
       [albumMinDto, albumMinDto2],
     );
-    trackEntity = Track(
+    trackEntity = const Track(
       1,
       'track title',
       true,
-      const [AlbumMin(6, 'album title', 'artist name; artist name 2')],
+      [AlbumMin(6, 'album title', 'artist name; artist name 2')],
       [ArtistMin(4, 'artist name')],
     );
     unavailableTrackEntity = const Track(
@@ -89,11 +89,11 @@ class TestData {
       [],
       [],
     );
-    trackWithMultipleArtistsEntity = Track(
+    trackWithMultipleArtistsEntity = const Track(
       3,
       'track title 3',
       true,
-      const [
+      [
         AlbumMin(6, 'album title', 'artist name; artist name 2'),
         AlbumMin(7, 'album title 2', 'artist name 2')
       ],
@@ -121,21 +121,26 @@ class TestData {
     albumEntity = Album(
       6,
       'album title',
-      [ArtistMin(4, 'artist name'), ArtistMin(5, 'artist name 2')],
+      const [ArtistMin(4, 'artist name'), ArtistMin(5, 'artist name 2')],
       [trackEntity, unavailableTrackEntity, trackWithMultipleArtistsEntity],
     );
 
     artistBoxJson = {
       'artist': artistJson,
       'albums': [albumJson, albumJson2],
-      'trackIds': ['1', '2', '3']
+      'tracks': [trackJson, trackWithMultipleArtistsJson, unavailableTrackJson]
     };
-    artistInfoDto = const ArtistInfo(
+    artistInfoDto = ArtistInfo(
       artistDto,
       [albumMinDto, albumMinDto2],
-      ['1', '2', '3'],
+      [trackDto, trackWithMultipleArtistsDto, unavailableTrackDto],
     );
-    artistEntity = Artist(6, 'artist name', [albumEntity, albumEntity]);
+    artistEntity = Artist(
+      6,
+      'artist name',
+      [albumEntity, albumEntity],
+      [trackEntity, trackWithMultipleArtistsEntity, unavailableTrackEntity],
+    );
 
     userJson = {'uid': 8, 'login': 'user_login'};
     final playlistJson = {

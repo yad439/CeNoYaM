@@ -1,18 +1,21 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'album.dart';
+import 'track.dart';
 
-class ArtistMin {
-  ArtistMin(this._id, this._name);
-  final int _id;
-  final String _name;
+part 'artist.freezed.dart';
 
-  String get name => _name;
-
-  int get id => _id;
+@freezed
+class ArtistMin with _$ArtistMin {
+  const factory ArtistMin(int id, String name) = _ArtistMin;
 }
 
-class Artist extends ArtistMin {
-  Artist(super.id, super.name, this._albums);
-  final List<AlbumMin> _albums;
-
-  List<AlbumMin> get albums => _albums;
+@freezed
+class Artist with _$Artist implements ArtistMin {
+  const factory Artist(
+    int id,
+    String name,
+    List<AlbumMin> albums,
+    List<TrackMin> popularTracks,
+  ) = _Artist;
 }

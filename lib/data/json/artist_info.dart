@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'album_json.dart';
 import 'artist_json.dart';
+import 'track_json.dart';
 
 part 'artist_info.freezed.dart';
 part 'artist_info.g.dart';
@@ -11,7 +12,7 @@ class ArtistInfo with _$ArtistInfo {
   const factory ArtistInfo(
     ArtistJson artist,
     List<AlbumMinJson> albums,
-    List<String> trackIds,
+    List<TrackJson> tracks,
   ) = _ArtistInfo;
 
   factory ArtistInfo.fromJson(Map<String, dynamic> json) =>
