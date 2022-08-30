@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
+import 'package:cenoyam/presentation/bloc/artist_event.dart';
 import 'package:cenoyam/presentation/widget/artist_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -86,4 +87,5 @@ void main() {
 
 class MockAlbumBloc extends MockBloc<int, AlbumState> implements AlbumBloc {}
 
-class MockArtistBloc extends MockBloc<int, ArtistState> implements ArtistBloc {}
+class MockArtistBloc extends MockBloc<ArtistEvent, ArtistState>
+    implements ArtistBloc {}

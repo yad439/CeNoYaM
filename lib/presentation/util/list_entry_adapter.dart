@@ -5,8 +5,10 @@ import '../../domain/entity/album.dart';
 import '../../domain/entity/artist.dart';
 import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
+import '../../domain/enum/artist_subcategory.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/artist_bloc.dart';
+import '../bloc/artist_event.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/track_bloc.dart';
@@ -67,14 +69,16 @@ class AlbumEntryAdapter
 }
 
 class ArtistEntryAdapter
-    implements ListEntryAdapter<ArtistMin, int, ArtistState, ArtistBloc> {
+    implements
+        ListEntryAdapter<ArtistMin, ArtistEvent, ArtistState, ArtistBloc> {
   const ArtistEntryAdapter();
   @override
   String title(ArtistMin object) => object.name;
   @override
   String subtitle(ArtistMin object) => '';
   @override
-  int onTapAction(ArtistMin object) => object.id;
+  ArtistEvent onTapAction(ArtistMin object) =>
+      ArtistEvent(object.id, ArtistSubcategory.albums);
   @override
   Widget screen(BuildContext context, ArtistMin object) => const ArtistWidget();
 }

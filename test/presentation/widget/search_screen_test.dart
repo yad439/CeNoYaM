@@ -1,7 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cenoyam/domain/entity/search_results.dart';
+import 'package:cenoyam/domain/enum/artist_subcategory.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
+import 'package:cenoyam/presentation/bloc/artist_event.dart';
 import 'package:cenoyam/presentation/bloc/playlist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/playlist_event.dart';
 import 'package:cenoyam/presentation/bloc/profile_bloc.dart';
@@ -323,7 +325,12 @@ void main() {
         await widgetTester.pump();
 
         await widgetTester.tap(find.text(data.artistEntity.name));
-        mockito.verify(artistBloc.add(data.artistEntity.id));
+        final event = mockito
+            .verify(artistBloc.add(mockito.captureAny))
+            .captured
+            .single as ArtistEvent;
+        expect(event.id, data.artistEntity.id);
+        expect(event.subcategory, ArtistSubcategory.albums);
       });
       testWidgets('album', (widgetTester) async {
         final albumBloc = MockAlbumBloc();

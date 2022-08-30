@@ -7,6 +7,7 @@ import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/artist_bloc.dart';
+import '../bloc/artist_event.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/profile_bloc.dart';
@@ -92,7 +93,8 @@ class _ResultList extends StatelessWidget {
             loaded: (results) => CustomScrollView(
               slivers: [
                 if (results.artists.isNotEmpty)
-                  ..._buildEntry<ArtistMin, int, ArtistState, ArtistBloc>(
+                  ..._buildEntry<ArtistMin, ArtistEvent, ArtistState,
+                      ArtistBloc>(
                     context,
                     'Artists',
                     results.artists,
