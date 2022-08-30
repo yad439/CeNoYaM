@@ -18,8 +18,7 @@ import 'package:mockingjay/mockingjay.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart' as mockito;
 
-import '../../data/test_data.dart';
-
+import '../../test_data.dart';
 @GenerateNiceMocks(
   [
     MockSpec<TrackBloc>(),

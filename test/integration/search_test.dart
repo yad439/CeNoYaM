@@ -15,8 +15,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../data/test_data.dart';
-
+import '../test_data.dart';
 @GenerateNiceMocks([MockSpec<AudioPlayer>()])
 import 'search_test.mocks.dart';
 

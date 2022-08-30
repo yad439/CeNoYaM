@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'test_data.dart';
+import '../test_data.dart';
 
 void main() {
   final data = TestData();

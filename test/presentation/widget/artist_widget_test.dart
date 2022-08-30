@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockingjay/mockingjay.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/test_data.dart';
+import '../../test_data.dart';
 
 void main() {
   final albumBloc = MockAlbumBloc();
