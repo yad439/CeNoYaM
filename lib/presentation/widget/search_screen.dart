@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entity/album.dart';
+import '../../domain/entity/artist.dart';
 import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
 import '../bloc/album_bloc.dart';
+import '../bloc/artist_bloc.dart';
 import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
@@ -90,6 +92,14 @@ class _ResultList extends StatelessWidget {
             uninitialized: () => const SizedBox.shrink(),
             loaded: (results) => CustomScrollView(
               slivers: [
+                if (results.artists.isNotEmpty)
+                  ..._buildEntry<ArtistMin, int, LoadingState<List<AlbumMin>>,
+                      ArtistBloc>(
+                    context,
+                    'Artists',
+                    results.artists,
+                    const ArtistEntryAdapter(),
+                  ),
                 if (results.tracks.isNotEmpty)
                   ..._buildEntry<TrackMin, int, TrackState, TrackBloc>(
                     context,

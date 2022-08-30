@@ -2,14 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entity/album.dart';
+import '../../domain/entity/artist.dart';
 import '../../domain/entity/playlist.dart';
 import '../../domain/entity/track.dart';
 import '../bloc/album_bloc.dart';
+import '../bloc/artist_bloc.dart';
 import '../bloc/loading_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/track_bloc.dart';
 import '../widget/album_widget.dart';
+import '../widget/artist_widget.dart';
 import '../widget/playlist_widget.dart';
 import '../widget/track_widget.dart';
 
@@ -64,4 +67,19 @@ class AlbumEntryAdapter
   int onTapAction(AlbumMin object) => object.id;
   @override
   Widget screen(BuildContext context, AlbumMin object) => const AlbumWidget();
+}
+
+class ArtistEntryAdapter
+    implements
+        ListEntryAdapter<ArtistMin, int, LoadingState<List<AlbumMin>>,
+            ArtistBloc> {
+  const ArtistEntryAdapter();
+  @override
+  String title(ArtistMin object) => object.name;
+  @override
+  String subtitle(ArtistMin object) => '';
+  @override
+  int onTapAction(ArtistMin object) => object.id;
+  @override
+  Widget screen(BuildContext context, ArtistMin object) => const ArtistWidget();
 }
