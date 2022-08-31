@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/artist_event.dart';
+import 'package:cenoyam/presentation/bloc/artist_state.dart';
 import 'package:cenoyam/presentation/widget/artist_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,9 +20,10 @@ void main() {
     whenListen(
       artistBloc,
       Stream.fromIterable([
+        ArtistState.loading(data.artistAlbumsEntity.id),
         ArtistState.loaded(data.artistAlbumsEntity),
       ]),
-      initialState: const ArtistState.uninitialized(),
+      initialState: const ArtistState.initial(),
     );
   });
 

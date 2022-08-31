@@ -9,6 +9,7 @@ import '../../domain/enum/artist_subcategory.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/artist_bloc.dart';
 import '../bloc/artist_event.dart';
+import '../bloc/artist_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/track_bloc.dart';
@@ -78,7 +79,7 @@ class ArtistEntryAdapter
   String subtitle(ArtistMin object) => '';
   @override
   ArtistEvent onTapAction(ArtistMin object) =>
-      ArtistEvent(object.id, ArtistSubcategory.albums);
+      ArtistEvent.load(object.id, ArtistSubcategory.albums);
   @override
   Widget screen(BuildContext context, ArtistMin object) => const ArtistWidget();
 }

@@ -325,12 +325,17 @@ void main() {
         await widgetTester.pump();
 
         await widgetTester.tap(find.text(data.artistEntity.name));
-        final event = mockito
-            .verify(artistBloc.add(mockito.captureAny))
-            .captured
-            .single as ArtistEvent;
-        expect(event.id, data.artistEntity.id);
-        expect(event.subcategory, ArtistSubcategory.albums);
+        (mockito.verify(artistBloc.add(mockito.captureAny)).captured.single
+                as ArtistEvent)
+            .when(
+          load: (id, subcategory) {
+            expect(id, data.artistEntity.id);
+            expect(subcategory, ArtistSubcategory.albums);
+          },
+          fetchAdditinal: (_) {
+            expect(false, true);
+          },
+        );
       });
       testWidgets('album', (widgetTester) async {
         final albumBloc = MockAlbumBloc();

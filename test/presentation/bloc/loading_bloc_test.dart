@@ -1,11 +1,8 @@
 import 'package:cenoyam/domain/entity/album.dart';
 import 'package:cenoyam/domain/entity/artist.dart';
 import 'package:cenoyam/domain/entity/playlist.dart';
-import 'package:cenoyam/domain/enum/artist_subcategory.dart';
 import 'package:cenoyam/domain/music_repository.dart';
 import 'package:cenoyam/presentation/bloc/album_bloc.dart';
-import 'package:cenoyam/presentation/bloc/artist_bloc.dart';
-import 'package:cenoyam/presentation/bloc/artist_event.dart';
 import 'package:cenoyam/presentation/bloc/loading_state.dart';
 import 'package:cenoyam/presentation/bloc/playlist_bloc.dart';
 import 'package:cenoyam/presentation/bloc/playlist_event.dart';
@@ -75,21 +72,6 @@ void main() {
     expect(bloc.state, isUninitialized);
 
     bloc.add('qwerty');
-
-    expect(
-      bloc.stream,
-      emitsInOrder([isLoaded]),
-    );
-  });
-
-  test('Artist bloc loads', () {
-    final bloc = ArtistBloc(repository);
-    when(repository.getArtist(any, subcategory: anyNamed('subcategory')))
-        .thenAnswer((_) async => MockArtist());
-
-    expect(bloc.state, isUninitialized);
-
-    bloc.add(const ArtistEvent(1, ArtistSubcategory.albums));
 
     expect(
       bloc.stream,

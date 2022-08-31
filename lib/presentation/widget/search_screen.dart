@@ -8,6 +8,7 @@ import '../../domain/entity/track.dart';
 import '../bloc/album_bloc.dart';
 import '../bloc/artist_bloc.dart';
 import '../bloc/artist_event.dart';
+import '../bloc/artist_state.dart';
 import '../bloc/playlist_bloc.dart';
 import '../bloc/playlist_event.dart';
 import '../bloc/profile_bloc.dart';
