@@ -11,7 +11,7 @@ class PlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text(title)),
-        body: Column(children: [child, const PlayerWidget()]),
+        body: Column(children: [Expanded(child: child), const PlayerWidget()]),
       );
 
   @override

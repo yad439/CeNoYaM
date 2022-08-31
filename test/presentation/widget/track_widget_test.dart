@@ -30,9 +30,9 @@ void main() {
         value: trackBloc,
         child: Provider<PlayerBloc>.value(
           value: playerBloc,
-          child: Directionality(
+          child: const Directionality(
             textDirection: TextDirection.ltr,
-            child: Column(children: const [TrackWidget()]),
+            child: TrackWidget(),
           ),
         ),
       ),
@@ -52,9 +52,9 @@ void main() {
         value: trackBloc,
         child: Provider<PlayerBloc>.value(
           value: playerBloc,
-          child: Directionality(
+          child: const Directionality(
             textDirection: TextDirection.ltr,
-            child: Column(children: const [TrackWidget()]),
+            child: TrackWidget(),
           ),
         ),
       ),

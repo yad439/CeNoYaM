@@ -36,9 +36,9 @@ void main() {
         value: albumBloc,
         child: Provider<PlayerBloc>.value(
           value: playerBloc,
-          child: Directionality(
+          child: const Directionality(
             textDirection: TextDirection.ltr,
-            child: Column(children: const [AlbumWidget()]),
+            child: AlbumWidget(),
           ),
         ),
       ),
@@ -74,9 +74,9 @@ void main() {
         value: albumBloc,
         child: Provider<PlayerBloc>.value(
           value: playerBloc,
-          child: Directionality(
+          child: const Directionality(
             textDirection: TextDirection.ltr,
-            child: Column(children: const [AlbumWidget()]),
+            child: AlbumWidget(),
           ),
         ),
       ),

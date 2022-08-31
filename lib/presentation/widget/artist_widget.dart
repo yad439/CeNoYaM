@@ -23,24 +23,22 @@ class ArtistWidget extends StatelessWidget {
       ),
       builder: (context, state) => state.when(
         uninitialized: () => const SizedBox(),
-        loaded: (albums) => Expanded(
-          child: ListView.builder(
-            itemCount: albums.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(albums[index].title),
-              onTap: () {
-                albumBloc.add(albums[index].id);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (context) => PlayerScreen(
-                      title: albums[index].title,
-                      child: const AlbumWidget(),
-                    ),
+        loaded: (albums) => ListView.builder(
+          itemCount: albums.length,
+          itemBuilder: (context, index) => ListTile(
+            title: Text(albums[index].title),
+            onTap: () {
+              albumBloc.add(albums[index].id);
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (context) => PlayerScreen(
+                    title: albums[index].title,
+                    child: const AlbumWidget(),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

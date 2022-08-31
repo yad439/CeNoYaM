@@ -33,12 +33,12 @@ void main() {
         value: albumBloc,
         child: Provider<ArtistBloc>.value(
           value: artistBloc,
-          child: MediaQuery(
-            data: const MediaQueryData(),
+          child: const MediaQuery(
+            data: MediaQueryData(),
             child: Material(
               child: Directionality(
                 textDirection: TextDirection.ltr,
-                child: Column(children: const [ArtistWidget()]),
+                child: ArtistWidget(),
               ),
             ),
           ),
@@ -68,7 +68,7 @@ void main() {
                 textDirection: TextDirection.ltr,
                 child: MockNavigatorProvider(
                   navigator: mockNavigator,
-                  child: Column(children: const [ArtistWidget()]),
+                  child: const ArtistWidget(),
                 ),
               ),
             ),
