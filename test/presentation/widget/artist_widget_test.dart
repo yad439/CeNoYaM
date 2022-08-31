@@ -33,12 +33,19 @@ void main() {
         value: albumBloc,
         child: Provider<ArtistBloc>.value(
           value: artistBloc,
-          child: const MediaQuery(
-            data: MediaQueryData(),
-            child: Material(
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: ArtistWidget(),
+          child: Localizations(
+            locale: const Locale('en'),
+            delegates: const [
+              DefaultWidgetsLocalizations.delegate,
+              DefaultMaterialLocalizations.delegate
+            ],
+            child: const MediaQuery(
+              data: MediaQueryData(),
+              child: Material(
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: ArtistWidget(),
+                ),
               ),
             ),
           ),
@@ -61,14 +68,21 @@ void main() {
         value: albumBloc,
         child: Provider<ArtistBloc>.value(
           value: artistBloc,
-          child: MediaQuery(
-            data: const MediaQueryData(),
-            child: Material(
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: MockNavigatorProvider(
-                  navigator: mockNavigator,
-                  child: const ArtistWidget(),
+          child: Localizations(
+            locale: const Locale('en'),
+            delegates: const [
+              DefaultWidgetsLocalizations.delegate,
+              DefaultMaterialLocalizations.delegate
+            ],
+            child: MediaQuery(
+              data: const MediaQueryData(),
+              child: Material(
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: MockNavigatorProvider(
+                    navigator: mockNavigator,
+                    child: const ArtistWidget(),
+                  ),
                 ),
               ),
             ),
