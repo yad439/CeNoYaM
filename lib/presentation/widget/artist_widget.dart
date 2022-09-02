@@ -9,9 +9,11 @@ import '../bloc/artist_bloc.dart';
 import '../bloc/artist_event.dart';
 import '../bloc/artist_state.dart';
 import '../bloc/loading_state.dart';
-import '../bloc/track_bloc.dart';
+import '../bloc/player_bloc.dart';
+import '../bloc/player_event.dart';
 import 'album_widget.dart';
 import 'player_screen.dart';
+import 'track_entry_widget.dart';
 
 class ArtistWidget extends StatefulWidget {
   const ArtistWidget({super.key});
@@ -52,7 +54,7 @@ class _ArtistWidgetState extends State<ArtistWidget>
   Widget build(BuildContext context) => Column(
         children: [
           TabBar(
-            tabs: const [Tab(text: 'albums'), Tab(text: 'tracks')],
+            tabs: const [Tab(text: 'Albums'), Tab(text: 'Tracks')],
             controller: _tabController,
           ),
           Expanded(
@@ -107,7 +109,7 @@ class _TracksTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trackBloc = context.read<TrackBloc>();
+    final playerBloc = context.read<PlayerBloc>();
     return BlocSelector<ArtistBloc, ArtistState, LoadingState<List<TrackMin>>>(
       selector: (state) => state.when(
         initial: () => const LoadingState.uninitialized(),
@@ -118,20 +120,9 @@ class _TracksTab extends StatelessWidget {
         uninitialized: () => const SizedBox(),
         loaded: (tracks) => ListView.builder(
           itemCount: tracks.length,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(tracks[index].title),
-            onTap: () {
-              trackBloc.add(tracks[index].id);
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (context) => PlayerScreen(
-                    title: tracks[index].title,
-                    child: const AlbumWidget(),
-                  ),
-                ),
-              );
-            },
+          itemBuilder: (context, index) => TrackEntryWidget(
+            tracks[index],
+            () => playerBloc.command.add(PlayerEvent.play(tracks[index])),
           ),
         ),
       ),
