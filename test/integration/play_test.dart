@@ -171,6 +171,35 @@ void main() {
     expect(find.textContaining('0:00'), findsWidgets);
   });
 
+  testWidgets('Plays from artist', skip: true, (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    final artist = find.text(data.artistEntity.name);
+    expect(artist, findsOneWidget);
+    await tester.tap(artist);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Tracks'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<LinearProgressIndicator>(find.byType(LinearProgressIndicator))
+          .value,
+      0,
+    );
+    await tester.tap(find.widgetWithText(ElevatedButton, '|>').first);
+    await tester.pump();
+    expect(player!.state, PlayerState.playing);
+    expect(find.textContaining('1:40'), findsOneWidget);
+    expect(find.textContaining('0:00'), findsWidgets);
+  });
+
   testWidgets('Persists state between sceens', (tester) async {
     await tester.pumpWidget(Cenoyam(getIt));
     await tester.pumpAndSettle();

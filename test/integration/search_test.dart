@@ -124,6 +124,36 @@ void main() {
     expect(find.text('album title 2'), findsOneWidget);
   });
 
+  testWidgets('Navigates to artist popular tracks', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    final artist = find.byWidgetPredicate(
+      (widget) =>
+          widget is ListTile &&
+          widget.title is Text &&
+          (widget.title as Text?)?.data == data.artistEntity.name,
+    );
+    expect(artist, findsOneWidget);
+    await tester.tap(artist);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ArtistWidget), findsOneWidget);
+
+    await tester.tap(find.text('Tracks'));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining(data.trackEntity.title), findsWidgets);
+    expect(
+      find.textContaining(data.trackWithMultipleArtistsEntity.title),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('Navigates to album through artist', (tester) async {
     await tester.pumpWidget(Cenoyam(getIt));
     await tester.pumpAndSettle();
