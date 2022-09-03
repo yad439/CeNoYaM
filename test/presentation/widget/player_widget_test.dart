@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_types_on_closure_parameters
+
 import 'dart:async';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -202,6 +204,38 @@ void main() {
 
       expect(track, findsOneWidget);
       expect(artist, findsOneWidget);
+    });
+
+    testWidgets('tapping seeks position', (tester) async {
+      final commandController = StreamController<PlayerEvent>();
+      addTearDown(commandController.close);
+      when(bloc!.command).thenReturn(commandController.sink);
+      await tester.pumpWidget(
+        Provider<PlayerBloc>.value(
+          value: bloc!,
+          child: const Directionality(
+            textDirection: TextDirection.ltr,
+            child: PlayerWidget(),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final progressBar = find.byType(ProgressBar);
+      expect(progressBar, findsOneWidget);
+      await tester.tapAt(tester.getCenter(progressBar));
+      await tester.pumpAndSettle();
+
+      expect(
+        commandController.stream,
+        emits(
+          (PlayerEvent event) => event.maybeWhen(
+            seek: (position) =>
+                closeTo(30, 1).matches(position.inSeconds, const {}),
+            orElse: () => false,
+          ),
+        ),
+      );
     });
 
     group('and paused', () {

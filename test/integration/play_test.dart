@@ -70,6 +70,28 @@ void main() {
     // expect(find.textContaining('1:40'), findsOneWidget);
     // expect(find.textContaining('0:00'), findsWidgets);
 
+    final progressBar = find.byType(ProgressBar);
+    expect(progressBar, findsOneWidget);
+    final topLeft = tester.getTopLeft(progressBar);
+    final bottomRight = tester.getBottomRight(progressBar);
+    await tester.tapAt(
+      Offset(
+        0.7 * topLeft.dx + 0.3 * bottomRight.dx,
+        (topLeft.dy + bottomRight.dy) / 2,
+      ),
+    );
+    await tester.pump();
+    expect(player!._position, greaterThan(const Duration(seconds: 29)));
+    expect(player!._position, lessThan(const Duration(seconds: 31)));
+    expect(
+      tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
+      greaterThan(const Duration(seconds: 29)),
+    );
+    expect(
+      tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
+      lessThan(const Duration(seconds: 31)),
+    );
+
     player!.tick();
     await tester.pump();
     expect(
@@ -303,6 +325,7 @@ class FakePlayer extends Fake implements AudioPlayer {
   final _positionController = StreamController<Duration>();
   final _playerStateController = StreamController<PlayerState>();
   var _positionState = 0;
+  var _position = Duration.zero;
 
   @override
   Stream<Duration> get onDurationChanged => _durationController.stream;
@@ -337,6 +360,7 @@ class FakePlayer extends Fake implements AudioPlayer {
     _durationController.add(const Duration(seconds: 100));
     _positionController.add(Duration.zero);
     _positionState = 0;
+    _position = Duration.zero;
     return Future.value();
   }
 
@@ -356,20 +380,30 @@ class FakePlayer extends Fake implements AudioPlayer {
     return Future.value();
   }
 
+  @override
+  Future<void> seek(Duration position) {
+    _position = position;
+    _positionController.add(position);
+    return Future.value();
+  }
+
   void tick() {
     expect(state, PlayerState.playing);
     switch (_positionState) {
       case 0:
         _positionState = 1;
+        _position = const Duration(seconds: 50);
         _positionController.add(const Duration(seconds: 50));
         break;
       case 1:
         _positionState = 2;
+        _position = const Duration(seconds: 100);
         _positionController.add(const Duration(seconds: 100));
         break;
       case 2:
         _positionState = 0;
         state = PlayerState.completed;
+        _position = Duration.zero;
         _playerStateController.add(PlayerState.completed);
         _positionController.add(Duration.zero);
         _durationController.add(Duration.zero);

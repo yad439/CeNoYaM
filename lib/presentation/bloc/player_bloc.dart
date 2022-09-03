@@ -46,6 +46,7 @@ class PlayerBloc {
         resume: _resume,
         stop: _stop,
         play: _play,
+        seek: _seek,
       );
 
   void _pause() {
@@ -64,6 +65,10 @@ class PlayerBloc {
   void _play(TrackMin track) {
     _player.play(track.id);
     _trackController.sink.add(track);
+  }
+
+  void _seek(Duration position) {
+    _player.seek(position);
   }
 
   void dispose() {

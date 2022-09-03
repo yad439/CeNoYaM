@@ -45,6 +45,7 @@ class PlayerWidget extends StatelessWidget {
                   builder: (cont, snap) => ProgressBar(
                     progress: snap.data!.position,
                     total: snap.data!.duration,
+                    onSeek: (pos) => bloc.command.add(PlayerEvent.seek(pos)),
                   ),
                 ),
               ],

@@ -37,6 +37,8 @@ class YandexPlayer {
 
   void stop() => _player.stop();
 
+  Future<void> seek(Duration position) => _player.seek(position);
+
   Future<Duration?> get duration => _player.getDuration();
 
   Stream<Duration> get durationStream => _durationStream;
