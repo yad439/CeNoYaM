@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
+
 import '../../domain/entity/track.dart';
 import '../../domain/enum/player_state.dart';
 import '../../domain/yandex_player.dart';
+import 'duration_state.dart';
 import 'player_event.dart';
 
 class PlayerBloc {
@@ -31,6 +34,12 @@ class PlayerBloc {
       );
 
   Stream<TrackMin?> get currentTrack => _trackController.stream;
+
+  Stream<DurationState> get durationState => Rx.combineLatest2(
+        position,
+        duration,
+        DurationState.new,
+      );
 
   void _handleEvent(PlayerEvent event) => event.when(
         pause: _pause,

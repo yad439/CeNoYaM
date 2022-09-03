@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.17.0"
 
 dependencies:
+  audio_video_progress_bar:
   audioplayers:
   bloc_concurrency:
   convert:

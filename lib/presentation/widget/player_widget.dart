@@ -1,8 +1,10 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/entity/track.dart';
 import '../../domain/enum/player_state.dart';
+import '../bloc/duration_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 
@@ -36,31 +38,15 @@ class PlayerWidget extends StatelessWidget {
                     }
                   },
                 ),
-                SizedBox(
-                  height: 20,
-                  child: StreamBuilder<double>(
-                    stream: bloc.progress,
-                    initialData: 0,
-                    builder: (cont, progress) => LinearProgressIndicator(
-                      value: progress.data,
-                    ),
+                StreamBuilder<DurationState>(
+                  stream: bloc.durationState,
+                  initialData:
+                      const DurationState(Duration.zero, Duration.zero),
+                  builder: (cont, snap) => ProgressBar(
+                    progress: snap.data!.position,
+                    total: snap.data!.duration,
                   ),
                 ),
-                Row(
-                  children: [
-                    StreamBuilder<Duration>(
-                      stream: bloc.position,
-                      initialData: Duration.zero,
-                      builder: (cont, snap) => Text(snap.data!.toString()),
-                    ),
-                    const Text('/'),
-                    StreamBuilder<Duration>(
-                      stream: bloc.duration,
-                      initialData: Duration.zero,
-                      builder: (cont, snap) => Text(snap.data!.toString()),
-                    )
-                  ],
-                )
               ],
             ),
           ),
