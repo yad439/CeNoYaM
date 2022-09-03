@@ -171,7 +171,7 @@ void main() {
     expect(find.textContaining('0:00'), findsWidgets);
   });
 
-  testWidgets('Plays from artist', skip: true, (tester) async {
+  testWidgets('Plays from artist', (tester) async {
     await tester.pumpWidget(Cenoyam(getIt));
     await tester.pumpAndSettle();
 
@@ -179,7 +179,12 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
     await tester.pumpAndSettle();
 
-    final artist = find.text(data.artistEntity.name);
+    final artist = find.byWidgetPredicate(
+      (widget) =>
+          widget is ListTile &&
+          widget.title is Text &&
+          (widget.title as Text?)?.data == data.artistEntity.name,
+    );
     expect(artist, findsOneWidget);
     await tester.tap(artist);
     await tester.pumpAndSettle();
