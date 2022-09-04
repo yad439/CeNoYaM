@@ -15,5 +15,8 @@ class PlayerEvent with _$PlayerEvent {
 
   const factory PlayerEvent.play(TrackMin track) = _Play;
 
+  const factory PlayerEvent.playList(List<TrackMin> list, int fromIndex) =
+      _PlayList;
+
   const factory PlayerEvent.seek(Duration position) = _Seek;
 }

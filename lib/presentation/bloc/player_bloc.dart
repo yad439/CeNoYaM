@@ -4,19 +4,20 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../domain/entity/track.dart';
 import '../../domain/enum/player_state.dart';
+import '../../domain/playing_queue.dart';
 import '../../domain/yandex_player.dart';
 import 'duration_state.dart';
 import 'player_event.dart';
 
 class PlayerBloc {
-  PlayerBloc(this._player) {
-    _eventController.stream.listen(_handleEvent);
+  PlayerBloc(this._player, this._playingQueue) {
+    _eventSubscription = _eventController.stream.listen(_handleEvent);
   }
   final YandexPlayer _player;
-  final StreamController<TrackMin?> _trackController =
-      StreamController<TrackMin?>.broadcast();
+  final PlayingQueue _playingQueue;
   final StreamController<PlayerEvent> _eventController =
       StreamController<PlayerEvent>();
+  late final StreamSubscription<PlayerEvent> _eventSubscription;
 
   Sink<PlayerEvent> get command => _eventController.sink;
 
@@ -33,7 +34,7 @@ class PlayerBloc {
         ),
       );
 
-  Stream<TrackMin?> get currentTrack => _trackController.stream;
+  Stream<TrackMin?> get currentTrack => _playingQueue.currentTrack;
 
   Stream<DurationState> get durationState => Rx.combineLatest2(
         position,
@@ -46,6 +47,7 @@ class PlayerBloc {
         resume: _resume,
         stop: _stop,
         play: _play,
+        playList: _playList,
         seek: _seek,
       );
 
@@ -59,12 +61,14 @@ class PlayerBloc {
 
   void _stop() {
     _player.stop();
-    _trackController.sink.add(null);
   }
 
   void _play(TrackMin track) {
-    _player.play(track.id);
-    _trackController.sink.add(track);
+    _playingQueue.play([track]);
+  }
+
+  void _playList(List<TrackMin> list, int fromIndex) {
+    _playingQueue.play(list, fromIndex: fromIndex);
   }
 
   void _seek(Duration position) {
@@ -72,7 +76,7 @@ class PlayerBloc {
   }
 
   void dispose() {
+    _eventSubscription.cancel();
     _eventController.close();
-    _trackController.close();
   }
 }

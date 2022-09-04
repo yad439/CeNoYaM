@@ -7,6 +7,7 @@ import 'package:cenoyam/data/json_mapper.dart';
 import 'package:cenoyam/data/yandex_music_datasource.dart';
 import 'package:cenoyam/data/yandex_music_repository.dart';
 import 'package:cenoyam/domain/music_repository.dart';
+import 'package:cenoyam/domain/playing_queue.dart';
 import 'package:cenoyam/domain/yandex_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,17 +16,25 @@ import 'package:get_it/get_it.dart';
 import '../test_data.dart';
 
 void main() {
-  final data = TestData();
+  late final TestData data;
   FakePlayer? player;
-  final repository =
-      YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper());
-  final getIt = GetIt.asNewInstance();
+  late final YandexMusicRepository repository;
+  late final GetIt getIt;
+
+  setUpAll(() {
+    data = TestData();
+    getIt = GetIt.asNewInstance();
+    repository =
+        YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper());
+  });
 
   setUp(() {
     player = FakePlayer();
+    final yandexPlayer = YandexPlayer(player!, repository);
     getIt
-      ..registerSingleton(YandexPlayer(player!, repository))
-      ..registerSingleton<MusicRepository>(repository);
+      ..registerSingleton(yandexPlayer)
+      ..registerSingleton<MusicRepository>(repository)
+      ..registerSingleton<PlayingQueue>(PlayingQueue(yandexPlayer));
   });
   tearDown(() async {
     await getIt.reset();
@@ -324,6 +333,7 @@ class FakePlayer extends Fake implements AudioPlayer {
   final _durationController = StreamController<Duration>();
   final _positionController = StreamController<Duration>();
   final _playerStateController = StreamController<PlayerState>();
+  final _playerCompleteController = StreamController<void>();
   var _positionState = 0;
   var _position = Duration.zero;
 
@@ -333,6 +343,8 @@ class FakePlayer extends Fake implements AudioPlayer {
   Stream<Duration> get onPositionChanged => _positionController.stream;
   @override
   Stream<PlayerState> get onPlayerStateChanged => _playerStateController.stream;
+  @override
+  Stream<void> get onPlayerComplete => _playerCompleteController.stream;
   @override
   Future<Duration?> getDuration() {
     switch (state) {
@@ -407,6 +419,7 @@ class FakePlayer extends Fake implements AudioPlayer {
         _playerStateController.add(PlayerState.completed);
         _positionController.add(Duration.zero);
         _durationController.add(Duration.zero);
+        _playerCompleteController.add(null);
         break;
       default:
         assert(false, 'Unexpected position state');
@@ -451,6 +464,7 @@ class FakePlayer extends Fake implements AudioPlayer {
     _durationController.close();
     _positionController.close();
     _playerStateController.close();
+    _playerCompleteController.close();
     return Future.value();
   }
 }

@@ -4,6 +4,7 @@ import 'package:cenoyam/data/json_mapper.dart';
 import 'package:cenoyam/data/yandex_music_datasource.dart';
 import 'package:cenoyam/data/yandex_music_repository.dart';
 import 'package:cenoyam/domain/music_repository.dart';
+import 'package:cenoyam/domain/playing_queue.dart';
 import 'package:cenoyam/domain/yandex_player.dart';
 import 'package:cenoyam/presentation/widget/album_widget.dart';
 import 'package:cenoyam/presentation/widget/artist_widget.dart';
@@ -20,18 +21,43 @@ import '../test_data.dart';
 import 'search_test.mocks.dart';
 
 void main() {
-  final data = TestData();
-  final player = MockAudioPlayer();
-  final repository =
-      YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper());
-  final getIt = GetIt.asNewInstance()
-    ..registerSingleton<MusicRepository>(
-      repository,
-    )
-    ..registerSingleton(YandexPlayer(player, repository));
-  when(player.onDurationChanged).thenAnswer((_) => const Stream.empty());
-  when(player.onPositionChanged).thenAnswer((_) => const Stream.empty());
-  when(player.getDuration()).thenAnswer((_) => Future.value(Duration.zero));
+  late final TestData data;
+  late final GetIt getIt;
+  late final YandexMusicRepository repository;
+  late final MockAudioPlayer player;
+
+  setUpAll(() {
+    data = TestData();
+    getIt = GetIt.asNewInstance();
+    repository =
+        YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper());
+    player = MockAudioPlayer();
+  });
+
+  setUp(() {
+    final yandexPlayer = YandexPlayer(player, repository);
+    getIt
+      ..registerSingleton<MusicRepository>(
+        repository,
+      )
+      ..registerSingleton<YandexPlayer>(
+        yandexPlayer,
+        dispose: (instance) => instance.dispose(),
+      )
+      ..registerSingleton<PlayingQueue>(
+        PlayingQueue(yandexPlayer),
+        dispose: (instance) => instance.dispose(),
+      );
+    when(player.onDurationChanged).thenAnswer((_) => const Stream.empty());
+    when(player.onPositionChanged).thenAnswer((_) => const Stream.empty());
+    when(player.getDuration()).thenAnswer((_) => Future.value(Duration.zero));
+  });
+
+  // ignore: unnecessary_lambdas
+  tearDown(() {
+    getIt.reset();
+    reset(player);
+  });
 
   testWidgets('Navigates to track', (tester) async {
     await tester.pumpWidget(Cenoyam(getIt));

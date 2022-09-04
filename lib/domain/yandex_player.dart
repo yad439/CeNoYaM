@@ -57,6 +57,8 @@ class YandexPlayer {
         }
       });
 
+  Stream<void> get onComplete => _player.onPlayerComplete;
+
   @disposeMethod
   void dispose() {
     for (final subscription in _subscriptions) {
