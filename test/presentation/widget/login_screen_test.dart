@@ -91,6 +91,7 @@ void main() {
     await widgetTester.pump();
 
     verify(navigator.pop);
+    expect(bloc.cleared, isTrue);
   });
 
   testWidgets('On failure form shows error', (widgetTester) async {

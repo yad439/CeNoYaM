@@ -19,6 +19,7 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           switch (state.state) {
             case LoginState.success:
+              bloc.add(const LoginFormEvent.clearState());
               Navigator.pop(context);
               break;
             case LoginState.failure:
