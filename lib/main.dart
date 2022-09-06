@@ -7,7 +7,6 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app.dart';
-import 'data/json_mapper.dart';
 import 'main.config.dart';
 
 void main() {
@@ -35,8 +34,6 @@ abstract class InjectableConfig {
       )..interceptors.add(CookieManager(jar));
   @singleton
   CookieJar get cookieJar => CookieJar();
-  @singleton
-  JsonMapper get jsonMapper => JsonMapper();
 }
 
 void disposeAudioPlayer(AudioPlayer player) => player.dispose();

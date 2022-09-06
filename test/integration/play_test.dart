@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cenoyam/app.dart';
-import 'package:cenoyam/data/json_mapper.dart';
 import 'package:cenoyam/data/yandex_music_datasource.dart';
 import 'package:cenoyam/data/yandex_music_repository.dart';
 import 'package:cenoyam/domain/music_repository.dart';
@@ -24,8 +23,7 @@ void main() {
   setUpAll(() {
     data = TestData();
     getIt = GetIt.asNewInstance();
-    repository =
-        YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper());
+    repository = YandexMusicRepository(YandexMusicDatasource(data.dio));
   });
 
   setUp(() {

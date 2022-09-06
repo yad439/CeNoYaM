@@ -17,9 +17,8 @@ import 'yandex_music_datasource.dart';
 
 @Singleton(as: MusicRepository)
 class YandexMusicRepository implements MusicRepository {
-  YandexMusicRepository(this._datasource, this._mapper);
+  YandexMusicRepository(this._datasource);
   final YandexMusicDatasource _datasource;
-  final JsonMapper _mapper;
 
   @override
   Future<Uri> getDownloadUrl(int trackId) async {
@@ -39,22 +38,20 @@ class YandexMusicRepository implements MusicRepository {
   @override
   Future<Playlist> getPlaylist(String owner, int id) => _datasource
       .getPlaylist(owner, id)
-      .then((value) => _mapper.playlistFromJson(value.playlist));
+      .then((value) => playlistFromJson(value.playlist));
 
   @override
   Future<Track> getTrack(int trackId, {int? albumId}) => _datasource
       .getTrackInfo(trackId, albumId: albumId)
-      .then((value) => _mapper.trackFromJson(value.track));
+      .then((value) => trackFromJson(value.track));
 
   @override
   Future<Album> getAlbum(int id) =>
-      _datasource.getAlbum(id).then(_mapper.albumFromJson);
+      _datasource.getAlbum(id).then(albumFromJson);
 
   @override
   Future<Artist> getArtist(int id, {ArtistSubcategory? subcategory}) =>
-      _datasource
-          .getArtist(id, subcategory: subcategory)
-          .then(_mapper.artistFromJson);
+      _datasource.getArtist(id, subcategory: subcategory).then(artistFromJson);
 
   @override
   Future<bool> login(String login, String password) =>
@@ -73,18 +70,10 @@ class YandexMusicRepository implements MusicRepository {
   Future<SearchResults> search(String text, SearchType searchType) async {
     final results = await _datasource.search(text, searchType);
     return SearchResults(
-      results.tracks.items
-          .map(_mapper.trackMinFromJson)
-          .toList(growable: false),
-      results.artists.items
-          .map(_mapper.artistMinFromJson)
-          .toList(growable: false),
-      results.albums.items
-          .map(_mapper.albumMinFromJson)
-          .toList(growable: false),
-      results.playlists.items
-          .map(_mapper.playlistMinFromJson)
-          .toList(growable: false),
+      results.tracks.items.map(trackMinFromJson).toList(growable: false),
+      results.artists.items.map(artistMinFromJson).toList(growable: false),
+      results.albums.items.map(albumMinFromJson).toList(growable: false),
+      results.playlists.items.map(playlistMinFromJson).toList(growable: false),
     );
   }
 }

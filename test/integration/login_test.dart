@@ -1,5 +1,4 @@
 import 'package:cenoyam/app.dart';
-import 'package:cenoyam/data/json_mapper.dart';
 import 'package:cenoyam/data/yandex_music_datasource.dart';
 import 'package:cenoyam/data/yandex_music_repository.dart';
 import 'package:cenoyam/domain/music_repository.dart';
@@ -16,7 +15,7 @@ void main() {
   final data = TestData();
   final getIt = GetIt.asNewInstance()
     ..registerSingleton<MusicRepository>(
-      YandexMusicRepository(YandexMusicDatasource(data.dio), JsonMapper()),
+      YandexMusicRepository(YandexMusicDatasource(data.dio)),
     );
 
   when(data.dio.get<Map<String, dynamic>>('/api/v2.1/handlers/auth'))
