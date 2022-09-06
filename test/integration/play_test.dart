@@ -156,8 +156,90 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, '|>').first);
     await tester.pump();
     expect(player!.state, PlayerState.playing);
-    // expect(find.textContaining('1:40'), findsOneWidget);
-    // expect(find.textContaining('0:00'), findsWidgets);
+    expect(player!._trackUrl, contains('something/abc'));
+
+    expect(
+      find.text(
+        '${data.trackEntity.artistString} - ${data.trackEntity.title}',
+      ),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.runAsync(
+      // wait for "play" to complete
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
+  });
+
+  testWidgets('Plays from album from the middle', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    final album = find.text(data.albumEntity.title);
+    expect(album, findsOneWidget);
+    await tester.tap(album);
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
+      Duration.zero,
+    );
+    await tester.tap(find.widgetWithText(ElevatedButton, '|>').at(2));
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
   });
 
   testWidgets('Plays from playlist', (tester) async {
@@ -185,8 +267,95 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, '|>').first);
     await tester.pump();
     expect(player!.state, PlayerState.playing);
-    // expect(find.textContaining('1:40'), findsOneWidget);
-    // expect(find.textContaining('0:00'), findsWidgets);
+    expect(player!._trackUrl, contains('something/abc'));
+
+    expect(
+      find.text(
+        '${data.trackEntity.artistString} - ${data.trackEntity.title}',
+      ),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.runAsync(
+      // wait for "play" to complete
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
+  });
+
+  testWidgets('Plays from playlist from the middle', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.text(data.playlistEntity.title),
+      find.byType(CustomScrollView),
+      const Offset(0, -100),
+    );
+    final playlist = find.text(data.playlistEntity.title);
+    expect(playlist, findsOneWidget);
+    await tester.tap(playlist);
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
+      Duration.zero,
+    );
+    await tester.tap(find.widgetWithText(ElevatedButton, '|>').at(2));
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
   });
 
   testWidgets('Plays from artist', (tester) async {
@@ -217,8 +386,98 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, '|>').first);
     await tester.pump();
     expect(player!.state, PlayerState.playing);
-    // expect(find.textContaining('1:40'), findsOneWidget);
-    // expect(find.textContaining('0:00'), findsWidgets);
+    expect(player!._trackUrl, contains('something/abc'));
+
+    expect(
+      find.text(
+        '${data.trackEntity.artistString} - ${data.trackEntity.title}',
+      ),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.runAsync(
+      // wait for "play" to complete
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
+  });
+
+  testWidgets('Plays from artist from the middle', (tester) async {
+    await tester.pumpWidget(Cenoyam(getIt));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'query');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Search'));
+    await tester.pumpAndSettle();
+
+    final artist = find.byWidgetPredicate(
+      (widget) =>
+          widget is ListTile &&
+          widget.title is Text &&
+          (widget.title as Text?)?.data == data.artistEntity.name,
+    );
+    expect(artist, findsOneWidget);
+    await tester.tap(artist);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Tracks'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
+      Duration.zero,
+    );
+    await tester.tap(find.widgetWithText(ElevatedButton, '|>').at(1));
+    await tester.pump();
+
+    expect(player!.state, PlayerState.playing);
+    expect(player!._trackUrl, contains('another/abc'));
+    final track2 = data.trackWithMultipleArtistsEntity;
+    expect(
+      find.text('${track2.artistString} - ${track2.title}'),
+      findsNWidgets(2),
+    );
+
+    player!.tick();
+    player!.tick();
+    player!.tick();
+    await tester.pump();
+
+    expect(player!.state, PlayerState.completed);
+
+    await tester.runAsync(
+      // wait for queue to send null track
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
+    );
+    await tester.pump();
+
+    expect(find.text('-'), findsOneWidget);
   });
 
   testWidgets('Persists state between sceens', (tester) async {
@@ -336,6 +595,7 @@ class FakePlayer extends Fake implements AudioPlayer {
   final _playerCompleteController = StreamController<void>();
   var _positionState = 0;
   var _position = Duration.zero;
+  var _trackUrl = '';
 
   @override
   Stream<Duration> get onDurationChanged => _durationController.stream;
@@ -373,6 +633,7 @@ class FakePlayer extends Fake implements AudioPlayer {
     _positionController.add(Duration.zero);
     _positionState = 0;
     _position = Duration.zero;
+    _trackUrl = (source as UrlSource).url;
     return Future.value();
   }
 

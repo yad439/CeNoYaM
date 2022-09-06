@@ -204,7 +204,7 @@ void main() {
       command.stream,
       emits(
         (PlayerEvent event) =>
-            event.maybeMap(play: (_) => true, orElse: () => false),
+            event.maybeMap(playList: (_) => true, orElse: () => false),
       ),
     );
   });

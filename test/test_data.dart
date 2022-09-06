@@ -199,11 +199,18 @@ class TestData {
     );
 
     downloadPreInfoJson = const {'src': '//example.com/download?ts=123'};
+    const downloadPreInfoJson2 = {'src': '//example.com/download?ts=456'};
     downloadInfoJson = const {
       'host': 'download.test.com',
       'path': '/something/abc',
       's': 'qwer',
       'ts': 'asdf'
+    };
+    const downloadInfoJson2 = {
+      'host': 'download.test.com',
+      'path': '/another/abc',
+      's': 'hjkl',
+      'ts': 'uiop'
     };
     downloadInfoDto = const DownloadInfo(
       'download.test.com',
@@ -350,11 +357,32 @@ class TestData {
     );
     when(
       dio.get<Map<String, dynamic>>(
+        '/api/v2.1/handlers/track/3/track/download/m',
+        queryParameters: anyNamed('queryParameters'),
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: downloadPreInfoJson2,
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+    when(
+      dio.get<Map<String, dynamic>>(
         'https://example.com/download?ts=123&format=json',
       ),
     ).thenAnswer(
       (_) async => Response(
         data: downloadInfoJson,
+        requestOptions: RequestOptions(path: ''),
+      ),
+    );
+    when(
+      dio.get<Map<String, dynamic>>(
+        'https://example.com/download?ts=456&format=json',
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: downloadInfoJson2,
         requestOptions: RequestOptions(path: ''),
       ),
     );

@@ -122,7 +122,7 @@ class _TracksTab extends StatelessWidget {
           itemCount: tracks.length,
           itemBuilder: (context, index) => TrackEntryWidget(
             tracks[index],
-            () => playerBloc.command.add(PlayerEvent.play(tracks[index])),
+            () => playerBloc.command.add(PlayerEvent.playList(tracks, index)),
           ),
         ),
       ),

@@ -92,7 +92,7 @@ void main() {
       // ignore: avoid_types_on_closure_parameters
       (PlayerEvent e) => e.maybeWhen(
         orElse: () => false,
-        play: (track) => track == data.trackEntity,
+        playList: (tracks, index) => tracks.length == 1 && index == 0,
       ),
     );
   });
