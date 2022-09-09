@@ -24,6 +24,7 @@ abstract class ListEntryAdapter<T, EventT, StateT,
   String subtitle(T object);
   EventT onTapAction(T object);
   Widget screen(BuildContext context, T object);
+  String get routeName;
 }
 
 class PlaylistEntryAdapter
@@ -41,6 +42,8 @@ class PlaylistEntryAdapter
   @override
   Widget screen(BuildContext context, PlaylistMin object) =>
       const PlaylistWidget();
+  @override
+  String get routeName => PlaylistWidget.routeName;
 }
 
 class TrackEntryAdapter
@@ -54,6 +57,8 @@ class TrackEntryAdapter
   int onTapAction(TrackMin object) => object.id;
   @override
   Widget screen(BuildContext context, TrackMin object) => const TrackWidget();
+  @override
+  String get routeName => TrackWidget.routeName;
 }
 
 class AlbumEntryAdapter
@@ -67,6 +72,8 @@ class AlbumEntryAdapter
   int onTapAction(AlbumMin object) => object.id;
   @override
   Widget screen(BuildContext context, AlbumMin object) => const AlbumWidget();
+  @override
+  String get routeName => AlbumWidget.routeName;
 }
 
 class ArtistEntryAdapter
@@ -82,4 +89,6 @@ class ArtistEntryAdapter
       ArtistEvent.load(object.id, ArtistSubcategory.albums);
   @override
   Widget screen(BuildContext context, ArtistMin object) => const ArtistWidget();
+  @override
+  String get routeName => ArtistWidget.routeName;
 }

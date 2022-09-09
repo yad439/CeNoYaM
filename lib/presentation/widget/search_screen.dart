@@ -18,10 +18,11 @@ import '../bloc/search_results_bloc.dart';
 import '../bloc/track_bloc.dart';
 import '../util/list_entry_adapter.dart';
 import 'login_screen.dart';
-import 'player_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
+
+  static const routeName = '/search';
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +41,7 @@ class SearchScreen extends StatelessWidget {
               unknown: () => const SizedBox.shrink(),
               anonimous: () => TextButton(
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
+                  await Navigator.pushNamed(context, LoginScreen.routeName);
                   profileBloc.add(ProfileEvent.update);
                 },
                 child: const Text('Login'),
@@ -167,14 +163,10 @@ class _ResultList extends StatelessWidget {
                     BlocProvider.of<BlocT>(context).add(
                       adapter.onTapAction(items[index]),
                     );
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => PlayerScreen(
-                          title: adapter.title(item),
-                          child: adapter.screen(context, item),
-                        ),
-                      ),
+                      adapter.routeName,
+                      arguments: adapter.title(item),
                     );
                   },
                 );

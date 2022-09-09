@@ -9,6 +9,8 @@ import 'track_entry_widget.dart';
 class PlaylistWidget extends StatelessWidget {
   const PlaylistWidget({super.key});
 
+  static const routeName = '/playlist';
+
   @override
   Widget build(BuildContext context) {
     final playerBloc = context.read<PlayerBloc>();

@@ -48,6 +48,9 @@ void main() {
       const Stream<ProfileState>.empty(),
       initialState: const ProfileState.unknown(),
     );
+    when(
+      () => navigator.pushNamed(any(), arguments: any(named: 'arguments')),
+    ).thenAnswer((_) => Future.value());
   });
   tearDown(() {
     reset(searchResultsBloc);
@@ -159,7 +162,6 @@ void main() {
         const Stream<ProfileState>.empty(),
         initialState: const ProfileState.anonimous(),
       );
-      when(() => navigator.push(any())).thenAnswer((_) => Future.value());
 
       await widgetTester.pumpWidget(
         MultiBlocProvider(
@@ -180,7 +182,7 @@ void main() {
       await widgetTester.tap(find.text('Login'));
       await widgetTester.pumpAndSettle();
 
-      verify(() => navigator.push(any(that: isA<MaterialPageRoute<void>>())));
+      verify(() => navigator.pushNamed('/login'));
     });
   });
   group('Results view', () {
@@ -283,8 +285,11 @@ void main() {
               BlocProvider<ProfileBloc>.value(value: profileBloc),
               BlocProvider<TrackBloc>.value(value: trackBloc),
             ],
-            child: const MaterialApp(
-              home: SearchScreen(),
+            child: MaterialApp(
+              home: MockNavigatorProvider(
+                navigator: navigator,
+                child: const SearchScreen(),
+              ),
             ),
           ),
         );
@@ -293,6 +298,12 @@ void main() {
         await widgetTester
             .tap(find.text(data.trackWithMultipleArtistsEntity.title));
         mockito.verify(trackBloc.add(data.trackWithMultipleArtistsEntity.id));
+        verify(
+          () => navigator.pushNamed(
+            '/track',
+            arguments: data.trackWithMultipleArtistsEntity.title,
+          ),
+        );
       });
       testWidgets('artist', (widgetTester) async {
         final artistBloc = MockArtistBloc();
@@ -317,8 +328,11 @@ void main() {
               BlocProvider<ProfileBloc>.value(value: profileBloc),
               BlocProvider<ArtistBloc>.value(value: artistBloc),
             ],
-            child: const MaterialApp(
-              home: SearchScreen(),
+            child: MaterialApp(
+              home: MockNavigatorProvider(
+                navigator: navigator,
+                child: const SearchScreen(),
+              ),
             ),
           ),
         );
@@ -336,6 +350,12 @@ void main() {
             expect(false, true);
           },
         );
+        verify(
+          () => navigator.pushNamed(
+            '/artist',
+            arguments: data.artistEntity.name,
+          ),
+        );
       });
       testWidgets('album', (widgetTester) async {
         final albumBloc = MockAlbumBloc();
@@ -346,8 +366,11 @@ void main() {
               BlocProvider<ProfileBloc>.value(value: profileBloc),
               BlocProvider<AlbumBloc>.value(value: albumBloc),
             ],
-            child: const MaterialApp(
-              home: SearchScreen(),
+            child: MaterialApp(
+              home: MockNavigatorProvider(
+                navigator: navigator,
+                child: const SearchScreen(),
+              ),
             ),
           ),
         );
@@ -355,6 +378,12 @@ void main() {
 
         await widgetTester.tap(find.text(data.albumEntity.title));
         mockito.verify(albumBloc.add(data.albumEntity.id));
+        verify(
+          () => navigator.pushNamed(
+            '/album',
+            arguments: data.albumEntity.title,
+          ),
+        );
       });
       testWidgets('playlist', (widgetTester) async {
         final playlistBloc = MockPlaylistBloc();
@@ -365,8 +394,11 @@ void main() {
               BlocProvider<ProfileBloc>.value(value: profileBloc),
               BlocProvider<PlaylistBloc>.value(value: playlistBloc),
             ],
-            child: const MaterialApp(
-              home: SearchScreen(),
+            child: MaterialApp(
+              home: MockNavigatorProvider(
+                navigator: navigator,
+                child: const SearchScreen(),
+              ),
             ),
           ),
         );
@@ -383,6 +415,12 @@ void main() {
                   as PlaylistEvent)
               .id,
           data.playlistEntity.id,
+        );
+        verify(
+          () => navigator.pushNamed(
+            '/playlist',
+            arguments: data.playlistEntity.title,
+          ),
         );
       });
     });

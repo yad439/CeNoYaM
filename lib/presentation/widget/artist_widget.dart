@@ -12,11 +12,13 @@ import '../bloc/loading_state.dart';
 import '../bloc/player_bloc.dart';
 import '../bloc/player_event.dart';
 import 'album_widget.dart';
-import 'player_screen.dart';
 import 'track_entry_widget.dart';
 
 class ArtistWidget extends StatefulWidget {
   const ArtistWidget({super.key});
+
+  static const routeName = '/artist';
+
   @override
   State<ArtistWidget> createState() => _ArtistWidgetState();
 }
@@ -87,14 +89,10 @@ class _AlbumsTab extends StatelessWidget {
             title: Text(albums[index].title),
             onTap: () {
               albumBloc.add(albums[index].id);
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute<void>(
-                  builder: (context) => PlayerScreen(
-                    title: albums[index].title,
-                    child: const AlbumWidget(),
-                  ),
-                ),
+                AlbumWidget.routeName,
+                arguments: albums[index].title,
               );
             },
           ),

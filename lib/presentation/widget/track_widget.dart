@@ -8,6 +8,8 @@ import '../bloc/track_bloc.dart';
 class TrackWidget extends StatelessWidget {
   const TrackWidget({super.key});
 
+  static const routeName = '/track';
+
   @override
   Widget build(BuildContext context) {
     final playerBloc = context.read<PlayerBloc>();

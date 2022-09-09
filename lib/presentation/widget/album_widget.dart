@@ -9,6 +9,8 @@ import 'track_entry_widget.dart';
 class AlbumWidget extends StatelessWidget {
   const AlbumWidget({super.key});
 
+  static const routeName = '/album';
+
   @override
   Widget build(BuildContext context) {
     final playerBloc = context.read<PlayerBloc>();

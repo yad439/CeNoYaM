@@ -68,8 +68,9 @@ void main() {
 
   testWidgets('Navigates to album', (tester) async {
     final mockNavigator = MockNavigator();
-    when(() => mockNavigator.push(any()))
-        .thenAnswer((_) => Future<void>.value());
+    when(
+      () => mockNavigator.pushNamed(any(), arguments: any(named: 'arguments')),
+    ).thenAnswer((_) => Future<void>.value());
     final albumBloc = MockAlbumBloc();
     await tester.pumpWidget(
       Provider<AlbumBloc>.value(
@@ -105,7 +106,10 @@ void main() {
     await tester.tap(album);
 
     verify(() => albumBloc.add(data.albumEntity.id));
-    verify(() => mockNavigator.push(any(that: isA<MaterialPageRoute<void>>())));
+    verify(
+      () =>
+          mockNavigator.pushNamed('/album', arguments: data.albumEntity.title),
+    );
   });
 
   testWidgets('Renders tracks', (tester) async {

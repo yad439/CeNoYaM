@@ -14,7 +14,13 @@ import 'presentation/bloc/playlist_bloc.dart';
 import 'presentation/bloc/profile_bloc.dart';
 import 'presentation/bloc/search_results_bloc.dart';
 import 'presentation/bloc/track_bloc.dart';
+import 'presentation/widget/album_widget.dart';
+import 'presentation/widget/artist_widget.dart';
+import 'presentation/widget/login_screen.dart';
+import 'presentation/widget/player_screen.dart';
+import 'presentation/widget/playlist_widget.dart';
 import 'presentation/widget/search_screen.dart';
+import 'presentation/widget/track_widget.dart';
 
 class Cenoyam extends StatelessWidget {
   const Cenoyam(this._getIt, {super.key});
@@ -56,7 +62,27 @@ class Cenoyam extends StatelessWidget {
             primarySwatch: Colors.grey,
             brightness: Brightness.dark,
           ),
-          home: const SearchScreen(),
+          initialRoute: SearchScreen.routeName,
+          routes: {
+            SearchScreen.routeName: (context) => const SearchScreen(),
+            LoginScreen.routeName: (context) => const LoginScreen(),
+            TrackWidget.routeName: (context) => PlayerScreen(
+                  title: ModalRoute.of(context)!.settings.arguments! as String,
+                  child: const TrackWidget(),
+                ),
+            ArtistWidget.routeName: (context) => PlayerScreen(
+                  title: ModalRoute.of(context)!.settings.arguments! as String,
+                  child: const ArtistWidget(),
+                ),
+            AlbumWidget.routeName: (context) => PlayerScreen(
+                  title: ModalRoute.of(context)!.settings.arguments! as String,
+                  child: const AlbumWidget(),
+                ),
+            PlaylistWidget.routeName: (context) => PlayerScreen(
+                  title: ModalRoute.of(context)!.settings.arguments! as String,
+                  child: const PlaylistWidget(),
+                ),
+          },
         ),
       );
 }
