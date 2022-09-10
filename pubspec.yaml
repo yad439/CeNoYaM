@@ -24,6 +24,7 @@ dependencies:
   get_it:
   injectable:
   json_annotation:
+  path_provider:
   provider:
   rxdart:
 

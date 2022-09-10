@@ -2,16 +2,19 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
 import 'main.config.dart';
 
-void main() {
+void main() async {
   final getIt = GetIt.instance;
   configureDependencies(getIt);
+  await getIt.allReady();
   runApp(Cenoyam(getIt));
 }
 
@@ -33,7 +36,14 @@ abstract class InjectableConfig {
         ),
       )..interceptors.add(CookieManager(jar));
   @singleton
-  CookieJar get cookieJar => CookieJar();
+  Future<CookieJar> get cookieJar async {
+    if (kIsWeb) {
+      return CookieJar();
+    } else {
+      final appDocDir = await getApplicationDocumentsDirectory();
+      return PersistCookieJar(storage: FileStorage(appDocDir.path));
+    }
+  }
 }
 
 void disposeAudioPlayer(AudioPlayer player) => player.dispose();
