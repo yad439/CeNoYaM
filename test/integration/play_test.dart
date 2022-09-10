@@ -518,8 +518,9 @@ void main() {
       find.text(
         '${data.trackEntity.artistString} - ${data.trackEntity.title}',
       ),
-      findsOneWidget,
+      findsNWidgets(2),
     );
+    expect(find.text('-'), findsNothing);
     expect(
       tester.widget<ProgressBar>(find.byType(ProgressBar)).progress,
       const Duration(seconds: 50),
@@ -551,8 +552,9 @@ void main() {
       find.text(
         '${data.trackEntity.artistString} - ${data.trackEntity.title}',
       ),
-      findsOneWidget,
+      findsNWidgets(2),
     );
+    expect(find.text('-'), findsNothing);
     expect(
       tester
           .widget<ProgressBar>(

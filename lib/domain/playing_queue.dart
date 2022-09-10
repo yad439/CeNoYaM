@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'entity/track.dart';
 import 'yandex_player.dart';
@@ -14,8 +15,8 @@ class PlayingQueue {
 
   final YandexPlayer _player;
   late final StreamSubscription<void> _onCompleteSubscription;
-  final StreamController<TrackMin?> _trackStreamController =
-      StreamController<TrackMin?>.broadcast();
+  final BehaviorSubject<TrackMin?> _trackStreamController =
+      BehaviorSubject<TrackMin?>();
   Queue<TrackMin> _queue = Queue<TrackMin>();
 
   Stream<TrackMin?> get currentTrack => _trackStreamController.stream;
